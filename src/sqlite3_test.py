@@ -22,6 +22,15 @@ def createTable():
     # id, username, age, email 컬럼이 존재
     # id는 기본 키로 설정, 자동 증가
     # IF NOT EXISTS는 해당 테이블이 이미 존재할 경우 생성하지 않는다는 의미
+    '''
+    타입 INTEGER, REAL, TEXT, BLOB, NUMERIC
+    키 PRIMARY KEY 유일키, INTEGER PRIMARY KEY AUTOINCREMENT 자동증가
+    NOT NULL 값이 반드시 있어야하며 NULL이면 안됨
+    UNIQUE 컬럼에 중복값 없도록
+    DEFAULT 값이 입력되지 않았을때 기본값 DEFAULT 0
+    CHECK 조건을 설정해서 입력 제한, CHECK (age>=18) 18 이상만 입력가능
+    
+    '''
 
     #변경사항 저장
     conn.commit()
@@ -81,6 +90,12 @@ def serachdata():
         SELECT DISTINCT age FROM users <- age값이 고유한 사용자들의 나이 목록
         조건13. 최대/최소/평균
         SELECT MIN(age) FROM users
+        SELECT MAX(age) FROM users
+        SELECT AVG(age) FROM users
+        SELECT SUM(age) FROM users
+        조건14. 조건과 함께 집계
+        SELECT age, COUNT(*) as count FROM users GROUP BY age HAVING count > 1 <- 나이가 같은 사용자가 1명 이상일때, having은 group by의 결과에 조건을 추가할때
+
         
     '''
     rows = cursor.fetchall()
