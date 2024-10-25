@@ -1,13 +1,11 @@
-# stock_stack_db.py
-
 import sqlite3
 
 class StockStackDB:
     def __init__(self, db_name="trading_stack.db"):
         self.conn = sqlite3.connect(db_name)
-        self.create_table()
+        self._create_table()
 
-    def create_table(self):
+    def _create_table(self):
         query = """
         CREATE TABLE IF NOT EXISTS stock_stack (
             stock_symbol TEXT PRIMARY KEY,
