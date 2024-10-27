@@ -6,19 +6,19 @@ class BaseDB(ABC):
         pass
 
     @abstractmethod
-    def add_data(self, transaction):
+    def add_data(self, query):
         pass
 
     @abstractmethod
-    def get_data(self, stock_name):
+    def get_data(self, query):
         pass
 
     @abstractmethod
-    def delete_data(self, transaction_id):
+    def delete_data(self, query):
         pass
 
     @abstractmethod
-    def update_data(self, transaction_id, quantity, price):
+    def update_data(self, query):
         pass
 
     @abstractmethod
