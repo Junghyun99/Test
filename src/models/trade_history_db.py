@@ -2,11 +2,11 @@ import sqlite3
 from db_class.py import BaseDB
 
 class TradeHistoryDB(BaseDB):
-    def __init__(self, db_name='StockTradeHistory.db'):
+    def __init__(self, db_name='TradeHistory.db'):
         self.conn = sqlite3.connect(db_name)
-        self._createTable()
+        self._create_table()
 
-    def _createTable(self):
+    def _create_table(self):
         with self.conn:
             self.conn.execute('''CREATE TABLE IF NOT EXISTS history 
                               (
@@ -18,14 +18,20 @@ class TradeHistoryDB(BaseDB):
                               price REAL NOT NULL,
                               fee REAL NOT NULL
                               )''')
-            
-    def get(self,date1, date2):
-        cursor = self.conn.cursor()
-        cursor.execute('''SELECT * FROM history WHERE date BETWEEN ? AND ?,(date1,date2)''')        
-        return cursor.fetchall()
     
-    def saveHistory():
+    def add_data(self, query, data):
         pass
+
+    def get_data(self, query, data):
+        cursor = self.conn.cursor()
+        cursor.execute(query,(data[0],data[1]))     
+        return cursor.fetchall()
+
+    def delete_data(self, query, data):
+        pass
+
+    def update_data(self, query, data):
+        pass                 
 
     def close(self):
         self.conn.close()
