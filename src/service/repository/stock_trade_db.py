@@ -23,9 +23,7 @@ class StockTradeDB(BaseDB):
         pass
 
     def get_data(self, query, data):
-        cursor = self.conn.cursor()
-        cursor.execute(query,(data[0],data[1]))     
-        return cursor.fetchall()
+        pass
 
     def delete_data(self, query, data):
         pass
