@@ -1,4 +1,4 @@
 from import
 
 class YamlKrManager(YamlManager):
-    pass
+    COUNTRY_CODE = "KR_STOCK" 
