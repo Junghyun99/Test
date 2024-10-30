@@ -1,5 +1,7 @@
 import pytest
-from yaml_crud import YamlCRUD
+import os
+import yaml
+from src.service.yaml.yaml_kr_manager import YamlKrManager
 
 @pytest.fixture
 def yaml_file(tmp_path):
@@ -9,7 +11,7 @@ def yaml_file(tmp_path):
 @pytest.fixture
 def yaml_crud(yaml_file):
     """YamlCRUD 객체를 생성하는 fixture."""
-    return YamlCRUD(str(yaml_file))
+    return YamlKrManager(str(yaml_file))
 
 def test_create(yaml_crud, yaml_file):
     new_entry = {"name": "Test", "value": 100}
