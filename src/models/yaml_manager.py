@@ -2,24 +2,9 @@ from abc import ABC, abstractmethod
 import yaml
 
 class YamlManager(ABC):
+    COUNTRY_CODE = "KR_STOCK"
     def __init__(self, file_path):
         self.file_path = file_path
-
-    @abstractmethod
-    def create(self, new_entry):
-        pass
-
-    @abstractmethod
-    def read(self, identifier):
-        pass
-
-    @abstractmethod
-    def update(self, identifier, updated_data):
-        pass
-
-    @abstractmethod
-    def delete(self, identifier):
-        pass
 
     def _write(self, data):
         """YAML 파일 쓰기 (내부에서만 호출)"""
@@ -33,3 +18,42 @@ class YamlManager(ABC):
                 return yaml.safe_load(file) or {}
         except FileNotFoundError:
             return {}
+
+    @abstractmethod    
+    def create(self, new_entry):
+        """KR_STOCK 항목에 새 데이터를 추가."""
+        data = self._read()
+        if COUNTRY_CODE not in data:
+            data[COUNTRY_CODE] = []
+      data[Country_code].append(new_entry)
+        self._write(data)
+
+    @abstractmethod
+    def read(self):
+        """KR_STOCK 데이터 가져오기."""
+        data = self._read()
+        return data.get(COUNTRY_CODE, [])
+
+    @abstractmethod
+    def update(self, identifier, updated_data):
+        """KR_STOCK에서 특정 항목 수정."""
+        data = self._read()
+        if COUNTRY_CODE in data:
+            for entry in data[COUNTRY_CODE]:
+                if entry.get("code") == identifier:
+                    entry.update(updated_data)
+                    self._write(data)
+                    return True
+        return False
+
+    @abstractmethod 
+    def delete(self, identifier):
+        """KR_STOCK에서 특정 항목 삭제."""
+        data = self._read()
+        if COUNTRY_CODE in data:
+            original_length = len(data[COUNTRY_CODE])
+            data[COUNTRY_CODE] = [entry for entry in data[COUNTRY_CODE] if entry.get("code") != identifier]
+            if len(data[COUNTRY_CODE]) < original_length:
+                self._write(data)
+                return True
+        return False
