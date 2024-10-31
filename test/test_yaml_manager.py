@@ -60,3 +60,4 @@ def test_delete(yaml_crud, yaml_file):
 def test_delete_invalid_index(yaml_crud):
     result = yaml_crud.delete(0)
     assert result is False
+
