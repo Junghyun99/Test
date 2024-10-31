@@ -32,11 +32,12 @@ class YamlManager(ABC):
     def read(self, identifier):
         """KR_STOCK 데이터 가져오기."""
         data = self.read() 
-        if COUNTRY_CODE in data:
-            if identifier:
-                return [entry for entry in data[COUNTRY_CODE] if entry.get("code") == identifier] 
-            return data[COUNTRY_CODE] 
-        return None
+        if COUNTRY_CODE not in data:
+            return None
+
+        if identifier:
+            return [entry for entry in data[COUNTRY_CODE] if entry.get("code") == identifier] 
+        return data[COUNTRY_CODE] 
 
     @abstractmethod
     def update(self, identifier, updated_data):
