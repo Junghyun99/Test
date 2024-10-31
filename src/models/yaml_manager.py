@@ -35,7 +35,7 @@ class YamlManager(ABC):
         if COUNTRY_CODE in data:
             if identifier:
                 return [entry for entry in data[COUNTRY_CODE] if entry.get("code") == identifier] 
-            return data[section] 
+            return data[COUNTRY_CODE] 
         return None
 
     @abstractmethod
