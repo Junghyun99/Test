@@ -29,10 +29,14 @@ class YamlManager(ABC):
         self._write(data)
 
     @abstractmethod
-    def read(self):
+    def read(self, identifier):
         """KR_STOCK 데이터 가져오기."""
-        data = self._read()
-        return data.get(COUNTRY_CODE, [])
+        data = self.read() 
+        if COUNTRY_CODE in data:
+            if identifier:
+                return [entry for entry in data[COUNTRY_CODE] if entry.get("code") == identifier] 
+            return data[section] 
+        return None
 
     @abstractmethod
     def update(self, identifier, updated_data):
