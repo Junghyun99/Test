@@ -12,59 +12,45 @@ def temp_file(tmp_path):
 
 @pytest.fixture
 def sample_data() -> Dict:
-    return {US_STOCK:
-  - name: Apple
-    code: AAPL
-    orders:
-      - order: 1
-        buy_price: 150
-        buy_rate: 5
-        sell_rate: 3
-      - order: 2
-        buy_price: 155
-        buy_rate: 5
-        sell_rate: 3
-
-  - name: Amazon
-    code: AMZN
-    orders:
-      - order: 1
-        buy_price: 3200
-        buy_rate: 4
-        sell_rate: 2
-      - order: 2
-        buy_price: 3300
-        buy_rate: 4
-        sell_rate: 2
-      - order: 3
-        buy_price: 3400
-        buy_rate: 4
-        sell_rate: 2
-
-KR_STOCK:
-  - name: 삼성전자
-    code: 005930
-    orders:
-      - order: 1
-        buy_price: 70000
-        buy_rate: 6
-        sell_rate: 3
-      - order: 2
-        buy_price: 71000
-        buy_rate: 6
-        sell_rate: 3
-      - order: 3
-        buy_price: 72000
-        buy_rate: 6
-        sell_rate: 3
-
-  - name: 현대차
-    code: 005380
-    orders:
-      - order: 1
-        buy_price: 180000
-        buy_rate: 5
-        sell_rate: 4}
+    return {
+    "US_STOCK": [
+        {
+            "name": "Apple",
+            "code": "AAPL",
+            "orders": [
+                {"order": 1, "buy_price": 150, "buy_rate": 5, "sell_rate": 3},
+                {"order": 2, "buy_price": 155, "buy_rate": 5, "sell_rate": 3},
+            ]
+        },
+        {
+            "name": "Amazon",
+            "code": "AMZN",
+            "orders": [
+                {"order": 1, "buy_price": 3200, "buy_rate": 4, "sell_rate": 2},
+                {"order": 2, "buy_price": 3300, "buy_rate": 4, "sell_rate": 2},
+                {"order": 3, "buy_price": 3400, "buy_rate": 4, "sell_rate": 2},
+            ]
+        }
+    ],
+    "KR_STOCK": [
+        {
+            "name": "삼성전자",
+            "code": "005930",
+            "orders": [
+                {"order": 1, "buy_price": 70000, "buy_rate": 6, "sell_rate": 3},
+                {"order": 2, "buy_price": 71000, "buy_rate": 6, "sell_rate": 3},
+                {"order": 3, "buy_price": 72000, "buy_rate": 6, "sell_rate": 3},
+            ]
+        },
+        {
+            "name": "현대차",
+            "code": "005380",
+            "orders": [
+                {"order": 1, "buy_price": 180000, "buy_rate": 5, "sell_rate": 4},
+            ]
+        }
+    ]
+} 
 
 @pytest.fixture
 def kr_stock_crud(temp_file):
