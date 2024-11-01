@@ -1,8 +1,7 @@
 import pytest
 import os
 import yaml
-from typing import Dict
-from your_module import KRStockCRUD, USStockCRUD  # your_module은 파일 경로에 맞춰 수정 필요
+from src.service.yaml import KRStockCRUD, USStockCRUD 
 
 @pytest.fixture
 def temp_file(tmp_path):
