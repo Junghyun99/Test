@@ -40,7 +40,7 @@ class YamlManager:
         if self.COUNTRY_CODE not in data:
             return None
 
-        filterd_data = data["KR_STOCK"]
+        filterd_data = data[self.COUNTRY_CODE]
         if identifier:
 
             for entry in filterd_data:

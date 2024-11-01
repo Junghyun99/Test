@@ -31,9 +31,26 @@ def sample_kr_data2():
                 {"order": 1, "buy_price": 180000, "buy_rate": 5, "sell_rate": 4},
             ]
         }
-
-
-                                                                                                                                                                                                                                        
+@pytest.fixture
+def sample_us_data1():
+    return {
+        "name": "Apple",
+        "code": "AAPL",
+        "orders": [
+            {"order": 1, "buy_price": 150, "buy_rate": 5, "sell_rate":3},
+            {"order": 2, "buy_price": 155, "buy_rate": 5, "sell_rate":3}
+        ]}
+@pytest.fixture
+def sample_us_data2():
+    return {
+        "name": "Amazon",
+        "code": "AMZN",
+        "orders": [
+            {"order": 1, "buy_price": 3200, "buy_rate": 4, "sell_rate":2},
+            {"order": 2, "buy_price": 3300, "buy_rate": 4, "sell_rate":2},
+            {"order": 3, "buy_price": 3400, "buy_rate": 4, "sell_rate":2}
+        ]}
+                                                                                                                                                                                                                               
 @pytest.fixture
 def kr_stock_crud(temp_file):
     return YamlKrManager(str(temp_file))
@@ -65,20 +82,19 @@ def test_create_empty_kr_stock(kr_stock_crud):
     assert len(data) == 1
     assert data[0] == {}
 
-def test_create_us_stock(us_stock_crud, sample_data):
-    us_stock_crud.create(sample_data)
-    data = us_stock_crud.read()
+def test_create_us_stock(us_stock_crud, sample_us_data1,sample_us_data2):
+    us_stock_crud.create(sample_us_data1)
+    us_stock_crud.create(sample_us_data2)
+    data = us_stock_crud.read("AAPL")
     assert len(data) == 1
-    assert data[0]["name"] == "Samsung Electronics"
+    assert data[0]["name"] == "Apple"
 
-def test_create_multiple_stocks(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
-    sample_data["name"] = "LG Electronics"
-    sample_data["code"] = "066570"
-    kr_stock_crud.create(sample_data)
+def test_create_multiple_stocks(kr_stock_crud, us_stock_crud, sample_kr_data1, sample_us_data1):
+    kr_stock_crud.create(sample_kr_data1)
+    us_stock_crud.create(sample_us_data1)
     data = kr_stock_crud.read()
-    assert len(data) == 2
-    assert data[1]["name"] == "LG Electronics"
+    assert len(data) == 1
+    assert data[0]["name"] == "삼성전자"
 
 
 # --- READ TEST CASES ---
