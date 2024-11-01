@@ -1,7 +1,8 @@
 import pytest
 import os
 import yaml
-from src.service.yaml import KRStockCRUD, USStockCRUD 
+from src.service.yaml.yaml_kr_manager import YamlKrManager
+from src.service.yaml.yaml_us_manager import YamlUsManager
 
 @pytest.fixture
 def temp_file(tmp_path):
@@ -11,68 +12,52 @@ def temp_file(tmp_path):
         os.remove(file_path)
 
 @pytest.fixture
-def sample_data() -> Dict:
+def sample_kr_data1():
     return {
-    "US_STOCK": [
-        {
-            "name": "Apple",
-            "code": "AAPL",
-            "orders": [
-                {"order": 1, "buy_price": 150, "buy_rate": 5, "sell_rate": 3},
-                {"order": 2, "buy_price": 155, "buy_rate": 5, "sell_rate": 3},
-            ]
-        },
-        {
-            "name": "Amazon",
-            "code": "AMZN",
-            "orders": [
-                {"order": 1, "buy_price": 3200, "buy_rate": 4, "sell_rate": 2},
-                {"order": 2, "buy_price": 3300, "buy_rate": 4, "sell_rate": 2},
-                {"order": 3, "buy_price": 3400, "buy_rate": 4, "sell_rate": 2},
-            ]
-        }
-    ],
-    "KR_STOCK": [
-        {
-            "name": "삼성전자",
+        "name": "삼성전자",
             "code": "005930",
             "orders": [
                 {"order": 1, "buy_price": 70000, "buy_rate": 6, "sell_rate": 3},
                 {"order": 2, "buy_price": 71000, "buy_rate": 6, "sell_rate": 3},
                 {"order": 3, "buy_price": 72000, "buy_rate": 6, "sell_rate": 3},
             ]
-        },
-        {
+        }
+@pytest.fixture
+def sample_kr_data2():    
+    return {
             "name": "현대차",
             "code": "005380",
             "orders": [
                 {"order": 1, "buy_price": 180000, "buy_rate": 5, "sell_rate": 4},
             ]
         }
-    ]
-} 
 
+
+                                                                                                                                                                                                                                        
 @pytest.fixture
 def kr_stock_crud(temp_file):
-    return KRStockCRUD(str(temp_file))
+    return YamlKrManager(str(temp_file))
 
 @pytest.fixture
 def us_stock_crud(temp_file):
-    return USStockCRUD(str(temp_file))
+    return YamlUsManager(str(temp_file))
 
 
 # --- CREATE TEST CASES ---
-def test_create_kr_stock(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
-    data = kr_stock_crud.read()
+def test_create_kr_stock(kr_stock_crud, sample_kr_data1,sample_kr_data2):
+    kr_stock_crud.create(sample_kr_data1)
+    kr_stock_crud.create(sample_kr_data2)
+    data = kr_stock_crud.read("005930")
     assert len(data) == 1
-    assert data[0]["name"] == "Samsung Electronics"
-
-def test_create_duplicate_kr_stock(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
-    kr_stock_crud.create(sample_data)
+    assert data[0]["name"] == "삼성전자"
     data = kr_stock_crud.read()
-    assert len(data) == 2  # 중복 허용 시에 대한 테스트
+    assert len(data) == 2
+
+def test_create_duplicate_kr_stock(kr_stock_crud, sample_kr_data1):
+    kr_stock_crud.create(sample_kr_data1)
+    kr_stock_crud.create(sample_kr_data1)
+    data = kr_stock_crud.read()
+    assert len(data) == 1  # 중복 허용 시에 대한 테스트
 
 def test_create_empty_kr_stock(kr_stock_crud):
     kr_stock_crud.create({})
