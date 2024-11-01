@@ -7,20 +7,25 @@ class BaseDB(ABC):
 
     @abstractmethod
     def add_data(self, query, data):
-        pass
+        self.conn.execute(query, data)
+        self.conn.commit()  # 명시적 commit
 
-    @abstractmethod
+    @abstractmethod 
     def get_data(self, query, data):
-        pass
+        cursor = self.conn.cursor()
+        cursor.execute(query, data)
+        return cursor.fetchall()
 
     @abstractmethod
     def delete_data(self, query, data):
-        pass
+        self.conn.execute(query, data)
+        self.conn.commit()  # 명시적 commit
 
     @abstractmethod
     def update_data(self, query, data):
-        pass
+        self.conn.execute(query, data)
+        self.conn.commit()  # 명시적 commit
 
     @abstractmethod
     def close(self):
-        pass
+        self.conn.close(
