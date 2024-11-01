@@ -1,6 +1,5 @@
 class PriceCalculator:
-
-@staticmethod
+    @staticmethod
     def calculate_price(base_price, percentage, is_buy):
         """
         기본 가격과 비율을 받아 매수가 또는 매도가를 계산합니다.
