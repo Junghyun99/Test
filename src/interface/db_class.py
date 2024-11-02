@@ -23,6 +23,5 @@ class BaseDB:
         cursor.execute(query, data)
         self.conn.commit()  # 명시적 commit
 
-    @abstractmethod
     def close(self):
         self.conn.close()
