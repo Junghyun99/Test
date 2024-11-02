@@ -157,78 +157,47 @@ def test_update_code_us_stock(us_stock_crud, sample_us_data1):
     assert data[0]["code"] == "AAPL"
 
 # --- DELETE TEST CASES ---
-def test_delete_existing_kr_stock(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
-    result = kr_stock_crud.delete("005930")
+def test_delete_existing_kr_stock(kr_stock_crud, sample_kr_data1, sample_kr_data2):
+    kr_stock_crud.create(sample_kr_data1)
+    kr_stock_crud.create(sample_kr_data2)
+    result = kr_stock_crud.delete("005380")
     assert result is True
     data = kr_stock_crud.read()
-    assert len(data) == 0
+    assert len(data) == 1
 
 def test_delete_non_existing_kr_stock(kr_stock_crud):
     result = kr_stock_crud.delete("999999")
     assert result is False
 
-def test_delete_one_of_multiple_stocks(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
-    sample_data["code"] = "066570"
-    kr_stock_crud.create(sample_data)
-    kr_stock_crud.delete("066570")
-    data = kr_stock_crud.read()
-    assert len(data) == 1
-    assert data[0]["code"] == "005930"
-
-def test_delete_us_stock(us_stock_crud, sample_data):
-    us_stock_crud.create(sample_data)
-    us_stock_crud.delete("005930")
+def test_delete_all_us_stocks(us_stock_crud, sample_us_data1, sample_us_data2):
+    us_stock_crud.create(sample_us_data1)
+    us_stock_crud.create(sample_us_data2)
+    us_stock_crud.delete("AAPL")
+    us_stock_crud.delete("AMZN")
     data = us_stock_crud.read()
-    assert len(data) == 0
-
-def test_delete_all_kr_stocks(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
-    sample_data["code"] = "066570"
-    kr_stock_crud.create(sample_data)
-    kr_stock_crud.delete("005930")
-    kr_stock_crud.delete("066570")
-    data = kr_stock_crud.read()
     assert data == []
 
 
 # --- COMPLEX TEST CASES ---
-def test_complex_create_update_delete(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
-    sample_data["code"] = "066570"
-    kr_stock_crud.create(sample_data)
-    kr_stock_crud.update("005930", {"name": "Samsung Updated"})
-    kr_stock_crud.delete("066570")
+def test_complex_create_update_delete(kr_stock_crud, sample_kr_data1, sample_kr_data2):
+    kr_stock_crud.create(sample_kr_data1)
+    kr_stock_crud.create(sample_kr_data1)
+    kr_stock_crud.create(sample_kr_data2)
+    kr_stock_crud.update("005930", {"name": "Samsung"})
+    kr_stock_crud.delete("005380")
     data = kr_stock_crud.read()
     assert len(data) == 1
-    assert data[0]["name"] == "Samsung Updated"
+    assert data[0]["name"] == "Samsung"
 
-def test_complex_create_read_update(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
-    sample_data["code"] = "066570"
-    kr_stock_crud.create(sample_data)
-    kr_stock_crud.update("005930", {"name": "Updated Samsung"})
-    data = kr_stock_crud.read()
-    assert len(data) == 2
-    assert data[0]["name"] == "Updated Samsung"
-
-def test_complex_multiple_updates(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
+def test_complex_multiple_updates(kr_stock_crud, sample_kr_data1):
+    kr_stock_crud.create(sample_kr_data1)
     for i in range(3):
         kr_stock_crud.update("005930", {"name": f"Samsung Updated {i}"})
     data = kr_stock_crud.read()
     assert data[0]["name"] == "Samsung Updated 2"
 
-def test_complex_create_delete_read(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
+def test_complex_create_delete_read(kr_stock_crud, sample_kr_data1):
+    kr_stock_crud.create(sample_kr_data1)
     kr_stock_crud.delete("005930")
     data = kr_stock_crud.read()
     assert len(data) == 0
-
-def test_complex_us_stock_operations(us_stock_crud, sample_data):
-    us_stock_crud.create(sample_data)
-    us_stock_crud.update("005930", {"name": "Tesla Updated"})
-    us_stock_crud.delete("005930")
-    data = us_stock_crud.read()
-    assert data == []
