@@ -1,5 +1,5 @@
 import sqlite3
-from db_class import BaseDB
+from src.interface.db_class import BaseDB
 
 class StockTradeDB(BaseDB):
     def __init__(self, db_name='StockTrade.db'):
@@ -7,8 +7,7 @@ class StockTradeDB(BaseDB):
         self._create_table()
 
     def _create_table(self):
-        with self.conn:
-            self.conn.execute('''CREATE TABLE IF NOT EXISTS history 
+        self.conn.execute('''CREATE TABLE IF NOT EXISTS history 
                               (
                               id INTEGER PRIMARY KEY AUTOINCREMENT,         -- 고유 식별자
     stock_name TEXT NOT NULL,                     -- 종목 이름
@@ -22,3 +21,4 @@ class StockTradeDB(BaseDB):
     total_value REAL GENERATED ALWAYS AS (price * amount), -- 총 거래 금액
     status TEXT CHECK(status IN ('completed', 'processing' )), -- 거래 상태 (완료, 진행중)
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP  -- 거래 시간 )''')
+        self.conn.commit()
