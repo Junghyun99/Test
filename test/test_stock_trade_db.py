@@ -121,93 +121,102 @@ def test_full_scenario(stock_db):
     assert result == []
 
 
-
-import pytest
-import sqlite3
-from src.service.repository.stock_trade_db import StockTradeDB
-
 @pytest.fixture
-def stock_db(tmp_path):
-    db_path = tmp_path / "test_StockTrade.db"
-    db = StockTradeDB(str(db_path))
-    
+def sample_data(stock_db):
     # 각 국가별 거래 내역 10개씩 생성
     kr_transactions = [
-        ('KR_STOCK_{}'.format(i), 'KR', 'TX_KR_{}'.format(i), 'KR', i, 'buy' if i % 2 == 0 else 'sell', 100 + i, 5 + i, 'completed' if i % 3 == 0 else 'processing')
-        for i in range(10)
+        ('삼성전자', '005390', 'TX_KR_1', 'KR', 1, 'buy', 60000, 5, 'processing'),
+        ('삼성전자', '005390', 'TX_KR_2', 'KR', 2, 'buy', 55000, 5, 'completed'),
+        ('삼성전자', '005390', 'TX_KR_3', 'KR', 2, 'sell', 58000, 5, 'completed'),
+        ('현대차', '005830', 'TX_KR_4', 'KR', 1, 'buy', 240000, 5, 'processing'),
+        ('네이버', '002380', 'TX_KR_5', 'KR', 1, 'buy', 6000, 10, 'completed'),
+        ('카카오', '005530', 'TX_KR_6', 'KR', 1, 'buy', 120000, 3, 'processing'),
+        ('삼성전자', '005390', 'TX_KR_7', 'KR', 2, 'buy', 55000, 5, 'processing'),
+        ('네이버', '002380', 'TX_KR_8', 'KR', 1, 'sell', 8000, 10, 'completed'),
+        ('삼성전자', '005390', 'TX_KR_9', 'KR', 3, 'buy', 40000, 5, 'processing'),
+        ('네이버', '002380', 'TX_KR_10', 'KR', 1, 'buy', 6200, 5, 'processing')
     ]
     us_transactions = [
-        ('US_STOCK_{}'.format(i), 'US', 'TX_US_{}'.format(i), 'US', i, 'buy' if i % 2 == 0 else 'sell', 200 + i, 10 + i, 'completed' if i % 3 == 0 else 'processing')
-        for i in range(10)
+        ('apple', 'AAPL', 'TX_US_1', 'US', 1, 'buy', 180.4, 5, 'processing'),
+        ('amazon', 'AMZN', 'TX_US_2', 'US', 1, 'buy', 432.1, 8, 'completed'),
+        ('tesla', 'TSLA', 'TX_US_3', 'US', 1, 'buy', 300.8, 2, 'processing'),
+        ('apple', 'AAPL', 'TX_US_4', 'US', 2, 'buy', 110.5, 5, 'completed'),
+        ('apple', 'AAPL', 'TX_US_5', 'US', 2, 'sell', 150, 5, 'completed'),
+        ('apple', 'AAPL', 'TX_US_6', 'US', 2, 'buy', 110.7, 5, 'completed'),
+        ('amazon', 'AMZN', 'TX_US_7', 'US', 1, 'sell', 501.3, 8, 'completed'),
+        ('apple', 'AAPL', 'TX_US_8', 'US', 2, 'sell', 150.7, 5, 'completed'),
+        ('apple', 'AAPL', 'TX_US_9', 'US', 2, 'buy', 120.6, 5, 'processing'),
+        ('apple', 'AAPL', 'TX_US_10', 'US', 3, 'buy', 90, 5, 'processing')
     ]
     
     for data in kr_transactions + us_transactions:
-        db.create_data(
-            '''INSERT INTO history (stock_name, 나라, transaction_id, country_code, trade_round, trade_type, price, amount, status) 
+        stock_db.insert_data(
+            '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status) 
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
             data
         )
 
-    yield db
-    db.close()
-
 # 국가 코드별 데이터 검색 테스트
-def test_read_data_by_country_code_kr(stock_db):
+def test_read_data_by_country_code_kr(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE country_code=?", ('KR',))
     assert len(result) == 10
     for entry in result:
-        assert entry[3] == 'KR'
+        assert entry[4] == 'KR'
 
-def test_read_data_by_country_code_us(stock_db):
+def test_read_data_by_country_code_us(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE country_code=?", ('US',))
     assert len(result) == 10
     for entry in result:
-        assert entry[3] == 'US'
+        assert entry[4] == 'US'
 
 # 거래 상태에 따른 데이터 검색 테스트
-def test_read_data_by_status_completed(stock_db):
+def test_read_data_by_status_completed(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE status=?", ('completed',))
-    assert len(result) > 0  # 일부 데이터는 'completed' 상태
+    assert len(result) == 10  # 일부 데이터는 'completed' 상태
     for entry in result:
-        assert entry[9] == 'completed'
+        assert entry[10] == 'completed'
 
-def test_read_data_by_status_processing(stock_db):
+def test_read_data_by_status_processing(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE status=?", ('processing',))
-    assert len(result) > 0  # 일부 데이터는 'processing' 상태
+    assert len(result) == 10  # 일부 데이터는 'processing' 상태
     for entry in result:
-        assert entry[9] == 'processing'
+        assert entry[10] == 'processing'
 
 # 거래 유형별 데이터 검색 테스트
-def test_read_data_by_trade_type_buy(stock_db):
+def test_read_data_by_trade_type_buy(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE trade_type=?", ('buy',))
-    assert len(result) > 0  # 일부 데이터는 'buy' 유형
+    assert len(result) == 15  # 일부 데이터는 'buy' 유형
     for entry in result:
         assert entry[6] == 'buy'
 
-def test_read_data_by_trade_type_sell(stock_db):
+def test_read_data_by_trade_type_sell(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE trade_type=?", ('sell',))
-    assert len(result) > 0  # 일부 데이터는 'sell' 유형
+    assert len(result) == 5  # 일부 데이터는 'sell' 유형
     for entry in result:
         assert entry[6] == 'sell'
 
 # 복합 조건 검색 테스트
-def test_read_data_by_country_and_status(stock_db):
+def test_read_data_by_country_and_status(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE country_code=? AND status=?", ('KR', 'completed'))
+    assert len(result) == 4
+    assert len(result) % 2 == 0
     for entry in result:
-        assert entry[3] == 'KR'
-        assert entry[9] == 'completed'
+        assert entry[4] == 'KR'
+        assert entry[10] == 'completed'
 
-def test_read_data_by_trade_type_and_price_range(stock_db):
-    result = stock_db.read_data("SELECT * FROM history WHERE trade_type=? AND price BETWEEN ? AND ?", ('buy', 105, 115))
+def test_read_data_by_code(stock_db,sample_data):
+    result = stock_db.read_data("SELECT * FROM history WHERE code=?", ('AAPL',))
+    assert len(result) == 7
     for entry in result:
-        assert entry[6] == 'buy'
-        assert 105 <= entry[7] <= 115
+        assert entry[2] == 'AAPL' #all stack
 
-def test_read_data_by_amount_and_trade_round(stock_db):
-    result = stock_db.read_data("SELECT * FROM history WHERE amount>? AND trade_round<?", (6, 5))
-    for entry in result:
-        assert entry[8] > 6
-        assert entry[5] < 5
+def test_read_data_by_code_processing(stock_db):
+    result = stock_db.read_data("SELECT * FROM history WHERE code=? AND status=?", ('TSLA', 'processing'))
+    assert len(result) == 0
+    result = stock_db.read_data("SELECT * FROM history WHERE code=? AND status=?", ('삼성전자', 'processing'))
+    assert len(result) == 3 # processing stack
+    for 
+    
 
 def test_read_data_by_country_trade_type_and_status(stock_db):
     result = stock_db.read_data("SELECT * FROM history WHERE country_code=? AND trade_type=? AND status=?", ('US', 'sell', 'processing'))
