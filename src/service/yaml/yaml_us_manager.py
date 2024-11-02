@@ -1,4 +1,4 @@
-from src.model.yaml_manager import YamlManager 
+from src.interface.yaml_manager import YamlManager 
 
 class YamlUsManager(YamlManager):
     COUNTRY_CODE = "US_STOCK"
