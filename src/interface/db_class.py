@@ -3,14 +3,17 @@ class BaseDB:
     def _create_table(self):
         pass
 
-    def create_data(self, query, data):
+    def insert_data(self, query, data):
         cursor = self.conn.cursor()
         cursor.execute(query, data)
         self.conn.commit()  # 명시적 commit
  
-    def read_data(self, query, data):
+    def read_data(self, query, data=None):
         cursor = self.conn.cursor()
-        cursor.execute(query, data)
+        if data:
+            cursor.execute(query, data)
+        else:
+            cursor.execute(query)
         return cursor.fetchall()
 
     def delete_data(self, query, data):
