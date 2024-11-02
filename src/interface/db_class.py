@@ -1,4 +1,4 @@
-class BaseDB(ABC):
+class BaseDB:
     
     def _create_table(self):
         pass
