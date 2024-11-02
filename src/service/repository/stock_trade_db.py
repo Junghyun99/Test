@@ -7,7 +7,8 @@ class StockTradeDB(BaseDB):
         self._create_table()
 
     def _create_table(self):
-        self.conn.execute('''CREATE TABLE IF NOT EXISTS history 
+        cursor = self.conn.cursor()
+        cursor.execute('''CREATE TABLE IF NOT EXISTS history 
                               (
                               id INTEGER PRIMARY KEY AUTOINCREMENT,         -- 고유 식별자
     stock_name TEXT NOT NULL,                     -- 종목 이름
