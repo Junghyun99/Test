@@ -9,3 +9,8 @@ def temp_file(tmp_path):
     yield file_path
     if file_path.exists():
         os.remove(file_path)
+
+
+@pytest.fixture
+def stock_conn(temp_file):
+    return StockTradeDB(str(temp_file))
