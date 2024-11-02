@@ -102,44 +102,45 @@ def test_read_empty_kr_stock(kr_stock_crud):
     data = kr_stock_crud.read()
     assert data == []
 
-def test_read_kr_stock_after_create(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
+def test_read_kr_stock_after_create(kr_stock_crud, sample_kr_data1):
+    kr_stock_crud.create(sample_kr_data1)
     data = kr_stock_crud.read()
     assert len(data) == 1
     assert data[0]["code"] == "005930"
 
-def test_read_specific_kr_stock(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
-    result = kr_stock_crud.get("KR_STOCK", "005930")
-    assert result[0]["name"] == "Samsung Electronics"
+def test_read_specific_kr_stock(kr_stock_crud, sample_kr_data1, sample_kr_data2):
+    kr_stock_crud.create(sample_kr_data1)
+    kr_stock_crud.create(sample_kr_data2)
+    data = kr_stock_crud.read("005380")
+    assert data[0]["name"] == "현대차"
 
 def test_read_us_stock_empty(us_stock_crud):
     data = us_stock_crud.read()
     assert data == []
 
-def test_read_multiple_us_stocks(us_stock_crud, sample_data):
-    us_stock_crud.create(sample_data)
-    sample_data["name"] = "Apple"
-    sample_data["code"] = "AAPL"
-    us_stock_crud.create(sample_data)
+def test_read_multiple_us_stocks(us_stock_crud, kr_stock_crud, sample_kr_data1, sample_us_data1):
+    kr_stock_crud.create(sample_kr_data1)
+    us_stock_crud.create(sample_us_data1)
     data = us_stock_crud.read()
-    assert len(data) == 2
+    assert len(data) == 1
+    data = kr_stock_crud.read()
+    assert len(data) == 1
 
 
 # --- UPDATE TEST CASES ---
-def test_update_existing_kr_stock(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
-    updated_data = {"name": "Samsung Electronics Modified"}
+def test_update_existing_kr_stock(kr_stock_crud, sample_kr_data1):
+    kr_stock_crud.create(sample_kr_data1)
+    updated_data = {"name": "Samsung"}
     kr_stock_crud.update("005930", updated_data)
     data = kr_stock_crud.read()
-    assert data[0]["name"] == "Samsung Electronics Modified"
+    assert data[0]["name"] == "Samsung"
 
 def test_update_non_existing_kr_stock(kr_stock_crud):
     result = kr_stock_crud.update("999999", {"name": "Non Existent"})
     assert result is False
 
-def test_update_multiple_orders_kr_stock(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
+def test_update_multiple_orders_kr_stock(kr_stock_crud, sample_kr_data1):
+    kr_stock_crud.create(sample_kr_data1)
     updated_data = {
         "orders": [
             {"order": 1, "buy_price": 62000, "buy_rate": 5, "sell_rate": 3}
@@ -149,18 +150,11 @@ def test_update_multiple_orders_kr_stock(kr_stock_crud, sample_data):
     data = kr_stock_crud.read()
     assert data[0]["orders"][0]["buy_price"] == 62000
 
-def test_update_us_stock(us_stock_crud, sample_data):
-    us_stock_crud.create(sample_data)
-    us_stock_crud.update("005930", {"name": "Updated Stock"})
+def test_update_code_us_stock(us_stock_crud, sample_us_data1):
+    us_stock_crud.create(sample_us_data1)
+    us_stock_crud.update("AAPL", {"code": "AAPP"})
     data = us_stock_crud.read()
-    assert data[0]["name"] == "Updated Stock"
-
-def test_update_partial_data(kr_stock_crud, sample_data):
-    kr_stock_crud.create(sample_data)
-    kr_stock_crud.update("005930", {"name": "Partial Update"})
-    data = kr_stock_crud.read()
-    assert data[0]["name"] == "Partial Update"
-
+    assert data[0]["code"] == "AAPL"
 
 # --- DELETE TEST CASES ---
 def test_delete_existing_kr_stock(kr_stock_crud, sample_data):

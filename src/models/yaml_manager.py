@@ -38,7 +38,7 @@ class YamlManager:
         """KR_STOCK 데이터 가져오기."""
         data = self._read() 
         if self.COUNTRY_CODE not in data:
-            return None
+            return []
 
         filterd_data = data[self.COUNTRY_CODE]
         if identifier:
@@ -52,6 +52,11 @@ class YamlManager:
 
     def update(self, identifier, updated_data):
         """KR_STOCK에서 특정 항목 수정."""
+        # Don't fix code
+        if "code" in updated_data:
+            print("Don't fix code")
+            return False
+
         data = self._read()
         if self.COUNTRY_CODE in data:
             for entry in data[self.COUNTRY_CODE]:
