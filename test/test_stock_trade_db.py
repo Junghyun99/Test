@@ -125,16 +125,16 @@ def test_full_scenario(stock_db):
 def sample_data(stock_db):
     # 각 국가별 거래 내역 10개씩 생성
     kr_transactions = [
-        ('삼성전자', '005390', 'TX_KR_1', 'KR', 1, 'buy', 60000, 5, 'processing', '2024-10-01'),
-        ('삼성전자', '005390', 'TX_KR_2', 'KR', 2, 'buy', 55000, 5, 'completed', '2024-10-02'),
-        ('삼성전자', '005390', 'TX_KR_3', 'KR', 2, 'sell', 58000, 5, 'completed', '2024-10-03'),
-        ('현대차', '005830', 'TX_KR_4', 'KR', 1, 'buy', 240000, 5, 'processing', '2024-10-04'),
-        ('네이버', '002380', 'TX_KR_5', 'KR', 1, 'buy', 6000, 10, 'completed', '2024-10-05'),
-        ('카카오', '005530', 'TX_KR_6', 'KR', 1, 'buy', 120000, 3, 'processing', '2024-10-06'),
-        ('삼성전자', '005390', 'TX_KR_7', 'KR', 2, 'buy', 55000, 5, 'processing', '2024-10-07'),
-        ('네이버', '002380', 'TX_KR_8', 'KR', 1, 'sell', 8000, 10, 'completed', '2024-10-08'),
-        ('삼성전자', '005390', 'TX_KR_9', 'KR', 3, 'buy', 40000, 5, 'processing', '2024-10-09'),
-        ('네이버', '002380', 'TX_KR_10', 'KR', 1, 'buy', 6200, 5, 'processing', '2024-10-10')
+        ('삼성전자', '005390', 'TX_KR_1', 'KR', 1, 'buy', 60000, 5, 'processing', '2024-09-01'),
+        ('삼성전자', '005390', 'TX_KR_2', 'KR', 2, 'buy', 55000, 5, 'completed', '2024-09-02'),
+        ('삼성전자', '005390', 'TX_KR_3', 'KR', 2, 'sell', 58000, 5, 'completed', '2024-09-03'),
+        ('현대차', '005830', 'TX_KR_4', 'KR', 1, 'buy', 240000, 5, 'processing', '2024-09-04'),
+        ('네이버', '002380', 'TX_KR_5', 'KR', 1, 'buy', 6000, 10, 'completed', '2024-09-05'),
+        ('카카오', '005530', 'TX_KR_6', 'KR', 1, 'buy', 120000, 3, 'processing', '2024-09-06'),
+        ('삼성전자', '005390', 'TX_KR_7', 'KR', 2, 'buy', 55000, 5, 'processing', '2024-09-07'),
+        ('네이버', '002380', 'TX_KR_8', 'KR', 1, 'sell', 8000, 10, 'completed', '2024-09-08'),
+        ('삼성전자', '005390', 'TX_KR_9', 'KR', 3, 'buy', 40000, 5, 'processing', '2024-09-09'),
+        ('네이버', '002380', 'TX_KR_10', 'KR', 1, 'buy', 6200, 5, 'processing', '2024-09-10')
     ]
     us_transactions = [
         ('apple', 'AAPL', 'TX_US_1', 'US', 1, 'buy', 180.4, 5, 'processing', '2024-10-01'),
@@ -213,12 +213,24 @@ def test_read_data_by_code(stock_db,sample_data):
 def test_read_data_by_code_processing(stock_db):
     result = stock_db.read_data("SELECT * FROM history WHERE code=? AND status=?", ('TSLA', 'processing'))
     assert len(result) == 0
-    result = stock_db.read_data("SELECT * FROM history WHERE code=? AND status=?", ('삼성전자', 'processing'))
+    result = stock_db.read_data("SELECT * FROM history WHERE code=? AND status=?", ('005390', 'processing'))
     assert len(result) == 3 # processing stack
-    for 
+   
     
 
 # 예시 데이터에 날짜도 넣어서 시간 조건검색도 테스트
+def test_read_data_by_time_status(stock_db):
+    result = stock_db.read_data("SELECT * FROM history 
+WHERE strftime('%Y', timestamp) =? AND status=?", ('2024','completed))
+    assert len(result) == 10
+
+    result = stock_db.read_data("SELECT * FROM history 
+WHERE strftime('%Y-%m', timestamp) =? AND status=?", ('2024-10','completed'))
+    assert len(result) == 6
+
+    result = stock_db.read_data("SELECT * FROM history 
+WHERE date(timestamp) BETWEEN ? And ? AND status=?", ('2024-09-06','2024-10-10', 'completed'))
+    assert len(result) == 
 
 
 def test_read_data_by_country_trade_type_and_status(stock_db):
