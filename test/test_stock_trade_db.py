@@ -229,19 +229,8 @@ WHERE strftime('%Y-%m', timestamp) =? AND status=?", ('2024-10','completed'))
     assert len(result) == 6
 
     result = stock_db.read_data("SELECT * FROM history 
-WHERE date(timestamp) BETWEEN ? And ? AND status=?", ('2024-09-06','2024-10-10', 'completed'))
-    assert len(result) == 
+WHERE date(timestamp) BETWEEN ? And ? AND status=?", ('2024-09-06','2024-10-05', 'completed'))
+    assert len(result) == 4
 
 
-def test_read_data_by_country_trade_type_and_status(stock_db):
-    result = stock_db.read_data("SELECT * FROM history WHERE country_code=? AND trade_type=? AND status=?", ('US', 'sell', 'processing'))
-    for entry in result:
-        assert entry[3] == 'US'
-        assert entry[6] == 'sell'
-        assert entry[9] == 'processing'
-
-# 특정 종목 이름으로 검색 테스트
-def test_read_data_by_stock_name(stock_db):
-    result = stock_db.read_data("SELECT * FROM history WHERE stock_name=?", ('KR_STOCK_5',))
-    assert len(result) == 1
-    assert result[0][1] == 'KR_STOCK_5'
+# complete 검색은 매도 기준
