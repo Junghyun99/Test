@@ -21,6 +21,7 @@ class StockTradeDB(BaseDB):
                        amount REAL NOT NULL CHECK(amount >= 0),       -- 거래 수량 
                        total_value REAL GENERATED ALWAYS AS (price * amount), -- 총 거래 금액 
                        status TEXT NOT NULL CHECK(status IN ('completed', 'processing' )), -- 거래 상태 (완료, 진행중) 
+                       pair_id INTEGER,
                        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP  -- 거래 시간 
                        )''')
         self.conn.commit()
