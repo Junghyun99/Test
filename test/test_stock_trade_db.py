@@ -125,13 +125,13 @@ def test_full_scenario(stock_db):
 def sample_data(stock_db):
     # 각 국가별 거래 내역 10개씩 생성
     kr_transactions = [
-        ('삼성전자', '005390', 'TX_KR_1', 'KR', 1, 'buy', 60000, 5, 'processing'),
-        ('삼성전자', '005390', 'TX_KR_2', 'KR', 2, 'buy', 55000, 5, 'completed'),
-        ('삼성전자', '005390', 'TX_KR_3', 'KR', 2, 'sell', 58000, 5, 'completed'),
-        ('현대차', '005830', 'TX_KR_4', 'KR', 1, 'buy', 240000, 5, 'processing'),
-        ('네이버', '002380', 'TX_KR_5', 'KR', 1, 'buy', 6000, 10, 'completed'),
-        ('카카오', '005530', 'TX_KR_6', 'KR', 1, 'buy', 120000, 3, 'processing'),
-        ('삼성전자', '005390', 'TX_KR_7', 'KR', 2, 'buy', 55000, 5, 'processing'),
+        ('삼성전자', '005390', 'TX_KR_1', 'KR', 1, 'buy', 60000, 5, 'processing', '2024-10-01'),
+        ('삼성전자', '005390', 'TX_KR_2', 'KR', 2, 'buy', 55000, 5, 'completed', '2024-10-01'),
+        ('삼성전자', '005390', 'TX_KR_3', 'KR', 2, 'sell', 58000, 5, 'completed', '2024-10-01'),
+        ('현대차', '005830', 'TX_KR_4', 'KR', 1, 'buy', 240000, 5, 'processing', '2024-10-01'),
+        ('네이버', '002380', 'TX_KR_5', 'KR', 1, 'buy', 6000, 10, 'completed', '2024-10-01'),
+        ('카카오', '005530', 'TX_KR_6', 'KR', 1, 'buy', 120000, 3, 'processing', '2024-10-01'),
+        ('삼성전자', '005390', 'TX_KR_7', 'KR', 2, 'buy', 55000, 5, 'processing', '2024-10-01'),
         ('네이버', '002380', 'TX_KR_8', 'KR', 1, 'sell', 8000, 10, 'completed'),
         ('삼성전자', '005390', 'TX_KR_9', 'KR', 3, 'buy', 40000, 5, 'processing'),
         ('네이버', '002380', 'TX_KR_10', 'KR', 1, 'buy', 6200, 5, 'processing')
@@ -147,12 +147,12 @@ def sample_data(stock_db):
         ('apple', 'AAPL', 'TX_US_8', 'US', 2, 'sell', 150.7, 5, 'completed'),
         ('apple', 'AAPL', 'TX_US_9', 'US', 2, 'buy', 120.6, 5, 'processing'),
         ('apple', 'AAPL', 'TX_US_10', 'US', 3, 'buy', 90, 5, 'processing')
-    ]
-    
+    ]                 
+
     for data in kr_transactions + us_transactions:
         stock_db.insert_data(
-            '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
+            '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status, timestamp) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
             data
         )
 
