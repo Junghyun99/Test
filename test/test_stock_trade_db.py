@@ -210,7 +210,7 @@ def test_read_data_by_code(stock_db,sample_data):
     for entry in result:
         assert entry[2] == 'AAPL' #all stack
 
-def test_read_data_by_code_processing(stock_db):
+def test_read_data_by_code_processing(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE code=? AND status=?", ('TSLA', 'processing'))
     assert len(result) == 0
     result = stock_db.read_data("SELECT * FROM history WHERE code=? AND status=?", ('005390', 'processing'))
@@ -219,7 +219,7 @@ def test_read_data_by_code_processing(stock_db):
     
 
 # 예시 데이터에 날짜도 넣어서 시간 조건검색도 테스트
-def test_read_data_by_time_status(stock_db):
+def test_read_data_by_time_status(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history 
 WHERE strftime('%Y', timestamp) =? AND status=?", ('2024','completed))
     assert len(result) == 10
@@ -234,3 +234,7 @@ WHERE date(timestamp) BETWEEN ? And ? AND status=?", ('2024-09-06','2024-10-05',
 
 
 # complete 검색은 매도 기준, pair id 활용
+test_read_data_by_time_completed(stock_db,sample_data):
+    result = stock_db.read_data("SELECT * FROM history 
+WHERE strftime('%Y', timestamp) =? AND status=?", ('2024','completed))
+    assert len(result) == 10
