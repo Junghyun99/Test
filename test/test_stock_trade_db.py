@@ -218,6 +218,12 @@ def test_read_data_by_code_processing(stock_db):
     for 
     
 
+예시 데이터에 날짜도 넣어서 시간 조건검색도 테스트
+
+INSERT INTO history (stock_name, 나라, transaction_id, country_code, trade_round, trade_type, price, amount, status, timestamp)
+VALUES ('Samsung', 'KR', 'TX123456', 'KR_STOCK', 1, 'buy', 1000.50, 10, 'completed', '2024-11-02');
+
+
 def test_read_data_by_country_trade_type_and_status(stock_db):
     result = stock_db.read_data("SELECT * FROM history WHERE country_code=? AND trade_type=? AND status=?", ('US', 'sell', 'processing'))
     for entry in result:
