@@ -126,27 +126,27 @@ def sample_data(stock_db):
     # 각 국가별 거래 내역 10개씩 생성
     kr_transactions = [
         ('삼성전자', '005390', 'TX_KR_1', 'KR', 1, 'buy', 60000, 5, 'processing', '2024-10-01'),
-        ('삼성전자', '005390', 'TX_KR_2', 'KR', 2, 'buy', 55000, 5, 'completed', '2024-10-01'),
-        ('삼성전자', '005390', 'TX_KR_3', 'KR', 2, 'sell', 58000, 5, 'completed', '2024-10-01'),
-        ('현대차', '005830', 'TX_KR_4', 'KR', 1, 'buy', 240000, 5, 'processing', '2024-10-01'),
-        ('네이버', '002380', 'TX_KR_5', 'KR', 1, 'buy', 6000, 10, 'completed', '2024-10-01'),
-        ('카카오', '005530', 'TX_KR_6', 'KR', 1, 'buy', 120000, 3, 'processing', '2024-10-01'),
-        ('삼성전자', '005390', 'TX_KR_7', 'KR', 2, 'buy', 55000, 5, 'processing', '2024-10-01'),
-        ('네이버', '002380', 'TX_KR_8', 'KR', 1, 'sell', 8000, 10, 'completed'),
-        ('삼성전자', '005390', 'TX_KR_9', 'KR', 3, 'buy', 40000, 5, 'processing'),
-        ('네이버', '002380', 'TX_KR_10', 'KR', 1, 'buy', 6200, 5, 'processing')
+        ('삼성전자', '005390', 'TX_KR_2', 'KR', 2, 'buy', 55000, 5, 'completed', '2024-10-02'),
+        ('삼성전자', '005390', 'TX_KR_3', 'KR', 2, 'sell', 58000, 5, 'completed', '2024-10-03'),
+        ('현대차', '005830', 'TX_KR_4', 'KR', 1, 'buy', 240000, 5, 'processing', '2024-10-04'),
+        ('네이버', '002380', 'TX_KR_5', 'KR', 1, 'buy', 6000, 10, 'completed', '2024-10-05'),
+        ('카카오', '005530', 'TX_KR_6', 'KR', 1, 'buy', 120000, 3, 'processing', '2024-10-06'),
+        ('삼성전자', '005390', 'TX_KR_7', 'KR', 2, 'buy', 55000, 5, 'processing', '2024-10-07'),
+        ('네이버', '002380', 'TX_KR_8', 'KR', 1, 'sell', 8000, 10, 'completed', '2024-10-08'),
+        ('삼성전자', '005390', 'TX_KR_9', 'KR', 3, 'buy', 40000, 5, 'processing', '2024-10-09'),
+        ('네이버', '002380', 'TX_KR_10', 'KR', 1, 'buy', 6200, 5, 'processing', '2024-10-10')
     ]
     us_transactions = [
-        ('apple', 'AAPL', 'TX_US_1', 'US', 1, 'buy', 180.4, 5, 'processing'),
-        ('amazon', 'AMZN', 'TX_US_2', 'US', 1, 'buy', 432.1, 8, 'completed'),
-        ('tesla', 'TSLA', 'TX_US_3', 'US', 1, 'buy', 300.8, 2, 'processing'),
-        ('apple', 'AAPL', 'TX_US_4', 'US', 2, 'buy', 110.5, 5, 'completed'),
-        ('apple', 'AAPL', 'TX_US_5', 'US', 2, 'sell', 150, 5, 'completed'),
-        ('apple', 'AAPL', 'TX_US_6', 'US', 2, 'buy', 110.7, 5, 'completed'),
-        ('amazon', 'AMZN', 'TX_US_7', 'US', 1, 'sell', 501.3, 8, 'completed'),
-        ('apple', 'AAPL', 'TX_US_8', 'US', 2, 'sell', 150.7, 5, 'completed'),
-        ('apple', 'AAPL', 'TX_US_9', 'US', 2, 'buy', 120.6, 5, 'processing'),
-        ('apple', 'AAPL', 'TX_US_10', 'US', 3, 'buy', 90, 5, 'processing')
+        ('apple', 'AAPL', 'TX_US_1', 'US', 1, 'buy', 180.4, 5, 'processing', '2024-10-01'),
+        ('amazon', 'AMZN', 'TX_US_2', 'US', 1, 'buy', 432.1, 8, 'completed', '2024-10-02'),
+        ('tesla', 'TSLA', 'TX_US_3', 'US', 1, 'buy', 300.8, 2, 'processing', '2024-10-03'),
+        ('apple', 'AAPL', 'TX_US_4', 'US', 2, 'buy', 110.5, 5, 'completed', '2024-10-04'),
+        ('apple', 'AAPL', 'TX_US_5', 'US', 2, 'sell', 150, 5, 'completed', '2024-10-05'),
+        ('apple', 'AAPL', 'TX_US_6', 'US', 2, 'buy', 110.7, 5, 'completed', '2024-10-06'),
+        ('amazon', 'AMZN', 'TX_US_7', 'US', 1, 'sell', 501.3, 8, 'completed', '2024-10-07'),
+        ('apple', 'AAPL', 'TX_US_8', 'US', 2, 'sell', 150.7, 5, 'completed', '2024-10-08'),
+        ('apple', 'AAPL', 'TX_US_9', 'US', 2, 'buy', 120.6, 5, 'processing', '2024-10-09'),
+        ('apple', 'AAPL', 'TX_US_10', 'US', 3, 'buy', 90, 5, 'processing', '2024-10-10')
     ]                 
 
     for data in kr_transactions + us_transactions:
@@ -218,10 +218,7 @@ def test_read_data_by_code_processing(stock_db):
     for 
     
 
-예시 데이터에 날짜도 넣어서 시간 조건검색도 테스트
-
-INSERT INTO history (stock_name, 나라, transaction_id, country_code, trade_round, trade_type, price, amount, status, timestamp)
-VALUES ('Samsung', 'KR', 'TX123456', 'KR_STOCK', 1, 'buy', 1000.50, 10, 'completed', '2024-11-02');
+# 예시 데이터에 날짜도 넣어서 시간 조건검색도 테스트
 
 
 def test_read_data_by_country_trade_type_and_status(stock_db):
