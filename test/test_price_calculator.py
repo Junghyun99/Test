@@ -1,6 +1,6 @@
 # test_price_calculator.py
 import pytest
-from your_module import PriceCalculator  # 실제 파일명에 맞게 수정하세요
+from src.util.price_calculator import PriceCalculator  # 실제 파일명에 맞게 수정하세요
 
 class TestPriceCalculator:
     @pytest.mark.parametrize("base_price, percentage, is_buy, expected", [
