@@ -236,5 +236,21 @@ WHERE date(timestamp) BETWEEN ? And ? AND status=?", ('2024-09-06','2024-10-05',
 # complete 검색은 매도 기준, pair id 활용
 test_read_data_by_time_completed(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history 
-WHERE strftime('%Y', timestamp) =? AND status=?", ('2024','completed))
-    assert len(result) == 10
+WHERE date(timestamp) BETWEEN ? And ? AND status=? And trade_type=?", ('2024-09-05''2024-10-5','completed','sell'))
+    assert len(result) == 2
+    assert result[0][0] == 8
+    assert result[0][6] == 'sell'
+    assert result[0][10] == 5 #pair
+    assert result[1][0] == 15
+    assert result[1][6] == 'sell'
+    assert result[1][10] == 14 #pair
+
+    pair_result = stock_db.read_data("SELECT * FROM history 
+WHERE id= IN (?, ?)", (5, 14))
+    assert len(result) == 2
+    assert result[0][0] == 5
+    assert result[0][6] == 'buy'
+    assert result[0][10] == 8 #pair
+    assert result[1][0] == 14
+    assert result[1][6] == 'buy'
+    assert result[1][10] == 15 #pair
