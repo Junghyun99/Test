@@ -5,10 +5,10 @@ class DummyBrokerAPI(BrokerAPI):
     def __init__(self):
         self.orders = {}  # 거래번호와 상태 저장
 
-    def get_current_price(self, symbol: str) -> float:
+    def get_current_price(self, symbol):
         return round(random.uniform(100, 500), 2)
 
-    def place_market_order(self, symbol: str, quantity: int, order_type: str) -> str:
+    def place_market_order(self, symbol, quantity, order_type):
         order_id = f"{symbol}-{datetime.now().strftime('%Y%m%d%H%M%S')}"
         self.orders[order_id] = "completed"
         return order_id
