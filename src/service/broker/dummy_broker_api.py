@@ -61,5 +61,5 @@ class DummyBrokerAPI(BrokerAPI):
         if self.order[order_id] is not "pending":
             return False
 
-        self.order[order_id] = "complete"
+        self.order[order_id] = "cancel"
         return True
