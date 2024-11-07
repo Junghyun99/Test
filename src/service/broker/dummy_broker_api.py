@@ -5,13 +5,16 @@ from
 class DummyBrokerAPI(BrokerAPI):
     def __init__(self):
         self.number = 0
-        self.order = []
+        self.order = {}
 
+    def generate_order_id(index):
+        return f"TX_{index}"
+    
     def get_current_price(self, symbol):
         return round(random.uniform(100, 500), 2)
 
     def place_market_order(self, symbol, quantity, order_type):
-        order_id = self.number
+        order_id = generate_order_id(self.number)
         status= ["pending", "complete"]
         self.order[order_id] = random.choice(status)
         time.sleep(random.randint(0,9))
@@ -19,7 +22,7 @@ class DummyBrokerAPI(BrokerAPI):
         return order_id
 
     def place_limit_order(self, symbol, quantity, price, order_type):
-        order_id = self.number
+        order_id = generate_order_id(self.number)
         status= ["pending", "complete"]
         self.order[order_id] = random.choice(status)
         time.sleep(random.randint(0,9))
@@ -27,11 +30,15 @@ class DummyBrokerAPI(BrokerAPI):
         return order_id
 
     def get_order_status(self, order_id):
-        if self.number < order_id:
+        if generate_order_id(self.number) in self.order:
             return "invalid"
+        if self.order[order_id] == "complete":
+            return "complete"
 
         status= ["cancel", "pending", "complete"]
-        return random.choice(status)
+        re_status = random.choice(status)
+        self.order[order_id] = re_status
+        return re_status
 
     def get_order_book(self, symbol: str) -> Tuple[List[Tuple[float, int]], List[Tuple[float, int]]]:
         buy_orders = [(round(random.uniform(100, 500), 2), random.randint(1, 100)) for _ in range(5)]
