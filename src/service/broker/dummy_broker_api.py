@@ -30,7 +30,7 @@ class DummyBrokerAPI(BrokerAPI):
         return order_id
 
     def get_order_status(self, order_id):
-        if generate_order_id(self.number) in self.order:
+        if order_id not in self.order:
             return "invalid"
         if self.order[order_id] == "complete":
             return "complete"
@@ -46,18 +46,19 @@ class DummyBrokerAPI(BrokerAPI):
         return sorted(buy_orders, reverse=True), sorted(sell_orders)
 
 
-    def amend_order(self, order_id, new_quantity, new_price):
-        order = self.orders.get(order_id)
-        if order and order["status"] == "대기 중":
-            order["quantity"] = new_quantity
-            if new_price is not None:
-                order["price"] = new_price
-            return True
-        return False
+    def amend_order(self, order_id, new_price):
+        if order_id not in self.order:
+            return False
+        if self.order[order_id] is not "pending":
+            return False
+
+        return True
 
     def cancel_order(self, order_id):
-        order = self.orders.get(order_id)
-        if order and order["status"] == "대기 중":
-            order["status"] = "취소됨"
-            return True
-        return False
+        if order_id not in self.order:
+            return False
+        if self.order[order_id] is not "pending":
+            return False
+
+        self.order[order_id] = "complete"
+        return True
