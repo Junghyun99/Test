@@ -141,3 +141,29 @@ def test_composite_order_book(dummy_broker):
     buy_orders, sell_orders = dummy_broker.get_order_book("AAPL")
     assert buy_orders and sell_orders
     assert all(isinstance(price, float) and isinstance(quantity, int) for price, quantity in buy_orders)
+
+
+
+# Tests for get_order_book
+def test_get_order_book_returns_two_lists(dummy_broker):
+    buy_orders, sell_orders = dummy_broker.get_order_book("AAPL")
+    assert isinstance(buy_orders, list)
+    assert isinstance(sell_orders, list)
+
+def test_get_order_book_buy_orders_sorted(dummy_broker):
+    buy_orders, _ = dummy_broker.get_order_book("AAPL")
+    assert all(buy_orders[i][0] >= buy_orders[i + 1][0] for i in range(len(buy_orders) - 1))
+
+def test_get_order_book_sell_orders_sorted(dummy_broker):
+    _, sell_orders = dummy_broker.get_order_book("AAPL")
+    assert all(sell_orders[i][0] <= sell_orders[i + 1][0] for i in range(len(sell_orders) - 1))
+
+def test_get_order_book_price_format(dummy_broker):
+    buy_orders, sell_orders = dummy_broker.get_order_book("AAPL")
+    all_prices = [price for price, _ in buy_orders + sell_orders]
+    assert all(isinstance(price, float) and 100 <= price <= 1000 for price in all_prices)
+
+def test_get_order_book_quantity_format(dummy_broker):
+    buy_orders, sell_orders = dummy_broker.get_order_book("AAPL")
+    all_quantities = [quantity for _, quantity in buy_orders + sell_orders]
+    assert all(isinstance(quantity, int) and 1 <= quantity <= 100 for quantity in all_quantities)
