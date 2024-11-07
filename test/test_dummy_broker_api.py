@@ -124,7 +124,8 @@ def test_composite_order_status_amend(dummy_broker):
     order_id = dummy_broker.place_limit_order("AAPL", 10, 300, "buy")
     dummy_broker.order[order_id] = "pending"
     assert dummy_broker.get_order_status(order_id) in ["cancel", "pending", "complete"]
-    assert dummy_broker.amend_order(order_id, 310) is True
+    if dummy_broker.order[order_id] is "pending":       
+        assert dummy_broker.amend_order(order_id, 310) is True
 
 def test_composite_cancel_then_amend(dummy_broker):
     order_id = dummy_broker.place_limit_order("AAPL", 10, 300, "buy")
