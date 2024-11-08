@@ -19,8 +19,36 @@ class BaseLogger(ABC):
         self.logger.addHandler(file_handler)
 
     def _get_formatter(self):
-        return logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        return logging.Formatter('%(asctime)s - %(process)d - %(threadName)s - %(module)s - %(lineno)d - %(name)s - %(levelname)s - %(message)s')
     
     @abstractmethod
     def log(self, message: str):
         pass
+
+
+
+
+
+
+
+
+logger = TradeLogger()
+
+logger.log_transaction("Samsung", "BUY", 100, 70.5)
+logger.log_warning("Price is volatile")
+logger.log_error("Failed to execute transaction")
+logger.log_debug("Debugging information")
+
+
+    def log_transaction(self, stock_name: str, action: str, amount: int, price: float):
+        message = f"{stock_name} - {action} {amount} shares at {price}"
+        self.logger.info(message)
+
+    def log_error(self, message: str):
+        self.logger.error(message)
+
+    def log_warning(self, message: str):
+        self.logger.warning(message)
+
+    def log_debug(self, message: str):
+        self.logger.debug(message)
