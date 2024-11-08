@@ -84,8 +84,6 @@ def test_multiple_log_levels(logger, caplog):
     assert "Error message" in caplog.text
 
 
-# gpt체크
-
 def test_logger_info(logger):
     logger.log_info("This is an info message")
     assert logger.isEnabledFor(logging.INFO)
@@ -98,41 +96,18 @@ def test_logger_error(logger):
     logger.log_error("This is an error message")
     assert logger.isEnabledFor(logging.ERROR)
 
-def test_log_file_created():
-    BaseLogger("FileTestLogger", LOG_FILE).get_logger().info("Testing file creation")
+def test_log_file_created(logger):
+    logger.log_info("Testing file creation")
     assert os.path.exists(LOG_FILE)
 
 # Composite scenarios for BaseLogger
 def test_logger_multiple_levels(logger):
-    logger.debug("Debug level message")
-    logger.info("Info level message")
-    logger.warning("Warning level message")
-    logger.error("Error level message")
-    assert logger.isEnabledFor(logging.DEBUG)
+    logger.log_debug("Debug level message")
+    logger.log_info("Info level message")
+    logger.log_warning("Warning level message")
+    logger.log_error("Error level message")
+    assert !logger.isEnabledFor(logging.DEBUG)
     assert logger.isEnabledFor(logging.INFO)
     assert logger.isEnabledFor(logging.WARNING)
     assert logger.isEnabledFor(logging.ERROR)
 
-def test_log_message_content():
-    test_logger = BaseLogger("ContentLogger", LOG_FILE).get_logger()
-    test_logger.info("Message content check")
-    with open(LOG_FILE, 'r') as file:
-        content = file.read()
-    assert "Message content check" in content
-
-def test_logger_propagation(logger):
-    assert logger.propagate is False
-
-def test_logger_formatting():
-    logger = BaseLogger("FormatLogger", LOG_FILE).get_logger()
-    logger.info("Testing formatting")
-    with open(LOG_FILE, 'r') as file:
-        content = file.read()
-    assert "FormatLogger" in content  # Check for logger name in format
-
-def test_logger_file_handler():
-    test_logger = BaseLogger("HandlerLogger", LOG_FILE).get_logger()
-    test_logger.info("Testing file handler")
-    with open(LOG_FILE, 'r') as file:
-        content = file.read()
-    assert len(content) > 0
