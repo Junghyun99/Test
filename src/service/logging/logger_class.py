@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 class BaseLogger(ABC):
     def __init__(self, logger_name: str, log_file: str, level=logging.INFO):
         self.logger = logging.getLogger(logger_name)
+        self.logger.propagate = False
         self.logger.setLevel(level)
         self._setup_handlers(log_file)
 
