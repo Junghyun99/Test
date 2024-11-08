@@ -20,6 +20,9 @@ class BaseLogger(ABC):
 
     def _get_formatter(self):
         return logging.Formatter('%(asctime)s - %(process)d - %(threadName)s - %(module)s - %(lineno)d - %(name)s - %(levelname)s - %(message)s')
+
+    def get_logger(self):
+        return self.logger
     
     def log_debug(self, message):
         self.logger.debug(message)
