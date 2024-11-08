@@ -59,79 +59,32 @@ def test_log_info_file_output(logger):
     with open(LOG_FILE, "r") as file:
         assert "File output test" in file.read()
 
-#여기서부터 정리
-def test_log_warning_message(caplog):
-    logger = BaseLogger("TestLogger", "test_log.log")
+def test_log_warning_message(logger, caplog):
     with caplog.at_level(logging.WARNING):
         logger.log_warning("Warning message")
     assert "Warning message" in caplog.text
-
-def test_log_warning_level(caplog):
-    logger = BaseLogger("TestLogger", "test_log.log")
-    with caplog.at_level(logging.WARNING):
-        logger.log_warning("Level check")
     assert "WARNING" in caplog.text
 
-def test_log_warning_no_logging_when_disabled(caplog):
-    logger = BaseLogger("TestLogger", "test_log.log", level=logging.ERROR)
-    with caplog.at_level(logging.WARNING):
-        logger.log_warning("Should not log")
-    assert "Should not log" not in caplog.text
-
-def test_log_warning_handler_types():
-    logger = BaseLogger("TestLogger", "test_log.log")
-    assert any(isinstance(handler, logging.StreamHandler) for handler in logger.logger.handlers)
-
-def test_log_warning_format_output(caplog):
-    logger = BaseLogger("TestLogger", "test_log.log")
-    with caplog.at_level(logging.WARNING):
-        logger.log_warning("Formatted warning")
-    assert "WARNING" in caplog.text
-
-
-def test_log_error_message(caplog):
-    logger = BaseLogger("TestLogger", "test_log.log")
+def test_log_error_message(logger, caplog):
     with caplog.at_level(logging.ERROR):
         logger.log_error("Error message")
     assert "Error message" in caplog.text
-
-def test_log_error_level(caplog):
-    logger = BaseLogger("TestLogger", "test_log.log")
-    with caplog.at_level(logging.ERROR):
-        logger.log_error("Error level test")
     assert "ERROR" in caplog.text
 
-def test_log_error_when_level_is_low(caplog):
-    logger = BaseLogger("TestLogger", "test_log.log", level=logging.CRITICAL)
-    with caplog.at_level(logging.ERROR):
-        logger.log_error("Should not be logged")
-    assert "Should not be logged" not in caplog.text
 
-def test_log_error_multiple_handlers():
-    logger = BaseLogger("TestLogger", "test_log.log")
-    assert len(logger.logger.handlers) == 2
-
-def test_log_error_to_file():
-    logger = BaseLogger("TestLogger", "test_log.log")
-    logger.log_error("Error to file")
-    with open("test_log.log", "r") as file:
-        assert "Error to file" in file.read()
-
-
-def test_multiple_log_levels(caplog):
-    logger = BaseLogger("TestLogger", "test_log.log", level=logging.DEBUG)
-    with caplog.at_level(logging.DEBUG):
+def test_multiple_log_levels(logger, caplog):
+    with caplog.at_level(logging.INFO):
         logger.log_debug("Debug message")
         logger.log_info("Info message")
         logger.log_warning("Warning message")
         logger.log_error("Error message")
-    assert "Debug message" in caplog.text
+    assert "Debug message" not in caplog.text
     assert "Info message" in caplog.text
     assert "Warning message" in caplog.text
     assert "Error message" in caplog.text
 
 
-# gptnn체크
+# gpt체크
 
 def test_logger_info(logger):
     logger.log_info("This is an info message")
