@@ -1,18 +1,36 @@
+import pytest
+import logging
+from logger_manager import LoggerManager
 
+@pytest.fixture
+def logger_manager():
+    # Fixture to create an instance of LoggerManager
+    return LoggerManager()
 
+def test_get_logger_system_type(logger_manager):
+    # Test to get a SystemLogger instance
+    logger = logger_manager.get_logger('SYSTEM')
+    assert isinstance(logger, logging.Logger)
+    assert logger.name == "SystemLogger"
 
+def test_get_logger_transaction_type(logger_manager):
+    # Test to get a TransactionLogger instance
+    logger = logger_manager.get_logger('TRANSACTION')
+    assert isinstance(logger, logging.Logger)
+    assert logger.name == "TransactionLogger"
 
-# LoggerManager 인스턴스 생성
-logger_manager = LoggerManager()
+def test_get_logger_invalid_type(logger_manager):
+    # Test to handle an invalid logger type
+    with pytest.raises(ValueError, match="Unknown logger type: INVALID"):
+        logger_manager.get_logger('INVALID')
 
-# SystemLogger와 TransactionLogger 가져오기
-system_logger = logger_manager.get_logger('system')
-transaction_logger = logger_manager.get_logger('transaction')
+def test_set_log_level_existing_logger(logger_manager):
+    # Test setting log level for an existing logger
+    logger = logger_manager.get_logger('SYSTEM')
+    logger_manager.set_log_level('SYSTEM', logging.DEBUG)
+    assert logger.level == logging.DEBUG
 
-# 로그 메시지 기록
-system_logger.info("This is an info message from the system logger.")
-transaction_logger.error("This is an error message from the transaction logger.")
-
-# 로그 레벨 변경
-logger_manager.set_log_level('system', logging.DEBUG)
-system_logger.debug("This debug message will now be shown since the log level is DEBUG.")
+def test_set_log_level_non_existing_logger(logger_manager):
+    # Test setting log level for a non-existing logger
+    with pytest.raises(ValueError, match="Logger type NON_EXISTENT not found"):
+        logger_manager.set_log_level('NON_EXISTENT', logging.ERROR)
