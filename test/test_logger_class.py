@@ -31,7 +31,7 @@ def test_get_logger_file_handler_type(logger):
 
 def test_log_debug_enabled(logger):
     logger.log_debug("Debug message")
-    assert !logger.isEnabledFor(logging.DEBUG)
+    assert logger.isEnabledFor(logging.DEBUG) == False
 
 def test_log_debug_message_content(logger, caplog):
     with caplog.at_level(logging.DEBUG):
@@ -106,7 +106,7 @@ def test_logger_multiple_levels(logger):
     logger.log_info("Info level message")
     logger.log_warning("Warning level message")
     logger.log_error("Error level message")
-    assert !logger.isEnabledFor(logging.DEBUG)
+    assert logger.isEnabledFor(logging.DEBUG) == False
     assert logger.isEnabledFor(logging.INFO)
     assert logger.isEnabledFor(logging.WARNING)
     assert logger.isEnabledFor(logging.ERROR)

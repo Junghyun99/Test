@@ -1,5 +1,5 @@
-from system_logger import SystemLogger
-from transaction_logger import TransactionLogger
+from src.service.logging.system_logger import SystemLogger
+from src.service.logging.transaction_logger import TransactionLogger
 
 
 class LoggerManager:

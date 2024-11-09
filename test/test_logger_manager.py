@@ -1,6 +1,6 @@
 import pytest
 import logging
-from logger_manager import LoggerManager
+from src.service.logging.logger_manager import LoggerManager
 
 @pytest.fixture
 def logger_manager():

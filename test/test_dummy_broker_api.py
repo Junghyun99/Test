@@ -1,5 +1,5 @@
 import pytest
-from src.service.broker_api.dummy_broker_api import DummyBrokerAPI
+from src.service.broker.dummy_broker_api import DummyBrokerAPI
 
 @pytest.fixture
 def dummy_broker():

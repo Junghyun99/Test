@@ -220,23 +220,19 @@ def test_read_data_by_code_processing(stock_db,sample_data):
 
 # 예시 데이터에 날짜도 넣어서 시간 조건검색도 테스트
 def test_read_data_by_time_status(stock_db,sample_data):
-    result = stock_db.read_data("SELECT * FROM history 
-WHERE strftime('%Y', timestamp) =? AND status=?", ('2024','completed))
+    result = stock_db.read_data("SELECT * FROM history WHERE strftime('%Y', timestamp) =? AND status=?", ('2024','completed'))
     assert len(result) == 10
 
-    result = stock_db.read_data("SELECT * FROM history 
-WHERE strftime('%Y-%m', timestamp) =? AND status=?", ('2024-10','completed'))
+    result = stock_db.read_data("SELECT * FROM history WHERE strftime('%Y-%m', timestamp) =? AND status=?", ('2024-10','completed'))
     assert len(result) == 6
 
-    result = stock_db.read_data("SELECT * FROM history 
-WHERE date(timestamp) BETWEEN ? And ? AND status=?", ('2024-09-06','2024-10-05', 'completed'))
+    result = stock_db.read_data("SELECT * FROM history WHERE date(timestamp) BETWEEN ? And ? AND status=?", ('2024-09-06','2024-10-05', 'completed'))
     assert len(result) == 4
 
 
 # complete 검색은 매도 기준, pair id 활용
-test_read_data_by_time_completed(stock_db,sample_data):
-    result = stock_db.read_data("SELECT * FROM history 
-WHERE date(timestamp) BETWEEN ? And ? AND status=? And trade_type=?", ('2024-09-05''2024-10-5','completed','sell'))
+def test_read_data_by_time_completed(stock_db,sample_data):
+    result = stock_db.read_data("SELECT * FROM history WHERE date(timestamp) BETWEEN ? And ? AND status=? And trade_type=?", ('2024-09-05''2024-10-5','completed','sell'))
     assert len(result) == 2
     assert result[0][0] == 8
     assert result[0][6] == 'sell'
@@ -245,8 +241,7 @@ WHERE date(timestamp) BETWEEN ? And ? AND status=? And trade_type=?", ('2024-09-
     assert result[1][6] == 'sell'
     assert result[1][10] == 14 #pair
 
-    pair_result = stock_db.read_data("SELECT * FROM history 
-WHERE id= IN (?, ?)", (5, 14))
+    pair_result = stock_db.read_data("SELECT * FROM history WHERE id= IN (?, ?)", (5, 14))
     assert len(result) == 2
     assert result[0][0] == 5
     assert result[0][6] == 'buy'

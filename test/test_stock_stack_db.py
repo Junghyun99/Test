@@ -1,6 +1,6 @@
 #not check
 import pytest
-from stock_stack_db import StockStackDB
+from src.service.repository.stock_stack_db import StockStackDB
 
 def test_save_stack():
     db = StockStackDB("test.db")

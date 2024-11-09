@@ -15,19 +15,19 @@ class DummyBrokerAPI(BrokerAPI):
         return round(random.uniform(100, 500), 2)
 
     def place_market_order(self, symbol, quantity, order_type):
-        order_id = generate_order_id(self.number)
+        order_id = self.generate_order_id(self.number)
         status= ["pending", "complete"]
         self.order[order_id] = random.choice(status)
         time.sleep(random.randint(0,9))
-        self.number++
+        self.number = self.number + 1
         return order_id
 
     def place_limit_order(self, symbol, quantity, price, order_type):
-        order_id = generate_order_id(self.number)
+        order_id = self.generate_order_id(self.number)
         status= ["pending", "complete"]
         self.order[order_id] = random.choice(status)
         time.sleep(random.randint(0,9))
-        self.number++
+        self.number = self.number + 1
         return order_id
 
     def get_order_status(self, order_id):
