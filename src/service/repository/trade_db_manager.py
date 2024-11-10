@@ -21,9 +21,9 @@ class TradeDBManager:
     result = self.db.read_data(query, (stock_name,))
     
     # Process the result to extract prices in trade_round order
-    price_list = [record[1] for record in result]  # record[1] is the price
+    stack_list = [dict(record[1:]) for record in result]
     
-    return price_list
+    return stack_list
 
 
 
