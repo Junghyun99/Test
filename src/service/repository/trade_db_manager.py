@@ -6,15 +6,15 @@ class TradeDBManager:
         self.db = StockTradeDB(db_name)
 
     # Reading Methods
-    def get_latest_active_stack(self, stock_name):
+    def get_latest_active_stack(self, stock_code):
     """
     종목을 넣어주면 최신 스택을 리턴,
-    라운드 순으로 id, 매수 가격,양, 총량을 리스트로 리턴,
+    라운드 순으로 id, 매수 가격,양,총량을 리스트로 리턴,
     """
     # Query to get active transactions ordered by trade_round
     query = '''
-        SELECT trade_round, price FROM history 
-        WHERE stock_name = ? AND status = 'processing' 
+        SELECT trade_round, id, price, amount, total_value FROM history 
+        WHERE code = ? AND status = 'processing' 
         ORDER BY trade_round ASC
     '''
     # Fetch the data from the database
