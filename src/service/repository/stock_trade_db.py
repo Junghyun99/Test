@@ -15,10 +15,10 @@ class StockTradeDB(BaseDB):
                        code TEXT NOT NULL,                            -- 심볼 혹은 번호
                        transaction_id TEXT NOT NULL UNIQUE,          -- 거래번호
                        country_code TEXT NOT NULL, 
-                       trade_round INTEGER,
+                       trade_round INTEGER CHECK(trade_round > 0),
                        trade_type TEXT CHECK(trade_type IN ('buy', 'sell')),  -- 거래 유형 (매수, 매도) 
-                       price REAL NOT NULL,                          -- 거래 단가 
-                       amount REAL NOT NULL CHECK(amount >= 0),       -- 거래 수량 
+                       price REAL NOT NULL CHECK(price > 0),                          -- 거래 단가 
+                       amount REAL NOT NULL CHECK(amount > 0),       -- 거래 수량 
                        total_value REAL GENERATED ALWAYS AS (price * amount), -- 총 거래 금액 
                        status TEXT NOT NULL CHECK(status IN ('completed', 'processing' )), -- 거래 상태 (완료, 진행중) 
                        pair_id INTEGER,
