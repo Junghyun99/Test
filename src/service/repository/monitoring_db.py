@@ -14,9 +14,9 @@ class MonitoringDB(BaseDB):
                        stock_name TEXT NOT NULL,                     -- 종목 이름
                        code TEXT NOT NULL UNIQUE,                            -- 심볼 혹은 번호
                        country_code TEXT NOT NULL, 
-                       trade_round INTEGER,
-                       price REAL NOT NULL,                          -- 거래 단가 
-                       buy_rate INTEGER NOT NULL,
-sell_rate INTEGER NOT NULL
+                       trade_round INTEGER CHECK(trade_round > 0),
+                       price REAL NOT NULL CHECK(price > 0),                          -- 거래 단가 
+                       buy_rate INTEGER NOT NULL CHECK(buy_rate > 0),
+sell_rate INTEGER NOT NULL CHECK(sell_rate > 0)
                        )''')
         self.conn.commit()
