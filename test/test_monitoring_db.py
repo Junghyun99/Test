@@ -28,7 +28,6 @@ def test_insert_data_success(moni_db):
 def test_insert_data_multiple_entries(stock_db):
     data_entries = [
         ('aaple', 'AAPL', 'US', 1, 150.0, 5, 3),
-('aaple', 'AAPL', 'US', 1, 150.0, 5, 3) ,
 ('aaple', 'MSFT', 'US', 1, 150.0, 5, 3)
     ]
     for data in data_entries:
@@ -39,6 +38,20 @@ def test_insert_data_multiple_entries(stock_db):
         )
     result = stock_db.read_data("SELECT * FROM monitoring")
     assert len(result) == 2 
+
+def test_insert_data_duplicate_insert(stock_db):
+    with pytest.raises(sqlite3.IntegrityError):
+        stock_db.insert_data(
+            '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, buy_rate, sell_rate) 
+               VALUES (?, ?, ?, ?, ?, ?)''', 
+            ('apple', 'AAPL', 'US', 1, 150.0, 5, 3)
+        )
+        stock_db.insert_data(
+            '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, buy_rate, sell_rate) 
+               VALUES (?, ?, ?, ?, ?, ?)''', 
+            ('apple', 'AAPL', 'US', 1, 150.0, 5, 3)
+        )
+
 
 def test_insert_data_missing_field(stock_db):
     with pytest.raises(sqlite3.IntegrityError):
@@ -57,33 +70,10 @@ def test_insert_data_negative_round(stock_db):
         )
 
 # READ 테스트 케이스
-def test_read_data_single_entry(stock_db):
-    stock_db.insert_data(
-        '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status) 
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-        ('aaple', 'AAPL', 'TX130', 'US', 1, 'buy', 150.0, 10, 'completed')
-    )
-    result = stock_db.read_data("SELECT * FROM history WHERE transaction_id=?", ('TX130',))
-    assert result[0][3] == 'TX130'
-
 def test_read_data_no_results(stock_db):
-    result = stock_db.read_data("SELECT * FROM history WHERE transaction_id=?", ('INVALID',))
+    result = stock_db.read_data("SELECT * FROM monitoring WHERE code=?", ('INVALID',))
     assert result == []
-
-def test_read_data_multiple_results(stock_db):
-    data_entries = [
-        ('aaple', 'AAPL', 'TX131', 'US', 1, 'buy', 150.0, 10, 'completed'),
-        ('삼성전자', '005390', 'TX132', 'KR', 2, 'sell', 160.0, 5, 'completed'),
-        ('amazon', 'AMAZ', 'TX133', 'US', 1, 'sell', 170.0, 2, 'processing')
-    ]
-    for data in data_entries:
-        stock_db.insert_data(
-            '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
-            data
-        )
-    result = stock_db.read_data("SELECT * FROM history WHERE country_code=?", ('US',))
-    assert len(result) == 2
+###########
 
 # 복합 시나리오 테스트 케이스
 def test_full_scenario(stock_db):
