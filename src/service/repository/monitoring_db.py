@@ -12,7 +12,7 @@ class MonitoringDB(BaseDB):
                        monitoring (
                        id INTEGER PRIMARY KEY AUTOINCREMENT,         -- 고유 식별자
                        stock_name TEXT NOT NULL,                     -- 종목 이름
-                       code TEXT NOT NULL,                            -- 심볼 혹은 번호
+                       code TEXT NOT NULL UNIQUE,                            -- 심볼 혹은 번호
                        country_code TEXT NOT NULL, 
                        trade_round INTEGER,
                        price REAL NOT NULL,                          -- 거래 단가 
