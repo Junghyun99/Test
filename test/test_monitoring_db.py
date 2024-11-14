@@ -27,41 +27,33 @@ def test_insert_data_success(moni_db):
 
 def test_insert_data_multiple_entries(stock_db):
     data_entries = [
-        ('apple', 'APPL', 'TX124', 'US', 1, 'buy', 150.0, 10, 'completed'),
-        ('microsoft', 'MSFT', 'TX125', 'US', 2, 'sell', 280.0, 5, 'processing'),
-        ('google', 'GOOGL', 'TX126', 'US', 3, 'buy', 2200.0, 2, 'completed')
+        ('aaple', 'AAPL', 'US', 1, 150.0, 5, 3),
+('aaple', 'AAPL', 'US', 1, 150.0, 5, 3) ,
+('aaple', 'MSFT', 'US', 1, 150.0, 5, 3)
     ]
     for data in data_entries:
         stock_db.insert_data(
-            '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
+            '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, buy_rate, sell_rate) 
+               VALUES (?, ?, ?, ?, ?, ?, ?)''', 
             data
         )
-    result = stock_db.read_data("SELECT * FROM history")
-    assert len(result) == 3
+    result = stock_db.read_data("SELECT * FROM monitoring")
+    assert len(result) == 2 
 
 def test_insert_data_missing_field(stock_db):
     with pytest.raises(sqlite3.IntegrityError):
         stock_db.insert_data(
-            '''INSERT INTO history (stock_name, transaction_id, country_code, trade_round, trade_type, price, amount) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)''', 
-            ('apple', 'TX127', 'US', 1, 'buy', 150.0, 10)
+            '''INSERT INTO monitoring(stock_name, country_code, trade_round, price, buy_rate, sell_rate) 
+               VALUES (?, ?, ?, ?, ?, ?)''', 
+            ('apple', 'US', 1, 150.0, 5, 3)
         )
 
-def test_insert_data_invalid_trade_type(stock_db):
+def test_insert_data_negative_round(stock_db):
     with pytest.raises(sqlite3.IntegrityError):
         stock_db.insert_data(
-            '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
-            ('aaple', 'AAPL', 'TX128', 'US', 1, 'hold', 150.0, 10, 'completed')
-        )
-
-def test_insert_data_negative_amount(stock_db):
-    with pytest.raises(sqlite3.IntegrityError):
-        stock_db.insert_data(
-            '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
-            ('apple', 'AAPL', 'TX129', 'US', 1, 'buy', 150.0, -10, 'completed')
+            '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, buy_rate, sell_rate) 
+               VALUES (?, ?, ?, ?, ?, ?, ?)''', ('aaple', 'AAPL', 'US', -1, 150.0, 5, 3)
+            
         )
 
 # READ 테스트 케이스
