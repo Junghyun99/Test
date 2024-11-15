@@ -1,12 +1,16 @@
 from concurrent.futures import ThreadPoolExecutor
 import time
+import os
+from src.service.repository.monitoring_db import MonitoringDB
 
+
+max_core = os.cpu_count()-1
 def main():
 data_ids = [1, 2, 3, 4, 5] # 작업할 ID 목록
 results = []
 
 # 스레드 풀을 생성하고 스레드를 관리
-with ThreadPoolExecutor(max_workers=3) as executor:
+with ThreadPoolExecutor(max_workers=max_core) as executor:
     # 각 ID에 대해 fetch_data 작업을 비동기로 제출
     futures = [executor.submit(fetch_data, data_id) for data_id in data_ids]
 
@@ -20,10 +24,6 @@ print("All tasks completed.")
 
 
 
-import threading
-import time
-from monitoring_db import MonitoringDB  # MonitoringDB 클래스는 앞서 정의한 것 사용
-import requests  # 종목의 현재 가격을 읽기 위한 요청 모듈
 
 class MonitoringManager:
     def __init__(self):
@@ -35,7 +35,7 @@ class MonitoringManager:
         query = "SELECT * FROM monitoring"
         return self.db.read_data(query)
 
-    def add_stock(self, stock_name, code, country_code, trade_round, price, buy_rate, sell_rate):
+    def add_monitoring_stock(self, stock_name, code, country_code, trade_round, price, buy_rate, sell_rate):
         """새로운 종목 추가"""
         query = '''INSERT INTO monitoring (stock_name, code, country_code, trade_round, price, buy_rate, sell_rate)
                    VALUES (?, ?, ?, ?, ?, ?, ?)'''
