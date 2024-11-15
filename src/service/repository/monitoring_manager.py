@@ -1,3 +1,6 @@
+from concurrent.futures import ThreadPoolExecutor
+import time
+
 def main():
 data_ids = [1, 2, 3, 4, 5] # 작업할 ID 목록
 results = []
