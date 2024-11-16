@@ -6,7 +6,8 @@ class BaseLogger(ABC):
         self.logger = logging.getLogger(logger_name)
         self.logger.propagate = False
         self.logger.setLevel(level)
-        self._setup_handlers(log_file)
+        if not self.logger.hasHandlers():
+            self._setup_handlers(log_file)
 
     def _setup_handlers(self, log_file):
         # 콘솔 핸들러
