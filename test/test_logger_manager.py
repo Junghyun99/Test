@@ -10,7 +10,7 @@ def logger_manager():
 def test_get_logger_system_type(logger_manager):
     # Test to get a SystemLogger instance
     logger = logger_manager.get_logger('SYSTEM')
-    assert isinstance(logger, logging.Logger)
+    assert isinstance(logger.get_logger(), logging.Logger)
     assert logger.name == "SystemLogger"
 
 def test_get_logger_transaction_type(logger_manager):

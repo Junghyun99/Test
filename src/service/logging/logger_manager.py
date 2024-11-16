@@ -9,9 +9,9 @@ class LoggerManager:
     def get_logger(self, logger_type):
         if logger_type not in self.loggers:
             if logger_type.upper() == 'SYSTEM':
-                self.loggers[logger_type] = SystemLogger().get_logger()
+                self.loggers[logger_type] = SystemLogger("SYSTEM", "system_log_file.log")
             elif logger_type.upper() == 'TRANSACTION':
-                self.loggers[logger_type] = TransactionLogger().get_logger()
+                self.loggers[logger_type] = TransactionLogger("TransactionLogger","transaction_log_file.log")
             else:
                 raise ValueError(f"Unknown logger type: {logger_type}")
         return self.loggers[logger_type]
