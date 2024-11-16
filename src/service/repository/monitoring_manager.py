@@ -40,7 +40,7 @@ class MonitoringManager:
         with ThreadPoolExecutor(max_workers=max_core) as executor:
     # 각 ID에 대해 fetch_data 작업을 비동기로 제출
     futures = [executor.submit(self.algorithm.fetch_func, stock) for stock in stocks]
-
+# *stock 으로 풀어서 인풋할수도
     # 작업 완료를 기다리며 결과 수집
     for future in as_completed(futures):
     try:
