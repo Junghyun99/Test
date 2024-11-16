@@ -30,7 +30,7 @@ def test_get_logger_level_default(logger):
 def test_get_logger_propagate(logger):
     assert not logger.propagate
 
-#logger 부를때마다 핸들러를 추가하는데, 같은 logger임, 동일로거 호출하는거면 핸들러 건너뛰자
+# 수정함 다시 체크
 def test_get_logger_handlers(logger):
     assert len(logger.handlers) == 2  
     # Console and File handlers
@@ -47,10 +47,10 @@ def test_log_debug_message_content(logger, caplog):
         logger.log_debug("Debug message")
     assert "Debug message" not in caplog.text
 
-# full search인지 일부 포함도 검색되는게 맞나? caplog보면 INFO가 존재하긴함
+# 테스트해보자 루트 로거에 대해 캡쳐함
 def test_log_info_level(logger, caplog):
     with caplog.at_level(logging.INFO):
-        logger.log_info("Check level")
+        logger.get_logger().info("Check level")
     assert "INFO" in caplog.text
 
 # 2024-11-16 13:53:26,503 - 13482 - MainThread - logger_class - 35 - TestLogger - WARNING - This appear
