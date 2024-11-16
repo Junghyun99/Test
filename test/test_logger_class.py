@@ -53,15 +53,11 @@ def test_log_info_level(logger, caplog):
         logger.get_logger().info("Check level")
     assert "INFO" in caplog.text
 
-# 2024-11-16 13:53:26,503 - 13482 - MainThread - logger_class - 35 - TestLogger - WARNING - This appear
-# AssertionError: assert 'This appear' in ''
-#        +  where '' = <_pytest.logging.LogCaptureFixture object at 0x7555a3a0aa50>.text
 def test_log_info_enabled_when_above_level(logger, caplog):
     with caplog.at_level(logging.WARNING):
         logger.log_warning("This appear")
     assert "This appear" in caplog.text
 
-# TypeError: expected str, bytes or os.PathLike object, not function
 def test_log_info_file_output(logger,file_path):
     logger.log_info("File output test")
     with open(file_path, "r") as file:
