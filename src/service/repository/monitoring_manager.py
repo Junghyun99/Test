@@ -1,4 +1,4 @@
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed 
 import os
 from src.service.repository.monitoring_db import MonitoringDB
 
