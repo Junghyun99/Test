@@ -1,10 +1,16 @@
 import pytest
+import os
 from src.service.logging.transaction_logger import TransactionLogger
+
+LOG_FILE = "test_log_file.log"
 
 @pytest.fixture
 def transaction_logger():
-    # Fixture to create an instance of TransactionLogger
-    return TransactionLogger()
+    if os.path.exists(LOG_FILE):
+        os.remove(LOG_FILE)
+    yield TransactionLogger("TestLogger", LOG_FILE).get_logger()
+    if os.path.exists(LOG_FILE):
+        os.remove(LOG_FILE)
 
 def test_log_transaction_message_format(caplog, transaction_logger):
     # Test to ensure the correct log message format

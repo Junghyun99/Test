@@ -1,8 +1,8 @@
 from src.interface.logger_class import BaseLogger
 
 class TransactionLogger(BaseLogger):
-    def __init__(self):
-        super().__init__('TransactionLogger')
+    def __init__(self, logger_name, log_file):
+        super().__init__(logger_name, log_file)
 
 
 
