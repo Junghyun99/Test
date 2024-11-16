@@ -43,9 +43,11 @@ class MonitoringManager:
 
     # 작업 완료를 기다리며 결과 수집
     for future in as_completed(futures):
+    try:
         result = future.result()  # 작업 결과 가져오기
         results.append(result)
-
+    except Exception as e:
+        print(e)
 
 
 class MonitoringKRManager(Monitoring Manager):
