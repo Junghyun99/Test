@@ -6,7 +6,8 @@ class MagicSplit(Algorithm):
     def __init__(self, broker_api):        
         self.broker_api = broker_api
 
-    def _calculate_price(self)
+    def _calculate_price(self):
+        pass
 
     def run_algorithm(self, stock_name, code, buy_price, trade_round, buy_rate, sell_rate):    
         # 매수 희망가와 매도 희망가 계산
