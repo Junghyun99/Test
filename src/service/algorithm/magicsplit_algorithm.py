@@ -3,9 +3,10 @@ from src.util.price_calculator import PriceCalulator
 
 
 class MagicSplit(Algorithm):
-    def __init__(self, broker_api, trade_db_manager):        
+    def __init__(self, broker_api, trade_db_manager, yaml_manager):        
         self.broker_api = broker_api
-        self.trade_db_manager.py = trade_db_manager
+        self.trade_db_manager = trade_db_manager
+        self.yaml_manager = yaml_manager
 
     def _calculate_price(self):
         pass
@@ -19,10 +20,10 @@ class MagicSplit(Algorithm):
         current_price = self.broker_api.get_current_price(code)
 
         # 매수 또는 매도 조건 확인
-        if current_price <= desired_buy_price:
+        if current_price <= target_buy_price:
             # 매수 API 호출
             pass
-        elif current_price >= desired_sell_price:
+        elif current_price >= target_sell_price:
             # 매도 API 호출
             pass
         else:
