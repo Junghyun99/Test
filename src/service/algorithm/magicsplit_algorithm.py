@@ -3,8 +3,8 @@ from src.util.price_calculator import PriceCalulator
 
 
 class MagicSplit(Algorithm):
-    def __init__(self, broker_api, trade_db_manager, yaml_manager):        
-        self.broker_api = broker_api
+    def __init__(self, broker, trade_db_manager, yaml_manager):        
+        self.broker = broker
         self.trade_db_manager = trade_db_manager
         self.yaml_manager = yaml_manager
 
@@ -17,14 +17,12 @@ class MagicSplit(Algorithm):
         target_sell_price = PriceCalulator.calculate_price(buy_price, sell_rate, False)
 
         # 현재 가격을 API로 받아오기
-        current_price = self.broker_api.get_current_price(code)
+        current_price = self.broker.get_current_price(code)
 
         # 매수 또는 매도 조건 확인
         if current_price <= target_buy_price:
-            # 매수 API 호출
-            pass
+self.broker.place_market_order(code, quantity, "BUY")
         elif current_price >= target_sell_price:
-            # 매도 API 호출
-            pass
+            self.broker.place_market_order(code, quantity, "SELL")
         else:
             pass
