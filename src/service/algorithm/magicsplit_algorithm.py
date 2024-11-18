@@ -1,12 +1,10 @@
 from src.interface.algorithm import Algorithm
+from src.util.
 
 class MagicSplit(Algorithm):
-    def __init__(self, api_client):
-        """
-        MagicSplit 클래스의 생성자.
-        :param api_client: 주식 API 클라이언트. 현재 가격 조회 및 매수/매도 요청에 사용됨.
-        """
-        self.api_client = api_client
+    def __init__(self, broker_api):
+        
+        self.broker_api = broker_api
 
     def fetch_data(self, stock_name, code, buy_price, trade_round, buy_rate, sell_rate):
         """
