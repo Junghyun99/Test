@@ -1,4 +1,6 @@
-class MagicSplit:
+from src.interface.algorithm import Algorithm
+
+class MagicSplit(Algorithm):
     def __init__(self, api_client):
         """
         MagicSplit 클래스의 생성자.
