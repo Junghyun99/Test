@@ -9,7 +9,22 @@ class BrokerManager:
 
     def place_market_order(self, symbol, quantity, order_type):      
         order_id = self.broker.place_market_order(symbol, quantity, order_type)
-        if 
+        
+        count = 0
+        while count < 10:
+            status = self.broker.get_order_status(order_id)
+            if status is "complete":
+                break
+            elif status is "pending":
+                time.sleep(1)
+            elif status is "cancel":
+                break
+            count += 1
+
+        if count is 10:
+            self.broker.
+        
+
 
 
         return get_current_price
