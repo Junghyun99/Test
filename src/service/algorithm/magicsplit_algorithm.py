@@ -3,8 +3,9 @@ from src.util.price_calculator import PriceCalulator
 
 
 class MagicSplit(Algorithm):
-    def __init__(self, broker_api):        
+    def __init__(self, broker_api, trade_db_manager):        
         self.broker_api = broker_api
+        self.trade_db_manager.py = trade_db_manager
 
     def _calculate_price(self):
         pass
