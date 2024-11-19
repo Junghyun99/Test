@@ -151,8 +151,8 @@ def sample_data(stock_db):
 
     for data in kr_transactions + us_transactions:
         stock_db.insert_data(
-            '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status, timestamp) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
+            '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status, pair_id, timestamp) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
             data
         )
 
@@ -212,7 +212,7 @@ def test_read_data_by_code(stock_db,sample_data):
 
 def test_read_data_by_code_processing(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE code=? AND status=?", ('TSLA', 'processing'))
-    assert len(result) == 0
+    assert len(result) == 1
     result = stock_db.read_data("SELECT * FROM history WHERE code=? AND status=?", ('005390', 'processing'))
     assert len(result) == 3 # processing stack
    
@@ -232,20 +232,20 @@ def test_read_data_by_time_status(stock_db,sample_data):
 
 # complete 검색은 매도 기준, pair id 활용
 def test_read_data_by_time_completed(stock_db,sample_data):
-    result = stock_db.read_data("SELECT * FROM history WHERE date(timestamp) BETWEEN ? And ? AND status=? And trade_type=?", ('2024-09-05''2024-10-5','completed','sell'))
+    result = stock_db.read_data("SELECT * FROM history WHERE (date(timestamp) BETWEEN ? AND ?) AND status=? AND trade_type=?", ('2024-09-05','2024-10-05','completed','sell'))
     assert len(result) == 2
     assert result[0][0] == 8
     assert result[0][6] == 'sell'
-    assert result[0][10] == 5 #pair
+    assert result[0][11] == 5 #pair
     assert result[1][0] == 15
     assert result[1][6] == 'sell'
-    assert result[1][10] == 14 #pair
+    assert result[1][11] == 14 #pair
 
-    pair_result = stock_db.read_data("SELECT * FROM history WHERE id= IN (?, ?)", (5, 14))
-    assert len(result) == 2
-    assert result[0][0] == 5
-    assert result[0][6] == 'buy'
-    assert result[0][10] == 8 #pair
-    assert result[1][0] == 14
-    assert result[1][6] == 'buy'
-    assert result[1][10] == 15 #pair
+    pair_result = stock_db.read_data("SELECT * FROM history WHERE id IN (?, ?)", (5, 14))
+    assert len(pair_result) == 2
+    assert pair_result[0][0] == 5
+    assert pair_result[0][6] == 'buy'
+    assert pair_result[0][11] == 8 #pair
+    assert pair_result[1][0] == 14
+    assert pair_result[1][6] == 'buy'
+    assert pair_result[1][11] == 15 #pair

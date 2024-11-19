@@ -18,6 +18,6 @@ class LoggerManager:
 
     def set_log_level(self, logger_type, level):
         if logger_type in self.loggers:
-            self.loggers[logger_type].setLevel(level)
+            self.loggers[logger_type].get_logger().setLevel(level)
         else:
             raise ValueError(f"Logger type {logger_type} not found")

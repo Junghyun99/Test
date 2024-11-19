@@ -8,7 +8,7 @@ class DummyBrokerAPI(BrokerAPI):
         self.number = 0
         self.order = {}
 
-    def generate_order_id(index):
+    def generate_order_id(self,index):
         return f"TX_{index}"
     
     def get_current_price(self, symbol):

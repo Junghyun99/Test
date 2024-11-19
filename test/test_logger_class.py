@@ -22,21 +22,21 @@ def logger(temp_file):
     return BaseLogger("TestLogger", temp_file)
   
 def test_get_logger_name(logger):
-    assert logger.name == "TestLogger"
+    assert logger.get_logger().name == "TestLogger"
 
 def test_get_logger_level_default(logger):
-    assert logger.level == logging.INFO
+    assert logger.get_logger().level == logging.INFO
 
 def test_get_logger_propagate(logger):
-    assert not logger.propagate
+    assert not logger.get_logger().propagate
 
-# 수정함 다시 체크
+
 def test_get_logger_handlers(logger):
-    assert len(logger.handlers) == 2  
+    assert len(logger.get_logger().handlers) == 2  
     # Console and File handlers
 
 def test_get_logger_file_handler_type(logger):
-    assert any(isinstance(handler, logging.FileHandler) for handler in logger.handlers)
+    assert any(isinstance(handler, logging.FileHandler) for handler in logger.get_logger().handlers)
 
 def test_log_debug_enabled(logger):
     logger.log_debug("Debug message")
@@ -47,13 +47,14 @@ def test_log_debug_message_content(logger, caplog):
         logger.log_debug("Debug message")
     assert "Debug message" not in caplog.text
 
-# 테스트해보자 루트 로거에 대해 캡쳐함
 def test_log_info_level(logger, caplog):
+    logger.get_logger().propagate = True
     with caplog.at_level(logging.INFO):
-        logger.get_logger().info("Check level")
+        logger.log_info("Check level")
     assert "INFO" in caplog.text
 
 def test_log_info_enabled_when_above_level(logger, caplog):
+    logger.get_logger().propagate = True
     with caplog.at_level(logging.WARNING):
         logger.log_warning("This appear")
     assert "This appear" in caplog.text
@@ -64,12 +65,14 @@ def test_log_info_file_output(logger,file_path):
         assert "File output test" in file.read()
 
 def test_log_warning_message(logger, caplog):
+    logger.get_logger().propagate = True
     with caplog.at_level(logging.WARNING):
         logger.log_warning("Warning message")
     assert "Warning message" in caplog.text
     assert "WARNING" in caplog.text
 
 def test_log_error_message(logger, caplog):
+    logger.get_logger().propagate = True
     with caplog.at_level(logging.ERROR):
         logger.log_error("Error message")
     assert "Error message" in caplog.text
@@ -77,6 +80,7 @@ def test_log_error_message(logger, caplog):
 
 
 def test_multiple_log_levels(logger, caplog):
+    logger.get_logger().propagate = True
     with caplog.at_level(logging.INFO):
         logger.log_debug("Debug message")
         logger.log_info("Info message")
