@@ -1,10 +1,11 @@
 from dataclasses import dataclass
+from src.util.enums import CountryCode
 
 @dataclass
 class MonitoringData:
     stock_name: str
     code: str
-    country_code: str
+    country_code: CountryCode
     trade_round: int
     price : float
     buy_rate: int

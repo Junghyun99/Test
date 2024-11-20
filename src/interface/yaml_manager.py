@@ -1,7 +1,9 @@
 import yaml
+from src.util.enums import CountryCode
+
 
 class YamlManager:
-    COUNTRY_CODE = "KR_STOCK"
+    COUNTRY_CODE = CountryCode.KR
     def __init__(self, file_path):
         self.file_path = file_path
 
@@ -45,8 +47,7 @@ class YamlManager:
             for entry in filterd_data:
                 if entry.get("code") == identifier:
                     return [entry]
-                    
-#            return [entry for entry in data[self.COUNTRY_CODE] if entry.get("code") == identifier] 
+
         return data[self.COUNTRY_CODE] 
 
     def update(self, identifier, updated_data):

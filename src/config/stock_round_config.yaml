@@ -1,4 +1,4 @@
-US_STOCK:
+US:
   - name: Apple
     code: AAPL
     orders:
@@ -27,7 +27,7 @@ US_STOCK:
         buy_rate: 4
         sell_rate: 2
 
-KR_STOCK:
+KR:
   - name: 삼성전자
     code: 005930
     orders:
