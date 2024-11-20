@@ -23,9 +23,9 @@ class MagicSplit(Algorithm):
         if current_price <= target_buy_price:
 result = self.broker_manager.place_market_order(code, quantity, "BUY")
         # 매수 성공시
-        self.trade_db_manager. 히스토리 추가       
-        yaml의 다음 차수정보 읽어와서
-        모니터링 디비 다음차수로 수정 
+        # self.trade_db_manager. 히스토리 추가       
+        # yaml의 다음 차수정보 읽어와서
+       # 모니터링 디비 다음차수로 수정할 내용 만들어서 리턴
 
 
         elif current_price >= target_sell_price:
