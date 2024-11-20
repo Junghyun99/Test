@@ -5,8 +5,8 @@ class MonitoringData:
     stock_name
     code
     country_code
-    price
     trade_round
+    price 
     buy_rate
     sell_rate
 
