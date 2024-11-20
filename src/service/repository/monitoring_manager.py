@@ -45,6 +45,7 @@ class MonitoringManager:
     for future in as_completed(futures):
     try:
         result = future.result()  # 작업 결과 가져오기
+# 매수매도에 따라 모니터링 객체를 업데이트
         results.append(result)
     except Exception as e:
         print(e)
