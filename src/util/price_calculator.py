@@ -9,3 +9,7 @@ class PriceCalculator:
         :return: 계산된 가격
         """
         return base_price * (1 - percentage / 100) if is_buy else base_price * (1 + percentage / 100)
+    
+    @staticmethod
+    def calculate_quantity(buy_price, current_price):
+        return buy_price // current_price #소수점 살리고 싶으면 / 이용

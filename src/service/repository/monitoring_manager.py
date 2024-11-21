@@ -1,7 +1,8 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed 
 import os
 from src.service.repository.monitoring_db import MonitoringDB
-from src.util.enums import CountryCode
+from src.model.monitoring_db_model import MonitoringData
+from src.util.enums import CountryCode, QueryOp
 
 class MonitoringManager:
     COUNTRY_CODE = CountryCode.KR
@@ -29,8 +30,11 @@ class MonitoringManager:
         data = (code,)
         self.db.delete_data(query, data)
  
-    def update_stock_in_monitoring(self):
-        pass
+    def update_stock_in_monitoring(self, stock_name, code, country_code, trade_round, price, buy_rate, sell_rate):
+        query = '''UPDATE INTO monitoring (stock_name, code, country_code, trade_round, price, buy_rate, sell_rate)
+                   VALUES (?, ?, ?, ?, ?, ?, ?)'''
+        data = (stock_name, code, country_code, trade_round, price, buy_rate, sell_rate)
+        self.db.insert_data(query, data)
 
     def start_monitoring(self):
         """모든 종목을 멀티 쓰레드로 모니터링"""
@@ -49,9 +53,10 @@ class MonitoringManager:
                     results.append(result)
                 except Exception as e:
                     print(e)
+                    
         for result in results:
             if result.QueryOp is QueryOp.UPDATE:
-                self.update_stock_in_monitoring(result.
+                self.update_stock_in_monitoring(result.MonitoringData.to_tuple());
 
 
 class MonitoringKRManager(MonitoringManager):
