@@ -8,3 +8,9 @@ class TradeStatus(Enum):
 class CountryCode(Enum):
     KR = "KR"
     US = "US"
+
+class QueryOp(Enum):
+    READ = 1
+    INSERT = 2
+    DELETE = 3
+    UPDATE = 4
