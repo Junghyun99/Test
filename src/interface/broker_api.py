@@ -23,6 +23,11 @@ class BrokerAPI(ABC):
         pass
 
     @abstractmethod
+    def get_order_info(self, order_id):
+        """거래내역 검색"""
+        pass
+
+    @abstractmethod
     def get_order_book(self, symbol):
         """호가 검색 (매수호가와 매도호가 리스트 반환)"""
         pass

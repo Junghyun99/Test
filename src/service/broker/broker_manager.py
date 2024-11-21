@@ -27,10 +27,12 @@ class BrokerManager:
         order_id = self.broker.place_limit_order(symbol, quantity, price, order_type)
 
         result = False
+        info = ()
         count = 0
         while count < 10:
             status = self.broker.get_order_status(order_id)
             if status is "complete":
+                info = self.broker.get_order_info(order_id)
                 result = True
                 break
             else : # status is "pending":
@@ -39,4 +41,4 @@ class BrokerManager:
 
         if count is 10:     
             self.broker.cancel_order(order_id)
-        return result
+        return (result, info)

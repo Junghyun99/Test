@@ -40,7 +40,12 @@ class DummyBrokerAPI(BrokerAPI):
         re_status = random.choice(status)
         self.order[order_id] = re_status
         return re_status
-
+    
+    def get_order_info(self, order_id):
+        price = random.randint(100, 5000)
+        quantity = random.randint(10, 50)
+        return (price, quantity)
+    
     def get_order_book(self, symbol):
         buy_orders = [(round(random.uniform(100, 500), 2), random.randint(1, 100)) for _ in range(5)]
         sell_orders = [(round(random.uniform(500, 1000), 2), random.randint(1, 100)) for _ in range(5)]

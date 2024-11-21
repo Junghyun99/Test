@@ -27,8 +27,9 @@ class MagicSplit(Algorithm):
 
         # 매수 또는 매도 조건 확인
         if current_price <= target_buy_price:
-            if self.broker_manager.place_market_order(code, quantity, "BUY"):
-                price = 1 # 매수 성공한 가격을 찾아야함, 브로커에서 수정
+            status, info = self.broker_manager.place_market_order(code, quantity, "BUY")
+            if status:
+                price = info[0]
                 # self.trade_db_manager. 히스토리 추가, 브로커에서?해도될듯?
                 # 다음차수 정보가 있을까? 없으면? 설정한 최대 차수에 걸렸다 치면 그만해야지
                 if len(yaml_data[0]["orders"]) > trade_round:
