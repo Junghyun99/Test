@@ -49,6 +49,8 @@ class MonitoringManager:
                     results.append(result)
                 except Exception as e:
                     print(e)
+        for result in results:
+            if result.QueryOp is QueryOp.
 
 
 class MonitoringKRManager(MonitoringManager):
