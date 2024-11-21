@@ -14,3 +14,4 @@ class QueryOp(Enum):
     INSERT = 2
     DELETE = 3
     UPDATE = 4
+    DEFAULT = 5
