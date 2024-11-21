@@ -50,7 +50,8 @@ class MonitoringManager:
                 except Exception as e:
                     print(e)
         for result in results:
-            if result.QueryOp is QueryOp.
+            if result.QueryOp is QueryOp.UPDATE:
+                self.update_stock_in_monitoring(result.
 
 
 class MonitoringKRManager(MonitoringManager):
