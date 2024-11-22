@@ -26,14 +26,13 @@ class MonitoringManager:
 
     def delete_stock_in_monitoring(self, code):
         """종목 삭제"""
-        query = "DELETE FROM monitoring WHERE code = ?"
+        query = '''DELETE FROM monitoring WHERE code = ?'''
         data = (code,)
         self.db.delete_data(query, data)
  
     def update_stock_in_monitoring(self, stock_name, code, country_code, trade_round, price, buy_rate, sell_rate):
-        query = '''UPDATE INTO monitoring (stock_name, code, country_code, trade_round, price, buy_rate, sell_rate)
-                   VALUES (?, ?, ?, ?, ?, ?, ?)'''
-        data = (stock_name, code, country_code, trade_round, price, buy_rate, sell_rate)
+        query = '''UPDATE INTO monitoring SET trade_round =?, price=?, buy_rate=?, sell_rate=? WHERE code = ?'''
+        data = (trade_round, price, buy_rate, sell_rate, code)
         self.db.insert_data(query, data)
 
     def start_monitoring(self):
@@ -42,21 +41,20 @@ class MonitoringManager:
         results = []
         stocks = self.read_all_stocks(self.COUNTRY_CODE.value)
         with ThreadPoolExecutor(max_workers=max_core) as executor:
-            # 각 ID에 대해 fetch_data 작업을 비동기로 제출
-            futures = [executor.submit(self.algorithm.fetch_func, stock) for stock in stocks]
-            # *stock 으로 풀어서 인풋할수도
-            # 작업 완료를 기다리며 결과 수집
+            futures = [executor.submit(self.algorithm.run_algorithm, MonitoringData(*stock)) for stock in stocks]
+
             for future in as_completed(futures):
                 try:
-                    result = future.result()  # 작업 결과 가져오기
-                    # 매수매도에 따라 모니터링 객체를 업데이트
+                    result = future.result() 
                     results.append(result)
                 except Exception as e:
                     print(e)
                     
         for result in results:
             if result.QueryOp is QueryOp.UPDATE:
-                self.update_stock_in_monitoring(result.MonitoringData.to_tuple());
+                self.update_stock_in_monitoring(result.MonitoringData.to_tuple())
+            elif result.QueryOp is QueryOp.DELETE:
+                self.delete_stock_in_monitoring(result.MonitoringData.code)
 
 
 class MonitoringKRManager(MonitoringManager):

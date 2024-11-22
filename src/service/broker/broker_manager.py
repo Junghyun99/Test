@@ -22,6 +22,7 @@ class BrokerManager:
         if count is 10:
             self.broker.cancel_order(order_id)
         return result
+    # self.trade_db_manager. 히스토리 추가, 브로커에서?해도될듯?
 
     def place_limit_order(self, symbol, quantity, price, order_type):
         order_id = self.broker.place_limit_order(symbol, quantity, price, order_type)

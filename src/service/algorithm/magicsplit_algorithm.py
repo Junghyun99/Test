@@ -9,44 +9,81 @@ class MagicSplit(Algorithm):
         self.trade_db_manager = trade_db_manager
         self.yaml_manager = yaml_manager
 
-    def _calculate_price(self):
-        pass
-
-    def run_algorithm(self, stock_name, code, buy_price, trade_round, buy_rate, sell_rate):    
-        # 매수 희망가와 매도 희망가 계산
+    def _calculate_price(self, buy_price, buy_rate, sell_rate):
         target_buy_price = PriceCalulator.calculate_price(buy_price, buy_rate, True)
         target_sell_price = PriceCalulator.calculate_price(buy_price, sell_rate, False)
+        return target_buy_price, target_sell_price
+    
+    def _get_prev_trade_round(self, code, trade_round):
+        info = self.trade_db_manager.get_trade_round(code, trade_round)
+        return info[0], info[1] # price, quantity
 
-        # 현재 가격을 API로 받아오기
-        current_price = self.broker_manager.get_current_price(code)
+    def _try_buy_stock(self, current_price, moniData:MonitoringData):
+        yaml_data = self.yaml_manager.read(moniData.code)
 
-        yaml_data = self.yaml_manager.read(code)
-        if yaml_data[0]["orders"][trade_round+1]["order"] != trade_round:
-            return
-        quantity = PriceCalulator.calculate_quantity(yaml_data[0]["orders"][trade_round+1]["buy_price"], current_price)
+        if yaml_data[0]["orders"][moniData.trade_round-1]["order"] != moniData.trade_round:
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData())
+        if len(yaml_data[0]["orders"]) <= moniData.trade_round: # 설정된 마지막 차수라는 뜻
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData())
+        
+        quantity = PriceCalulator.calculate_quantity(yaml_data[0]["orders"][moniData.trade_round-1]["buy_price"], current_price)
+        status, info = self.broker_manager.place_market_order(moniData.code, quantity, "BUY")
+            
+        if status is False:
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData())
 
-        # 매수 또는 매도 조건 확인
+        moniData.trade_round = yaml_data[0]["orders"][moniData.trade_round]["order"]
+        moniData.price = info[0] # 실제 거래 매수 금액
+        moniData.quantity = info[1] # 실제 거래 매수 수량
+        moniData.buy_rate = yaml_data[0]["orders"][moniData.trade_round]["buy_rate"]
+        moniData.sell_rate = yaml_data[0]["orders"][moniData.trade_round]["sell_rate"]
+
+        return AlgorithmData(QueryOp.UPDATE, moniData)
+        
+    def _try_sell_stock(self, current_price, moniData:MonitoringData):
+        yaml_data = self.yaml_manager.read(moniData.code)
+
+        if yaml_data[0]["orders"][moniData.trade_round-1]["order"] != moniData.trade_round:
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData())
+        
+        status, info = self.broker_manager.place_market_order(moniData.code, moniData.quantity, "BUY")
+            
+        if status is False:
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData())
+        
+        if moniData.trade_round  is 1: # 1 차수 매도 성공, 모니터링 DB에서 지우기
+            return AlgorithmData(QueryOp.DELETE, moniData)
+        
+        # 이전 차수에 산 매수금액과 수량
+        price, quantity  = self._get_prev_trade_round(moniData.code, moniData.trade_round - 1)
+        
+        moniData.trade_round = yaml_data[0]["orders"][moniData.trade_round-2]["order"]
+        moniData.price = price
+        moniData.quantity = quantity
+        moniData.buy_rate = yaml_data[0]["orders"][moniData.trade_round-2]["buy_rate"]
+        moniData.sell_rate = yaml_data[0]["orders"][moniData.trade_round-2]["sell_rate"]
+
+        return AlgorithmData(QueryOp.UPDATE, moniData)
+    
+    def run_algorithm(self, moniData:MonitoringData):
+        target_buy_price, target_sell_price = self._calculate_price(moniData.price, moniData.buy_rate, moniData.sell_rate)
+        current_price = self.broker_manager.get_current_price(moniData.code)
+
         if current_price <= target_buy_price:
-            status, info = self.broker_manager.place_market_order(code, quantity, "BUY")
-            if status:
-                price = info[0]
-                # self.trade_db_manager. 히스토리 추가, 브로커에서?해도될듯?
-                # 다음차수 정보가 있을까? 없으면? 설정한 최대 차수에 걸렸다 치면 그만해야지
-                if len(yaml_data[0]["orders"]) > trade_round:
-                    next_buy_rate = yaml_data[0]["orders"][trade_round+2]["buy_rate"]
-                    next_sell_rate = yaml_data[0]["orders"][trade_round+2]["sell_rate"]
-                    next_round = yaml_data[0]["orders"][trade_round+2]["order"]
-                    moni = MonitoringData(stock_name, code, self.yaml_manager.COUNTRY_CODE, next_round, price, next_buy_rate, next_sell_rate)
-                
-                else:
-                    moni = MonitoringData(stock_name, code, self.yaml_manager.COUNTRY_CODE, trade_round+1, price, 0, next_sell_rate)
-                return AlgorithmData(QueryOp.UPDATE, moni)
-            # 매수와 매도 rate와 차수가 전부 일치 안하네
-            # 미래 차수와 미래 매수 rate, 현재 차수와 현재 매도 rate
-
-
+            return self._try_buy_stock(current_price, moniData)
         elif current_price >= target_sell_price:
-            result = self.broker_manager.place_market_order(code, quantity, "SELL")
-        # 매도 성공시
+            return self._try_sell_stock(current_price, moniData)
         else:
-            pass
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData())
+
+
+'''
+1차수 매수 가격, 매수 5% 매도 5%, 수량가액
+2차수 매수 가격, 매수 5% 매도 5%, 수량가액
+3차수 매수 가격, 매수 5% 매도 5%, 수량가액
+4차수 매수 가격, 매수 5% 매도 5%, 수량가액
+
+3차수까지 매수한 상태, 4차수를 매수하냐, 3차수를 매도하냐의 조건
+3차수 매도 조건 : 3차수 매도률과 3차수 매수 가격, 수량은 3차수 수량 전부
+4차수 매수 조건 : 3차수 매수률과 3차수 매수 가격, 수량은 3차수 수량가액만큼
+'''

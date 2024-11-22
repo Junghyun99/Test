@@ -3,7 +3,7 @@ from src.util.enums import CountryCode, QueryOp
 
 
 # 기본 필드 순서
-FIELD_ORDER = ["stock_name", "code", "country_code", "trade_round", "price", "buy_rate", "sell_rate"]
+FIELD_ORDER = ["stock_name", "code", "country_code", "trade_round", "price", "quantity", "buy_rate", "sell_rate"]
 
 @dataclass
 class MonitoringData:
@@ -12,6 +12,7 @@ class MonitoringData:
     country_code: CountryCode
     trade_round: int
     price : float
+    quantity : int
     buy_rate: int
     sell_rate: int
 
