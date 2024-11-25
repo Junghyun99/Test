@@ -12,13 +12,45 @@ def setup_manager(mocker):
     mock_db = mocker.Mock(spec=MonitoringDB)
     manager = MonitoringManager(mock_algorithm)
     manager.db = mock_db
-    return manager
+    return manager, mock_algorithm, mock_db
+
+# 2. add_stock_in_monitoring 테스트
+def test_add_stock_in_monitoring(setup_manager):
+    manager, _, mock_db = setup_manager
+
+    # 1. 정상적인 추가
+    manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+    mock_db.insert_data.assert_called_once_with(
+        '''INSERT INTO monitoring (stock_name, code, country_code, trade_round, price, buy_rate, sell_rate)
+                   VALUES (?, ?, ?, ?, ?, ?, ?)''',
+        ("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+    )
+
+    # 2. 값 누락
+    with pytest.raises(TypeError):
+        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000)
+
+    # 3. 잘못된 데이터 유형
+    with pytest.raises(Exception):
+        manager.add_stock_in_monitoring("StockA", 123, "KR", "invalid", 1000, 0.5, "invalid")
+
+    # 4. DB 오류 처리
+    mock_db.insert_data.side_effect = Exception("DB Error")
+    with pytest.raises(Exception):
+        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+
+    # 5. 중복 데이터 테스트
+    mock_db.insert_data.side_effect = Exception("Unique constraint failed")
+    with pytest.raises(Exception):
+        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+
+
+
 
 def test_read_all_stocks_empty_db(setup_manager):
     setup_manager.db.read_data.return_value = []  # 빈 DB를 모킹
     result = setup_manager.read_all_stocks(CountryCode.KR.value)
     assert result == []
-
 
 def test_read_all_stocks_with_data(setup_manager):
     mock_data = [
@@ -30,16 +62,20 @@ def test_read_all_stocks_with_data(setup_manager):
     assert len(result) == 2
     assert result[0][0] == "Samsung"
 
-def test_read_all_stocks_wrong_country_code(setup_manager):
-    setup_manager.db.read_data.return_value = []  # Mock an empty DB for a different country code
-    result = setup_manager.read_all_stocks(CountryCode.US.value)
-    assert result == []
+def test_read_all_stocks_wrong_country_code(setup_manager): 
+    manager, _, mock_db = setup_manager
+    with pytest.raises(Exception):
+        manager.read_all_stocks(None)
 
-def test_read_all_stocks_invalid_query(setup_manager):
-    setup_manager.db.read_data.side_effect = Exception("DB Error")
-    with pytest.raises(Exception, match="DB Error"):
-        setup_manager.read_all_stocks(CountryCode.KR.value)
+def test_read_all_stocks_db_call(setup_manager):
+   manager, _, mock_db = setup_manager manager.read_all_stocks(CountryCode.KR.value)
+    mock_db.read_data.assert_called_once_with("SELECT * FROM monitoring WHERE country_code=?", ("KR",))
 
+def test_read_all_stocks_exception(setup_manager):
+    manager, _, mock_db = setup_manager
+    mock_db.read_data.side_effect = Exception("DB error")
+    with pytest.raises(Exception):
+        manager.read_all_stocks(CountryCode.KR.value)
 
 
 def test_add_stock_successful(setup_manager):
@@ -131,50 +167,11 @@ def test_start_monitoring_with_os_cpu_count(setup_manager):
 
 
 
-import pytest
-from src.service.monitoring_manager import MonitoringManager, MonitoringKRManager
-from src.model.monitoring_db_model import MonitoringData
-from src.util.enums import CountryCode, QueryOp
 
 
-@pytest.fixture
-def setup_manager(mocker):
-    mock_algorithm = mocker.Mock()  # 알고리즘 의존성 모킹
-    mock_db = mocker.Mock()  # MonitoringDB 모킹
-    manager = MonitoringManager(mock_algorithm)
-    manager.db = mock_db  # 모킹된 DB 주입
-    return manager, mock_algorithm, mock_db
 
 
-# 1. read_all_stocks 테스트
-def test_read_all_stocks(setup_manager):
-    manager, _, mock_db = setup_manager
 
-    # 가짜 반환값 설정
-    mock_db.read_data.return_value = [("StockA", "123", "KR", 1, 1000, 0.5, 1.5)]
-
-    # 1. 정상적으로 데이터 읽기
-    result = manager.read_all_stocks(CountryCode.KR.value)
-    assert len(result) == 1
-    assert result[0][0] == "StockA"
-
-    # 2. 빈 데이터 반환
-    mock_db.read_data.return_value = []
-    result = manager.read_all_stocks(CountryCode.KR.value)
-    assert result == []
-
-    # 3. DB 호출 확인
-    manager.read_all_stocks(CountryCode.KR.value)
-    mock_db.read_data.assert_called_once_with("SELECT * FROM monitoring WHERE country_code=?", ("KR",))
-
-    # 4. 예외 처리 테스트
-    mock_db.read_data.side_effect = Exception("DB error")
-    with pytest.raises(Exception):
-        manager.read_all_stocks(CountryCode.KR.value)
-
-    # 5. 잘못된 국가 코드 테스트
-    with pytest.raises(Exception):
-        manager.read_all_stocks(None)
 
 
 # 2. add_stock_in_monitoring 테스트
