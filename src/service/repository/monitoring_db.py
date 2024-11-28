@@ -16,6 +16,7 @@ class MonitoringDB(BaseDB):
                        country_code TEXT NOT NULL, 
                        trade_round INTEGER CHECK(trade_round > 0),
                        price REAL NOT NULL CHECK(price > 0),                          -- 거래 단가 
+                       quantity INTEGER NOT NULL,
                        buy_rate INTEGER NOT NULL CHECK(buy_rate > 0),
 sell_rate INTEGER NOT NULL CHECK(sell_rate > 0)
                        )''')

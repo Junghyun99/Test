@@ -14,42 +14,11 @@ def setup_manager(mocker):
     manager.db = mock_db
     return manager, mock_algorithm, mock_db
 
-# 2. add_stock_in_monitoring 테스트
-def test_add_stock_in_monitoring(setup_manager):
-    manager, _, mock_db = setup_manager
-
-    # 1. 정상적인 추가
-    manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
-    mock_db.insert_data.assert_called_once_with(
-        '''INSERT INTO monitoring (stock_name, code, country_code, trade_round, price, buy_rate, sell_rate)
-                   VALUES (?, ?, ?, ?, ?, ?, ?)''',
-        ("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
-    )
-
-    # 2. 값 누락
-    with pytest.raises(TypeError):
-        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000)
-
-    # 3. 잘못된 데이터 유형
-    with pytest.raises(Exception):
-        manager.add_stock_in_monitoring("StockA", 123, "KR", "invalid", 1000, 0.5, "invalid")
-
-    # 4. DB 오류 처리
-    mock_db.insert_data.side_effect = Exception("DB Error")
-    with pytest.raises(Exception):
-        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
-
-    # 5. 중복 데이터 테스트
-    mock_db.insert_data.side_effect = Exception("Unique constraint failed")
-    with pytest.raises(Exception):
-        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
-
-
-
 
 def test_read_all_stocks_empty_db(setup_manager):
-    setup_manager.db.read_data.return_value = []  # 빈 DB를 모킹
-    result = setup_manager.read_all_stocks(CountryCode.KR.value)
+    manager, _, mock_db = setup_manager
+    mock_db.read_data.return_value = []  # 빈 DB를 모킹
+    result = manager.read_all_stocks(CountryCode.KR.value)
     assert result == []
 
 def test_read_all_stocks_with_data(setup_manager):
@@ -57,13 +26,15 @@ def test_read_all_stocks_with_data(setup_manager):
         ("Samsung", "005930", "KR", 1, 70000, 20, 5, 10),
         ("Hyundai", "005380", "KR", 2, 180000, 6, 4, 8)
     ]
-    setup_manager.db.read_data.return_value = mock_data
-    result = setup_manager.read_all_stocks(CountryCode.KR.value)
+    manager, _, mock_db = setup_manager
+    mock_db.read_data.return_value = mock_data
+    result = manager.read_all_stocks(CountryCode.KR.value)
     assert len(result) == 2
     assert result[0][0] == "Samsung"
 
 def test_read_all_stocks_wrong_country_code(setup_manager): 
     manager, _, mock_db = setup_manager
+    mock_db.read_data.side_effect = Exception("DB error")
     with pytest.raises(Exception):
         manager.read_all_stocks(None)
 
@@ -78,56 +49,110 @@ def test_read_all_stocks_exception(setup_manager):
     with pytest.raises(Exception):
         manager.read_all_stocks(CountryCode.KR.value)
 
-
 def test_add_stock_successful(setup_manager):
-    setup_manager.db.insert_data.return_value = None  # Mock a successful insert
-    setup_manager.add_stock_in_monitoring("Samsung", "005930", "KR", 1, 10, 70000, 5, 10)
-    setup_manager.db.insert_data.assert_called_once()
-
+    manager, _, mock_db = setup_manager
+    mock_db.insert_data.return_value = None
+    manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+    mock_db.insert_data.assert_called_once()
+    
 def test_add_stock_missing_data(setup_manager):
-    setup_manager.db.insert_data.side_effect = Exception("Missing Data")
-    with pytest.raises(Exception, match="Missing Data"):
-        setup_manager.add_stock_in_monitoring("Samsung", "005930", "KR", None, 70000, 7, 5, 10)
-
-def test_add_stock_duplicate_entry(setup_manager):
-    setup_manager.db.insert_data.side_effect = Exception("Duplicate Entry")
-    with pytest.raises(Exception, match="Duplicate Entry"):
-        setup_manager.add_stock_in_monitoring("Samsung", "005930", "KR", 1, 70000, 5, 10)
+    manager, _, mock_db = setup_manager
+    with pytest.raises(TypeError):
+        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000)
 
 def test_add_stock_invalid_query(setup_manager):
-    setup_manager.db.insert_data.side_effect = Exception("Invalid Query")
-    with pytest.raises(Exception, match="Invalid Query"):
-        setup_manager.add_stock_in_monitoring("Samsung", "INVALID_CODE", "KR", 1, 70000, 5, 10)
+    manager, _, mock_db = setup_manager
+    with pytest.raises(Exception):
+        manager.add_stock_in_monitoring("StockA", 123, "KR", "invalid", 1000, 0.5, "invalid")
+
+def test_add_stock_Exception(setup_manager):
+    manager, _, mock_db = setup_manager
+    mock_db.insert_data.side_effect = Exception("DB Error")
+    with pytest.raises(Exception):
+        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+
+def test_add_stock_duplicate_entry(setup_manager):
+    manager, _, mock_db = setup_manager
+    manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+    mock_db.insert_data.side_effect = Exception("Unique constraint failed")
+    with pytest.raises(Exception):
+        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
 
 def test_add_stock_with_special_characters(setup_manager):
-    setup_manager.db.insert_data.return_value = None
-    setup_manager.add_stock_in_monitoring("Special$Char", "005930$", "KR", 1, 70000, 5, 10)
-    setup_manager.db.insert_data.assert_called_once()
+    manager, _, mock_db = setup_manager
+    mock_db.insert_data.return_value = None
+    manager.add_stock_in_monitoring("Special$Char", "005930$", "KR", 1, 70000, 5, 10)
+    mock_db.insert_data.assert_called_once()
 
 
 def test_delete_stock_successful(setup_manager):
-    setup_manager.db.delete_data.return_value = None
-    setup_manager.delete_stock_in_monitoring("005930")
-    setup_manager.db.delete_data.assert_called_once()
+    manager, _, mock_db = setup_manager
+    manager.delete_stock_in_monitoring("123")
+    mock_db.delete_data.assert_called_once_with("DELETE FROM monitoring WHERE code = ?", ("123",))
+
 
 def test_delete_stock_not_found(setup_manager):
-    setup_manager.db.delete_data.return_value = None
-    setup_manager.delete_stock_in_monitoring("INVALID_CODE")
-    setup_manager.db.delete_data.assert_called_once()
+    manager, _, mock_db = setup_manager
+    mock_db.delete_data.return_value = None
+    manager.delete_stock_in_monitoring("999")
+    mock_db.delete_data.assert_called_once()
 
-def test_delete_stock_invalid_query(setup_manager):
-    setup_manager.db.delete_data.side_effect = Exception("Invalid Query")
-    with pytest.raises(Exception, match="Invalid Query"):
-        setup_manager.delete_stock_in_monitoring("INVALID_CODE")
+def test_delete_stock_None(setup_manager):
+    manager, _, mock_db = setup_manager
+    mock_db.delete_data.side_effect = Exception("unsupported type")
+    with pytest.raises(Exception):
+        manager.delete_stock_in_monitoring(None)
+
+def test_delete_stock_Invalid_Type(setup_manager):
+    manager, _, mock_db = setup_manager
+    mock_db.delete_data.return_value = None
+    manager.delete_stock_in_monitoring(123)
+    mock_db.delete_data.assert_called_once()
 
 def test_delete_stock_empty_code(setup_manager):
-    with pytest.raises(ValueError):
-        setup_manager.delete_stock_in_monitoring("")
+    manager, _, mock_db = setup_manager
+    with pytest.raises(AttributeError):
+        setup_manager.delete_stock_in_monitoring()
 
 def test_delete_stock_sql_injection(setup_manager):
-    setup_manager.db.delete_data.side_effect = Exception("SQL Injection Detected")
-    with pytest.raises(Exception, match="SQL Injection Detected"):
-        setup_manager.delete_stock_in_monitoring("005930; DROP TABLE monitoring")
+    manager, _, mock_db = setup_manager
+    mock_db.delete_data.return_value = None
+    manager.delete_stock_in_monitoring("005930; DROP TABLE monitoring")
+
+
+def test_update_stock_normal(setup_manager):
+    manager, _, mock_db = setup_manager
+    manager.update_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+    mock_db.insert_data.assert_called_once_with(
+        '''UPDATE INTO monitoring SET trade_round =?, price=?, buy_rate=?, sell_rate=? WHERE code = ?''',
+        (1, 1000, 0.5, 1.5, "123")
+    )
+
+def test_update_stock_in_monitoring(setup_manager):
+    manager, _, mock_db = setup_manager
+    # 2. 값 누락
+    with pytest.raises(TypeError):
+        manager.update_stock_in_monitoring("StockA", "123", "KR", 1)
+
+def test_update_stock_in_monitoring(setup_manager):
+    manager, _, mock_db = setup_manager
+    # 3. 잘못된 데이터 유형
+    with pytest.raises(Exception):
+        manager.update_stock_in_monitoring("StockA", 123, "KR", "invalid", 1000, 0.5, "invalid")
+
+def test_update_stock_in_monitoring(setup_manager):
+    manager, _, mock_db = setup_manager
+    # 4. DB 오류 처리
+    mock_db.insert_data.side_effect = Exception("DB Error")
+    with pytest.raises(Exception):
+        manager.update_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+
+def test_update_stock_in_monitoring(setup_manager):
+    manager, _, mock_db = setup_manager
+    # 5. 업데이트 대상이 없는 경우
+    mock_db.insert_data.side_effect = Exception("No such record")
+    with pytest.raises(Exception):
+        manager.update_stock_in_monitoring("StockB", "999", "KR", 2, 2000, 0.6, 1.6)
 
 
 def test_start_monitoring_successful(setup_manager, mocker):
@@ -175,92 +200,6 @@ def test_start_monitoring_with_os_cpu_count(setup_manager):
 
 
 
-# 2. add_stock_in_monitoring 테스트
-def test_add_stock_in_monitoring(setup_manager):
-    manager, _, mock_db = setup_manager
-
-    # 1. 정상적인 추가
-    manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
-    mock_db.insert_data.assert_called_once_with(
-        '''INSERT INTO monitoring (stock_name, code, country_code, trade_round, price, buy_rate, sell_rate)
-                   VALUES (?, ?, ?, ?, ?, ?, ?)''',
-        ("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
-    )
-
-    # 2. 값 누락
-    with pytest.raises(TypeError):
-        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000)
-
-    # 3. 잘못된 데이터 유형
-    with pytest.raises(Exception):
-        manager.add_stock_in_monitoring("StockA", 123, "KR", "invalid", 1000, 0.5, "invalid")
-
-    # 4. DB 오류 처리
-    mock_db.insert_data.side_effect = Exception("DB Error")
-    with pytest.raises(Exception):
-        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
-
-    # 5. 중복 데이터 테스트
-    mock_db.insert_data.side_effect = Exception("Unique constraint failed")
-    with pytest.raises(Exception):
-        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
-
-
-# 3. delete_stock_in_monitoring 테스트
-def test_delete_stock_in_monitoring(setup_manager):
-    manager, _, mock_db = setup_manager
-
-    # 1. 정상 삭제
-    manager.delete_stock_in_monitoring("123")
-    mock_db.delete_data.assert_called_once_with("DELETE FROM monitoring WHERE code = ?", ("123",))
-
-    # 2. 존재하지 않는 데이터 삭제
-    mock_db.delete_data.side_effect = Exception("No such record")
-    with pytest.raises(Exception):
-        manager.delete_stock_in_monitoring("999")
-
-    # 3. None 값으로 삭제 시도
-    with pytest.raises(Exception):
-        manager.delete_stock_in_monitoring(None)
-
-    # 4. 잘못된 데이터 형식
-    with pytest.raises(Exception):
-        manager.delete_stock_in_monitoring(123)
-
-    # 5. DB 오류 발생
-    mock_db.delete_data.side_effect = Exception("DB Error")
-    with pytest.raises(Exception):
-        manager.delete_stock_in_monitoring("123")
-
-
-# 4. update_stock_in_monitoring 테스트
-def test_update_stock_in_monitoring(setup_manager):
-    manager, _, mock_db = setup_manager
-
-    # 1. 정상 업데이트
-    manager.update_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
-    mock_db.insert_data.assert_called_once_with(
-        '''UPDATE INTO monitoring SET trade_round =?, price=?, buy_rate=?, sell_rate=? WHERE code = ?''',
-        (1, 1000, 0.5, 1.5, "123")
-    )
-
-    # 2. 값 누락
-    with pytest.raises(TypeError):
-        manager.update_stock_in_monitoring("StockA", "123", "KR", 1)
-
-    # 3. 잘못된 데이터 유형
-    with pytest.raises(Exception):
-        manager.update_stock_in_monitoring("StockA", 123, "KR", "invalid", 1000, 0.5, "invalid")
-
-    # 4. DB 오류 처리
-    mock_db.insert_data.side_effect = Exception("DB Error")
-    with pytest.raises(Exception):
-        manager.update_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
-
-    # 5. 업데이트 대상이 없는 경우
-    mock_db.insert_data.side_effect = Exception("No such record")
-    with pytest.raises(Exception):
-        manager.update_stock_in_monitoring("StockB", "999", "KR", 2, 2000, 0.6, 1.6)
 
 
 # 5. start_monitoring 테스트

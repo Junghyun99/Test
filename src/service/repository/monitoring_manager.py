@@ -17,11 +17,11 @@ class MonitoringManager:
         data = (country_code,)
         return self.db.read_data(query, data)
 
-    def add_stock_in_monitoring(self, stock_name, code, country_code, trade_round, price, buy_rate, sell_rate):
+    def add_stock_in_monitoring(self, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate):
         """새로운 종목 추가"""
-        query = '''INSERT INTO monitoring (stock_name, code, country_code, trade_round, price, buy_rate, sell_rate)
-                   VALUES (?, ?, ?, ?, ?, ?, ?)'''
-        data = (stock_name, code, country_code, trade_round, price, buy_rate, sell_rate)
+        query = '''INSERT INTO monitoring (stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+        data = (stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
         self.db.insert_data(query, data)
 
     def delete_stock_in_monitoring(self, code):
@@ -30,10 +30,10 @@ class MonitoringManager:
         data = (code,)
         self.db.delete_data(query, data)
  
-    def update_stock_in_monitoring(self, stock_name, code, country_code, trade_round, price, buy_rate, sell_rate):
-        query = '''UPDATE INTO monitoring SET trade_round =?, price=?, buy_rate=?, sell_rate=? WHERE code = ?'''
-        data = (trade_round, price, buy_rate, sell_rate, code)
-        self.db.insert_data(query, data)
+    def update_stock_in_monitoring(self, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate):
+        query = '''UPDATE INTO monitoring SET trade_round =?, price=?, =?, quantitybuy_rate=?, sell_rate=? WHERE code = ?'''
+        data = (trade_round, price, quantity, buy_rate, sell_rate, code)
+        self.db.update_data(query, data)
 
     def start_monitoring(self):
         """모든 종목을 멀티 쓰레드로 모니터링"""
