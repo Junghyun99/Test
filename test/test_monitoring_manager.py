@@ -1,8 +1,8 @@
 #not check
 import pytest
 from src.service.repository.monitoring_db import MonitoringDB
-from src.service.algorithm.magicsplit_alogrithm import MagicSplit
-from src.service.monitoring_manager import MonitoringManager
+from src.service.algorithm.magicsplit_algorithm import MagicSplit
+from src.service.repository.monitoring_manager import MonitoringManager
 
 from src.util.enums import QueryOp, CountryCode
 
@@ -68,7 +68,8 @@ def test_read_all_stocks_wrong_country_code(setup_manager):
         manager.read_all_stocks(None)
 
 def test_read_all_stocks_db_call(setup_manager):
-   manager, _, mock_db = setup_manager manager.read_all_stocks(CountryCode.KR.value)
+    manager, _, mock_db = setup_manager 
+    manager.read_all_stocks(CountryCode.KR.value)
     mock_db.read_data.assert_called_once_with("SELECT * FROM monitoring WHERE country_code=?", ("KR",))
 
 def test_read_all_stocks_exception(setup_manager):
@@ -129,9 +130,9 @@ def test_delete_stock_sql_injection(setup_manager):
         setup_manager.delete_stock_in_monitoring("005930; DROP TABLE monitoring")
 
 
-def test_start_monitoring_successful(setup_manager):
-    setup_manager.read_all_stocks = Mock(return_value=[(1, "Samsung", "005930", "KR", 1, 70000, 5, 10)])
-    setup_manager.algorithm.fetch_func = Mock(return_value="Success")
+def test_start_monitoring_successful(setup_manager, mocker):
+    setup_manager.read_all_stocks = mocker.Mock(return_value=[(1, "Samsung", "005930", "KR", 1, 70000, 5, 10)])
+    setup_manager.algorithm.fetch_func = mocker.Mock(return_value="Success")
     setup_manager.start_monitoring()
     setup_manager.algorithm.fetch_func.assert_called_once()
 
@@ -273,8 +274,8 @@ def test_start_monitoring(setup_manager, mocker):
     ]
 
     mock_algorithm.run_algorithm.side_effect = [
-        mocker.Mock(QueryOp=QueryOp.UPDATE, MonitoringData=MonitoringData("StockA", "123", "KR", 1, 1000, 0.5, 1.5)),
-        mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData("StockB", "456", "KR", 2, 2000, 0.6, 1.6)),
+        mocker.Mock(QueryOp=QueryOp.UPDATE, MonitoringData=MonitoringDB("StockA", "123", "KR", 1, 1000, 0.5, 1.5)),
+        mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringDB("StockB", "456", "KR", 2, 2000, 0.6, 1.6)),
     ]
 
     # 1. 정상 작동 확인
