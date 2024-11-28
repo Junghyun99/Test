@@ -1,7 +1,7 @@
 from src.interface.algorithm import Algorithm
-from src.util.price_calculator import PriceCalulator
+from src.util.price_calculator import PriceCalculator
 from src.util.enums import QueryOp
-from src.model.monitoring_db_model import AlgorithmData, MonitoringData
+from src.model.monitoring_db_model import AlgorithmData, MonitoringData, DUMMY
 
 class MagicSplit(Algorithm):
     def __init__(self, broker_manager, trade_db_manager, yaml_manager):        
@@ -10,8 +10,8 @@ class MagicSplit(Algorithm):
         self.yaml_manager = yaml_manager
 
     def _calculate_price(self, buy_price, buy_rate, sell_rate):
-        target_buy_price = PriceCalulator.calculate_price(buy_price, buy_rate, True)
-        target_sell_price = PriceCalulator.calculate_price(buy_price, sell_rate, False)
+        target_buy_price = PriceCalculator.calculate_price(buy_price, buy_rate, True)
+        target_sell_price = PriceCalculator.calculate_price(buy_price, sell_rate, False)
         return target_buy_price, target_sell_price
     
     def _get_prev_trade_round(self, code, trade_round):
@@ -22,21 +22,21 @@ class MagicSplit(Algorithm):
         yaml_data = self.yaml_manager.read(moniData.code)
 
         if yaml_data[0]["orders"][moniData.trade_round-1]["order"] != moniData.trade_round:
-            return AlgorithmData(QueryOp.DEFAULT, MonitoringData())
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*DUMMY))
         if len(yaml_data[0]["orders"]) <= moniData.trade_round: # 설정된 마지막 차수라는 뜻
-            return AlgorithmData(QueryOp.DEFAULT, MonitoringData())
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*DUMMY))
         
-        quantity = PriceCalulator.calculate_quantity(yaml_data[0]["orders"][moniData.trade_round-1]["buy_price"], current_price)
+        quantity = PriceCalculator.calculate_quantity(yaml_data[0]["orders"][moniData.trade_round-1]["buy_price"], current_price)
         status, info = self.broker_manager.place_market_order(moniData.code, quantity, "BUY")
             
         if status is False:
-            return AlgorithmData(QueryOp.DEFAULT, MonitoringData())
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*DUMMY))
 
-        moniData.trade_round = yaml_data[0]["orders"][moniData.trade_round]["order"]
         moniData.price = info[0] # 실제 거래 매수 금액
         moniData.quantity = info[1] # 실제 거래 매수 수량
         moniData.buy_rate = yaml_data[0]["orders"][moniData.trade_round]["buy_rate"]
         moniData.sell_rate = yaml_data[0]["orders"][moniData.trade_round]["sell_rate"]
+        moniData.trade_round = yaml_data[0]["orders"][moniData.trade_round]["order"]
 
         return AlgorithmData(QueryOp.UPDATE, moniData)
         
@@ -44,12 +44,12 @@ class MagicSplit(Algorithm):
         yaml_data = self.yaml_manager.read(moniData.code)
 
         if yaml_data[0]["orders"][moniData.trade_round-1]["order"] != moniData.trade_round:
-            return AlgorithmData(QueryOp.DEFAULT, MonitoringData())
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*DUMMY))
         
         status, info = self.broker_manager.place_market_order(moniData.code, moniData.quantity, "BUY")
             
         if status is False:
-            return AlgorithmData(QueryOp.DEFAULT, MonitoringData())
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*DUMMY))
         
         if moniData.trade_round  is 1: # 1 차수 매도 성공, 모니터링 DB에서 지우기
             return AlgorithmData(QueryOp.DELETE, moniData)
@@ -74,7 +74,7 @@ class MagicSplit(Algorithm):
         elif current_price >= target_sell_price:
             return self._try_sell_stock(current_price, moniData)
         else:
-            return AlgorithmData(QueryOp.DEFAULT, MonitoringData())
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*DUMMY))
 
 
 '''

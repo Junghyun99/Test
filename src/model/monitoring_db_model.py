@@ -4,6 +4,7 @@ from src.util.enums import CountryCode, QueryOp
 
 # 기본 필드 순서
 FIELD_ORDER = ["stock_name", "code", "country_code", "trade_round", "price", "quantity", "buy_rate", "sell_rate"]
+DUMMY = ("stock","code",CountryCode.KR,0,0,0,0,0)
 
 @dataclass
 class MonitoringData:
