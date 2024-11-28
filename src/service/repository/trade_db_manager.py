@@ -7,13 +7,20 @@ class TradeDBManager:
 
     # Reading Methods
     def get_trade_round(self, code, round):
-        pass
+        '''
+
+        '''
+        query = '''
+            SELECT trade_round, id, price, amount, total_value FROM history 
+            WHERE code = ? AND status = 'processing' AND trade_round = ?
+        '''
+        return dict(self.db.read_data(query, (code, round)))
     
     def get_latest_active_stack(self, stock_code):
         """
         종목을 넣어주면 최신 스택을 리턴,
         라운드 순으로 id, 매수 가격,양,총량을 리스트로 리턴,
-        """
+       
         # Query to get active transactions ordered by trade_round
         query = '''
             SELECT trade_round, id, price, amount, total_value FROM history 
@@ -27,11 +34,13 @@ class TradeDBManager:
         stack_list = [dict(record[1:]) for record in result]
         
         return stack_list
+        """
+        pass
 
 
 
     def get_completed_pairs(self, stock_name=None, date=None):
-        """Returns completed trade pairs, filtered by stock name or date."""
+        """Returns completed trade pairs, filtered by stock name or date.
         query = '''
             SELECT * FROM history 
             WHERE status = 'completed' AND pair_id != 0
@@ -44,9 +53,11 @@ class TradeDBManager:
             query += " AND DATE(timestamp) = ?"
             params.append(date)
         return self.db.read_data(query, tuple(params))
+        """
+        pass
 
     def get_active_stacks(self, stock_name=None, date=None):
-        """Returns all active stacks, optionally filtered by stock name or date."""
+        """Returns all active stacks, optionally filtered by stock name or date.
         query = '''
             SELECT * FROM history 
             WHERE status = 'processing'
@@ -59,10 +70,12 @@ class TradeDBManager:
             query += " AND DATE(timestamp) = ?"
             params.append(date)
         return self.db.read_data(query, tuple(params))
+        """
+        pass
 
     # Writing Methods
     def record_buy_transaction(self, stock_name, code, transaction_id, country_code, trade_round, price, amount):
-        """Inserts a new buy transaction record."""
+        """Inserts a new buy transaction record.
         query = '''
             INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, 
                                  trade_type, price, amount, status, pair_id) 
@@ -70,9 +83,11 @@ class TradeDBManager:
         '''
         data = (stock_name, code, transaction_id, country_code, trade_round, price, amount)
         self.db.insert_data(query, data)
+        """
+        pass
 
     def record_sell_transaction(self, stock_name, code, transaction_id, country_code, trade_round, price, amount, pair_id):
-        """Inserts a new sell transaction record and updates the paired buy transaction."""
+        """Inserts a new sell transaction record and updates the paired buy transaction.
         # Insert the sell transaction
         query = '''
             INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, 
@@ -85,9 +100,11 @@ class TradeDBManager:
         # Update the paired buy transaction
         update_query = "UPDATE history SET status = 'completed' WHERE id = ?"
         self.db.update_data(update_query, (pair_id,))
+        """
+        pass
 
     def manual_adjustment(self, transaction_id, new_status, new_pair_id=None):
-        """Manually adjusts a transaction's status and optionally updates the pair ID."""
+        """Manually adjusts a transaction's status and optionally updates the pair ID.
         query = "UPDATE history SET status = ?"
         data = [new_status]
         if new_pair_id is not None:
@@ -96,3 +113,5 @@ class TradeDBManager:
         query += " WHERE transaction_id = ?"
         data.append(transaction_id)
         self.db.update_data(query, tuple(data))
+        """
+        pass
