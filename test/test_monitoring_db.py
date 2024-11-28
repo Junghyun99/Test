@@ -112,6 +112,18 @@ def test_delete_None(moni_db):
     with pytest.raises(Exception):
         moni_db.delete_data("DELETE FROM monitoring WHERE code=?",None)  
 
+def test_update_invalid_code(moni_db):
+    moni_db.insert_data(
+        '''INSERT INTO monitoring (stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate) 
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+        ('aaple', 'AAPL', 'US', 1, 150.0, 10, 10, 5)
+    )
+    # Update
+    moni_db.update_data(
+        "UPDATE monitoring SET buy_rate=? WHERE code=?", 
+        (15, 'MSTF')
+    )
+    
 # 복합 시나리오 테스트 케이스
 def test_full_scenario(moni_db):
     # Create

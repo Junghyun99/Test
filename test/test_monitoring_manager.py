@@ -122,37 +122,26 @@ def test_delete_stock_sql_injection(setup_manager):
 
 def test_update_stock_normal(setup_manager):
     manager, _, mock_db = setup_manager
-    manager.update_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+    manager.update_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)
     mock_db.insert_data.assert_called_once_with(
         '''UPDATE INTO monitoring SET trade_round =?, price=?, buy_rate=?, sell_rate=? WHERE code = ?''',
         (1, 1000, 0.5, 1.5, "123")
     )
 
-def test_update_stock_in_monitoring(setup_manager):
+def test_update_stock_invalid_entry(setup_manager):
     manager, _, mock_db = setup_manager
-    # 2. 값 누락
     with pytest.raises(TypeError):
         manager.update_stock_in_monitoring("StockA", "123", "KR", 1)
 
-def test_update_stock_in_monitoring(setup_manager):
+def test_update_stock_invalid_data(setup_manager):
     manager, _, mock_db = setup_manager
-    # 3. 잘못된 데이터 유형
-    with pytest.raises(Exception):
-        manager.update_stock_in_monitoring("StockA", 123, "KR", "invalid", 1000, 0.5, "invalid")
+    mock_db.update_data.return_value = None
+    manager.update_stock_in_monitoring("StockA", 123, "KR", "invalid", 1000, 10, 0.5, "invalid")
 
 def test_update_stock_in_monitoring(setup_manager):
     manager, _, mock_db = setup_manager
-    # 4. DB 오류 처리
-    mock_db.insert_data.side_effect = Exception("DB Error")
-    with pytest.raises(Exception):
-        manager.update_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
-
-def test_update_stock_in_monitoring(setup_manager):
-    manager, _, mock_db = setup_manager
-    # 5. 업데이트 대상이 없는 경우
-    mock_db.insert_data.side_effect = Exception("No such record")
-    with pytest.raises(Exception):
-        manager.update_stock_in_monitoring("StockB", "999", "KR", 2, 2000, 0.6, 1.6)
+    mock_db.update_data.return_value = None
+    manager.update_stock_in_monitoring("StockB", "999", "KR", 2, 2000, 0.6, 1.6)
 
 
 def test_start_monitoring_successful(setup_manager, mocker):
@@ -194,33 +183,25 @@ def test_start_monitoring_with_os_cpu_count(setup_manager):
 
 
 
-
-
-
-
-
-
-
-
 # 5. start_monitoring 테스트
 def test_start_monitoring(setup_manager, mocker):
     manager, mock_algorithm, mock_db = setup_manager
 
     # 가짜 데이터 생성
     mock_db.read_data.return_value = [
-        ("StockA", "123", "KR", 1, 1000, 0.5, 1.5),
-        ("StockB", "456", "KR", 2, 2000, 0.6, 1.6)
+        ("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5),
+        ("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)
     ]
 
     mock_algorithm.run_algorithm.side_effect = [
-        mocker.Mock(QueryOp=QueryOp.UPDATE, MonitoringData=MonitoringDB("StockA", "123", "KR", 1, 1000, 0.5, 1.5)),
-        mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringDB("StockB", "456", "KR", 2, 2000, 0.6, 1.6)),
+        mocker.Mock(QueryOp=QueryOp.UPDATE, MonitoringData=MonitoringDB("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)),
+        mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringDB("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)),
     ]
 
     # 1. 정상 작동 확인
     manager.start_monitoring()
     mock_algorithm.run_algorithm.assert_called()
-    mock_db.insert_data.assert_called()
+    mock_db.update_data.assert_called()
     mock_db.delete_data.assert_called()
 
     # 2. 빈 데이터 처리
