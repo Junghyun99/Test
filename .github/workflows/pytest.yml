@@ -43,15 +43,33 @@ jobs:
         name: pytest-report  # 아티팩트 이름
         path: report.xml     # 업로드할 파일
 
-    # 5. Slack 알림 전송
-    - name: Send Slack Notification
-        # 이전 단계 중 하나라도 실패했을 때만 실행
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_USERNAME: "GitHub Actions Bot"
-        SLACK_MESSAGE: |
-          Pytest Completed:
-          - Status: ${{ job.status }}
-          - Branch: ${{ github.ref_name }}
-          - Commit: ${{ github.sha }}
+
+    - name: Extract failed test
+      if: failure()  # 실패한 테스트가 있을 때만 실행
+      run: |
+        python -c '
+import xml.etree.ElementTree as ET
+import requests
+
+# Parse the JUnit XML result file
+tree = ET.parse("result.xml")
+root = tree.getroot()
+
+# Extract failed test cases
+failed_tests = []
+for testcase in root.findall(".//testcase[failure]"):
+    failed_tests.append(testcase.attrib["name"])
+
+# Prepare Slack message
+if failed_tests:
+    message = f"Tests failed: {', '.join(failed_tests)}"
+else:
+    message = "No tests failed."
+
+# Send to Slack
+slack_payload = {
+    "text": f"Pytest Completed:\n- Status: {{"${{ job.status }}}}\n- Branch: {{"${{ github.ref_name }}}}\n- Commit: {{"${{ github.sha }}}}\n{message}"
+}
+requests.post("${{ secrets.SLACK_WEBHOOK }}", json=slack_payload)
+        '
+
