@@ -1,4 +1,4 @@
 pytest
 pytest-mock
 pytest-html
-pyyaml
+pyyamlrequests
