@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     # 1. 저장소를 클론
@@ -21,7 +21,8 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.10  # 원하는 Python 버전
+        python-version: '3.10' # 원하는 Python 버전
+        cache: 'false'  # 캐시를 사용하지 않음 
 
     # 3. 필요한 의존성 설치
     - name: Install dependencies
