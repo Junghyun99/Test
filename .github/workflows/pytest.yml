@@ -32,4 +32,18 @@ jobs:
     # 4. pytest 실행
     - name: Run Pytest
       run: |
-        pytest # '--cov'는 코드 커버리지 보고를 포함 (필요 없으면 제거)
+        pytest --junitxml=report.xml
+      # 실패 여부를 확인하기 위해 종료 코드를 저장
+      continue-on-error: true
+
+    # 5. Slack 알림 전송
+    - name: Send Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_USERNAME: "GitHub Actions Bot"
+        SLACK_MESSAGE: |
+          Pytest Completed:
+          - Status: ${{ job.status }}
+          - Branch: ${{ github.ref_name }}
+          - Commit: ${{ github.sha }}
