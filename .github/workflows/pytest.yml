@@ -32,7 +32,7 @@ jobs:
     # 4. pytest 실행
     - name: Run Pytest
       run: |
-        pytest --html=report.html
+        pytest --junitxml=report.xml
       # 실패 여부를 확인하기 위해 종료 코드를 저장
       continue-on-error: true
 
@@ -41,11 +41,11 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: pytest-report  # 아티팩트 이름
-        path: report.html     # 업로드할 파일
+        path: report.xml     # 업로드할 파일
 
     # 5. Slack 알림 전송
     - name: Send Slack Notification
-      if: failure()  # 이전 단계 중 하나라도 실패했을 때만 실행
+        # 이전 단계 중 하나라도 실패했을 때만 실행
       uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
