@@ -21,7 +21,7 @@ total_failed_tests = sum(len(tests) for tests in failed_tests_by_file.values())
 # Prepare Slack message
 if total_failed_tests > 0:
     message = f"Total Failed Tests: {total_failed_tests}\n\n"
-    message = "Failed Test Cases:\n"
+    message += "Failed Test Cases:\n"
     for file_name, tests in failed_tests_by_file.items():
         message += f"{file_name}:\n"
         for test in tests:
