@@ -52,7 +52,7 @@ def test_read_all_stocks_exception(setup_manager):
 def test_add_stock_successful(setup_manager):
     manager, _, mock_db = setup_manager
     mock_db.insert_data.return_value = None
-    manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+    manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)
     mock_db.insert_data.assert_called_once()
     
 def test_add_stock_missing_data(setup_manager):
@@ -63,25 +63,25 @@ def test_add_stock_missing_data(setup_manager):
 def test_add_stock_invalid_query(setup_manager):
     manager, _, mock_db = setup_manager
     with pytest.raises(Exception):
-        manager.add_stock_in_monitoring("StockA", 123, "KR", "invalid", 1000, 0.5, "invalid")
+        manager.add_stock_in_monitoring("StockA", 123, "KR", "invalid", 1000, 10, 0.5, "invalid")
 
 def test_add_stock_Exception(setup_manager):
     manager, _, mock_db = setup_manager
     mock_db.insert_data.side_effect = Exception("DB Error")
     with pytest.raises(Exception):
-        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)
 
 def test_add_stock_duplicate_entry(setup_manager):
     manager, _, mock_db = setup_manager
-    manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+    manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)
     mock_db.insert_data.side_effect = Exception("Unique constraint failed")
     with pytest.raises(Exception):
-        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 0.5, 1.5)
+        manager.add_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)
 
 def test_add_stock_with_special_characters(setup_manager):
     manager, _, mock_db = setup_manager
     mock_db.insert_data.return_value = None
-    manager.add_stock_in_monitoring("Special$Char", "005930$", "KR", 1, 70000, 5, 10)
+    manager.add_stock_in_monitoring("Special$Char", "005930$", "KR", 1, 70000, 10, 5, 10)
     mock_db.insert_data.assert_called_once()
 
 
@@ -123,9 +123,9 @@ def test_delete_stock_sql_injection(setup_manager):
 def test_update_stock_normal(setup_manager):
     manager, _, mock_db = setup_manager
     manager.update_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)
-    mock_db.insert_data.assert_called_once_with(
-        '''UPDATE INTO monitoring SET trade_round =?, price=?, buy_rate=?, sell_rate=? WHERE code = ?''',
-        (1, 1000, 0.5, 1.5, "123")
+    mock_db.update_data.assert_called_once_with(
+        '''UPDATE INTO monitoring SET trade_round =?, price=?, quantity =?, buy_rate=?, sell_rate=? WHERE code = ?''',
+        (1, 1000, 10, 0.5, 1.5, "123")
     )
 
 def test_update_stock_invalid_entry(setup_manager):
@@ -141,7 +141,7 @@ def test_update_stock_invalid_data(setup_manager):
 def test_update_stock_in_monitoring(setup_manager):
     manager, _, mock_db = setup_manager
     mock_db.update_data.return_value = None
-    manager.update_stock_in_monitoring("StockB", "999", "KR", 2, 2000, 0.6, 1.6)
+    manager.update_stock_in_monitoring("StockB", "999", "KR", 2, 2000, 10, 0.6, 1.6)
 
 
 def test_start_monitoring_successful(setup_manager, mocker):
