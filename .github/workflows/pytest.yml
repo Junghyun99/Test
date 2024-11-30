@@ -34,7 +34,7 @@ jobs:
       run: |
         pytest --junitxml=report.xml
       # 실패 여부를 확인하기 위해 종료 코드를 저장
-      continue-on-error: true
+      #continue-on-error: true
 
 
     - name: Upload Test Report
@@ -44,7 +44,7 @@ jobs:
         path: report.xml     # 업로드할 파일
 
     - name: Extract failed tests and send Slack notification
-      #if: failure()  # 실패한 테스트가 있을 때만 실행
+      if: failure()  # 실패한 테스트가 있을 때만 실행
       run: |
         python parse_failed_tests.py
       env:
