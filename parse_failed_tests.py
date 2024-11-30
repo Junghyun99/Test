@@ -14,8 +14,13 @@ for testcase in root.findall(".//testcase[failure]"):
     test_name = testcase.attrib["name"]
     failed_tests_by_file[file_name].append(test_name)
 
+total_failed_tests = sum(len(tests) for tests in failed_tests_by_file.values())
+
+
+
 # Prepare Slack message
-if failed_tests_by_file:
+if total_failed_tests > 0:
+    message = f"Total Failed Tests: {total_failed_tests}\n\n"
     message = "Failed Test Cases:\n"
     for file_name, tests in failed_tests_by_file.items():
         message += f"{file_name}:\n"
