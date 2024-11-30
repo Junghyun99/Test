@@ -17,9 +17,9 @@ def sample_kr_data1():
         "name": "삼성전자",
             "code": "005930",
             "orders": [
-                {"order": 1, "buy_price": 70000, "quantity": 10, "buy_rate": 6, "sell_rate": 3},
-                {"order": 2, "buy_price": 71000, "quantity": 10, "buy_rate": 6, "sell_rate": 3},
-                {"order": 3, "buy_price": 72000, "quantity": 10, "buy_rate": 6, "sell_rate": 3},
+                {"order": 1, "buy_price": 70000, "buy_rate": 6, "sell_rate": 3},
+                {"order": 2, "buy_price": 71000, "buy_rate": 6, "sell_rate": 3},
+                {"order": 3, "buy_price": 72000, "buy_rate": 6, "sell_rate": 3},
             ]
         }
 @pytest.fixture
@@ -28,7 +28,7 @@ def sample_kr_data2():
             "name": "현대차",
             "code": "005380",
             "orders": [
-                {"order": 1, "buy_price": 180000, "quantity": 10, "buy_rate": 5, "sell_rate": 4},
+                {"order": 1, "buy_price": 180000, "buy_rate": 5, "sell_rate": 4},
             ]
         }
 @pytest.fixture
@@ -37,8 +37,8 @@ def sample_us_data1():
         "name": "Apple",
         "code": "AAPL",
         "orders": [
-            {"order": 1, "buy_price": 150, "quantity": 10, "buy_rate": 5, "sell_rate":3},
-            {"order": 2, "buy_price": 155, "quantity": 10, "buy_rate": 5, "sell_rate":3}
+            {"order": 1, "buy_price": 150,  "buy_rate": 5, "sell_rate":3},
+            {"order": 2, "buy_price": 155,  "buy_rate": 5, "sell_rate":3}
         ]}
 @pytest.fixture
 def sample_us_data2():
@@ -46,9 +46,9 @@ def sample_us_data2():
         "name": "Amazon",
         "code": "AMZN",
         "orders": [
-            {"order": 1, "buy_price": 3200, "quantity": 10, "buy_rate": 4, "sell_rate":2},
-            {"order": 2, "buy_price": 3300, "quantity": 10, "buy_rate": 4, "sell_rate":2},
-            {"order": 3, "buy_price": 3400, "quantity": 10, "buy_rate": 4, "sell_rate":2}
+            {"order": 1, "buy_price": 3200,  "buy_rate": 4, "sell_rate":2},
+            {"order": 2, "buy_price": 3300,  "buy_rate": 4, "sell_rate":2},
+            {"order": 3, "buy_price": 3400, "buy_rate": 4, "sell_rate":2}
         ]}
                                                                                                                                                                                                                                
 @pytest.fixture
