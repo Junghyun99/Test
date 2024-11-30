@@ -143,7 +143,7 @@ def test_update_multiple_orders_kr_stock(kr_stock_crud, sample_kr_data1):
     kr_stock_crud.create(sample_kr_data1)
     updated_data = {
         "orders": [
-            {"order": 1, "buy_price": 62000, "quantity": 10, "buy_rate": 5, "sell_rate": 3}
+            {"order": 1, "buy_price": 62000,  "buy_rate": 5, "sell_rate": 3}
         ]
     }
     kr_stock_crud.update("005930", updated_data)
