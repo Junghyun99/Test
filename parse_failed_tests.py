@@ -3,7 +3,7 @@ import requests
 import os
 
 # Parse the JUnit XML result file
-tree = ET.parse('result.xml')
+tree = ET.parse('report.xml')
 root = tree.getroot()
 
 # Extract failed test cases
