@@ -13,7 +13,7 @@ for testcase in root.findall(".//testcase[failure]"):
 
 # Prepare Slack message
 if failed_tests:
-    message = f"Tests failed: {', '.join(failed_tests)}"
+    message = f"Tests failed: \n{', '.join(failed_tests)}"
 else:
     message = "No tests failed."
 
