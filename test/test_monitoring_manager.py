@@ -252,6 +252,6 @@ def test_start_monitoring_cpu(setup_manager, mocker):
         ("StockC", "789", "KR", 1, 3000, 10, 0.6, 1.6) 
     ]
     # 4. 쓰레드 풀 동작 확인
-    mocker.patch("os.cpu_count", return_value=1)
+    mocker.patch("os.cpu_count", return_value=2)
     manager.start_monitoring()
     assert mock_algorithm.run_algorithm.call_count == 3 
