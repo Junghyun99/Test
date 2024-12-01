@@ -205,23 +205,53 @@ def test_start_monitoring_normal(setup_manager, mocker):
     mock_db.delete_data.assert_called()
 
 
-def test_start_monitoring(setup_manager, mocker):
+def test_start_monitoring_empty(setup_manager, mocker):
     manager, mock_algorithm, mock_db = setup_manager
     # 2. 빈 데이터 처리
     mock_db.read_data.return_value = []
     manager.start_monitoring()
     mock_algorithm.run_algorithm.assert_not_called()
 
+    # 가짜 데이터 생성
+    mock_db.read_data.return_value = [
+        ("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5),
+        ("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)
+    ]
+
+    mock_algorithm.run_algorithm.side_effect = [
+        mocker.Mock(QueryOp=QueryOp.UPDATE, MonitoringData=MonitoringData("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)),
+        mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)),
+    ]
+
+  # 5. DB 연산 실패 시 처리
+    mock_db.delete_data.side_effect = Exception("DB Error")
+    with pytest.raises(Exception):
+        manager.start_monitoring()
+
+
+def test_start_monitoring_algorithm_excaption(setup_manager, mocker):
+    manager, mock_algorithm, mock_db = setup_manager
+
+    # 가짜 데이터 생성
+    mock_db.read_data.return_value = [
+        ("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5),
+        ("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)
+    ]
     # 3. 알고리즘 예외 발생
     mock_algorithm.run_algorithm.side_effect = Exception("Algorithm error")
     with pytest.raises(Exception):
         manager.start_monitoring()
 
-    # 4. 쓰레드 풀 동작 확인
-    mocker.patch("os.cpu_count", return_value=4)
-    manager.start_monitoring()
+def test_start_monitoring_cpu(setup_manager, mocker):
+    manager, mock_algorithm, mock_db = setup_manager
 
-    # 5. DB 연산 실패 시 처리
-    mock_db.delete_data.side_effect = Exception("DB Error")
-    with pytest.raises(Exception):
-        manager.start_monitoring()
+    # 가짜 데이터 생성
+    mock_db.read_data.return_value = [
+        ("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5),
+        ("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6),
+        ("StockC", "789", "KR", 1, 3000, 10, 0.6, 1.6) 
+    ]
+    # 4. 쓰레드 풀 동작 확인
+    mocker.patch("os.cpu_count", return_value=1)
+    manager.start_monitoring()
+    assert mock_algorithm.run_algorithm.call_count == 3 
