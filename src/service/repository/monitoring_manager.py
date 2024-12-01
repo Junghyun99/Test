@@ -39,6 +39,7 @@ class MonitoringManager:
         """모든 종목을 멀티 쓰레드로 모니터링"""
         max_core = os.cpu_count()-1
         results = []
+        errors = []
         stocks = self.read_all_stocks(self.COUNTRY_CODE.value)
         with ThreadPoolExecutor(max_workers=max_core) as executor:
             futures = [executor.submit(self.algorithm.run_algorithm, MonitoringData(*stock)) for stock in stocks]
@@ -48,13 +49,20 @@ class MonitoringManager:
                     result = future.result() 
                     results.append(result)
                 except Exception as e:
-                    print(e)
+                    errors.append(e)
                     
         for result in results:
             if result.QueryOp is QueryOp.UPDATE:
                 self.update_stock_in_monitoring(*(result.MonitoringData.to_tuple()))
             elif result.QueryOp is QueryOp.DELETE:
                 self.delete_stock_in_monitoring(result.MonitoringData.code)
+
+        
+        if errors:
+        # 에러 상세 정보 출력
+            for error in errors:
+                print(f"Error at index {error['index']} with item {error['item']}: {error['error']}")
+            raise Exception("One or more errors occurred.")
 
 
 class MonitoringKRManager(MonitoringManager):
