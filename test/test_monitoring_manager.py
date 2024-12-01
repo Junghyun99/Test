@@ -1,4 +1,3 @@
-#not check
 import pytest
 from src.service.repository.monitoring_db import MonitoringDB
 from src.service.algorithm.magicsplit_algorithm import MagicSplit
@@ -185,8 +184,7 @@ def test_start_monitoring_with_os_cpu_count(setup_manager):
 
 
 
-# 5. start_monitoring 테스트
-def test_start_monitoring(setup_manager, mocker):
+def test_start_monitoring_normal(setup_manager, mocker):
     manager, mock_algorithm, mock_db = setup_manager
 
     # 가짜 데이터 생성
@@ -206,6 +204,9 @@ def test_start_monitoring(setup_manager, mocker):
     mock_db.update_data.assert_called()
     mock_db.delete_data.assert_called()
 
+
+def test_start_monitoring(setup_manager, mocker):
+    manager, mock_algorithm, mock_db = setup_manager
     # 2. 빈 데이터 처리
     mock_db.read_data.return_value = []
     manager.start_monitoring()
