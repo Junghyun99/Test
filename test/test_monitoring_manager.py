@@ -3,6 +3,7 @@ import pytest
 from src.service.repository.monitoring_db import MonitoringDB
 from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.service.repository.monitoring_manager import MonitoringManager
+from src.model.monitoring_db_model import MonitoringData
 
 from src.util.enums import QueryOp, CountryCode
 
@@ -62,6 +63,7 @@ def test_add_stock_missing_data(setup_manager):
 
 def test_add_stock_invalid_query(setup_manager):
     manager, _, mock_db = setup_manager
+    mock_db.insert_data.side_effect = Exception("sqlite3.IntegrityError")
     with pytest.raises(Exception):
         manager.add_stock_in_monitoring("StockA", 123, "KR", "invalid", 1000, 10, 0.5, "invalid")
 
@@ -124,7 +126,7 @@ def test_update_stock_normal(setup_manager):
     manager, _, mock_db = setup_manager
     manager.update_stock_in_monitoring("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)
     mock_db.update_data.assert_called_once_with(
-        '''UPDATE INTO monitoring SET trade_round =?, price=?, quantity =?, buy_rate=?, sell_rate=? WHERE code = ?''',
+        '''UPDATE INTO monitoring SET trade_round =?, price=?, quantity=?, buy_rate=?, sell_rate=? WHERE code = ?''',
         (1, 1000, 10, 0.5, 1.5, "123")
     )
 
@@ -194,8 +196,8 @@ def test_start_monitoring(setup_manager, mocker):
     ]
 
     mock_algorithm.run_algorithm.side_effect = [
-        mocker.Mock(QueryOp=QueryOp.UPDATE, MonitoringData=MonitoringDB("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)),
-        mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringDB("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)),
+        mocker.Mock(QueryOp=QueryOp.UPDATE, MonitoringData=MonitoringData("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)),
+        mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)),
     ]
 
     # 1. 정상 작동 확인

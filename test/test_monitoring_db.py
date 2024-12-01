@@ -69,6 +69,15 @@ def test_insert_data_negative_round(moni_db):
             
         )
 
+def test_insert_data_invalid(moni_db):
+    with pytest.raises(sqlite3.IntegrityError):
+        moni_db.insert_data(
+            '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', ('aaple', 'AAPL', 'US', "invalid", 150.0, 10, 5, "invalid")        
+        )
+
+
+
 # READ 테스트 케이스
 def test_read_data_no_results(moni_db):
     result = moni_db.read_data("SELECT * FROM monitoring WHERE code=?", ('INVALID',))

@@ -31,7 +31,7 @@ class MonitoringManager:
         self.db.delete_data(query, data)
  
     def update_stock_in_monitoring(self, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate):
-        query = '''UPDATE INTO monitoring SET trade_round =?, price=?, =?, quantitybuy_rate=?, sell_rate=? WHERE code = ?'''
+        query = '''UPDATE INTO monitoring SET trade_round =?, price=?, quantity=?, buy_rate=?, sell_rate=? WHERE code = ?'''
         data = (trade_round, price, quantity, buy_rate, sell_rate, code)
         self.db.update_data(query, data)
 
@@ -52,7 +52,7 @@ class MonitoringManager:
                     
         for result in results:
             if result.QueryOp is QueryOp.UPDATE:
-                self.update_stock_in_monitoring(result.MonitoringData.to_tuple())
+                self.update_stock_in_monitoring(*(result.MonitoringData.to_tuple()))
             elif result.QueryOp is QueryOp.DELETE:
                 self.delete_stock_in_monitoring(result.MonitoringData.code)
 
