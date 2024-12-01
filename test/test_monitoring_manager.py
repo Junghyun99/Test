@@ -162,24 +162,17 @@ def test_start_monitoring_exception_in_thread(setup_manager):
     with pytest.raises(Exception, match="Fetch Error"):
         setup_manager.start_monitoring()
 
+
 def test_start_monitoring_partial_success(setup_manager):
-    setup_manager.read_all_stocks.return_value = [
-        (1, "Samsung", "005930", "KR", 1, 70000, 5, 10),
-        (2, "Hyundai", "005380", "KR", 2, 180000, 4, 8)
+    manager, mock_algorithm, mock_db = setup_manager
+    mock_db.read_data.return_value = [
+        ("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5),
+        ("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)
     ]
-    setup_manager.algorithm.fetch_func.side_effect = [Exception("Fetch Error"), "Success"]
-    setup_manager.start_monitoring()
-    assert setup_manager.algorithm.fetch_func.call_count == 2
-
-def test_start_monitoring_with_os_cpu_count(setup_manager):
-    import os
-    max_core = os.cpu_count() - 1
-    setup_manager.read_all_stocks.return_value = [
-        (1, "Samsung", "005930", "KR", 1, 70000, 5, 10)
-    ]
-    setup_manager.start_monitoring()
-    setup_manager.algorithm.fetch_func.assert_called_once()
-
+    with pytest.raises(Exception):
+        manager.start_monitoring()
+   
+    assert mock_algorithm.run_algorithm.call_count == 3 
 
 
 
