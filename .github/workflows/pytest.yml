@@ -52,3 +52,19 @@ jobs:
         GITHUB_REF_NAME: ${{ github.ref_name }}
         GITHUB_SHA: ${{ github.sha }} 
 
+
+    - name: Run tests with coverage
+      run: |
+        pytest --cov=src --cov-report=term-missing --cov-fail-under=80
+
+    - name: Generate and upload HTML report
+      run: |
+        pytest --cov=src --cov-report=html
+        mv htmlcov coverage-report
+      continue-on-error: true  # 테스트 실패 시에도 HTML 업로드 진행
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: coverage-report
