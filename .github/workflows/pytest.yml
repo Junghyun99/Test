@@ -38,6 +38,7 @@ jobs:
 
 
     - name: Upload Test Report
+      if: failure()
       uses: actions/upload-artifact@v3
       with:
         name: pytest-report  # 아티팩트 이름
@@ -58,6 +59,7 @@ jobs:
         pytest --cov=src --cov-report=term-missing --cov-report=xml:coverage.xml --cov-fail-under=80
 
     - name: Upload coverage report
+      if: failure()
       uses: actions/upload-artifact@v3
       with:
         name: coverage-report
