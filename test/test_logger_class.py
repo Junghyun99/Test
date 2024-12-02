@@ -59,9 +59,9 @@ def test_log_info_enabled_when_above_level(logger, caplog):
         logger.log_warning("This appear")
     assert "This appear" in caplog.text
 
-def test_log_info_file_output(logger,file_path):
+def test_log_info_file_output(logger,temp_file):
     logger.log_info("File output test")
-    with open(file_path, "r") as file:
+    with open(temp_file "r") as file:
         assert "File output test" in file.read()
 
 def test_log_warning_message(logger, caplog):
@@ -104,9 +104,9 @@ def test_logger_error(logger):
     logger.log_error("This is an error message")
     assert logger.get_logger().isEnabledFor(logging.ERROR)
 
-def test_log_file_created(logger, file_path):
+def test_log_file_created(logger, temp_file):
     logger.log_info("Testing file creation")
-    assert os.path.exists(file_path)
+    assert os.path.exists(temp_file)
 
 # Composite scenarios for BaseLogger
 def test_logger_multiple_levels(logger):
