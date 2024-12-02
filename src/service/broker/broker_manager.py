@@ -12,14 +12,14 @@ class BrokerManager:
         count = 0
         while count < 10:
             status = self.broker.get_order_status(order_id)
-            if status is "complete":
+            if status == "complete":
                 result = True
                 break
             else : # status is "pending":
                 time.sleep(1)
             count += 1
 
-        if count is 10:
+        if count == 10:
             self.broker.cancel_order(order_id)
         return result
     # self.trade_db_manager. 히스토리 추가, 브로커에서?해도될듯?
@@ -32,7 +32,7 @@ class BrokerManager:
         count = 0
         while count < 10:
             status = self.broker.get_order_status(order_id)
-            if status is "complete":
+            if status == "complete":
                 info = self.broker.get_order_info(order_id)
                 result = True
                 break
@@ -40,6 +40,6 @@ class BrokerManager:
                 time.sleep(1)
             count += 1
 
-        if count is 10:     
+        if count == 10:     
             self.broker.cancel_order(order_id)
         return (result, info)
