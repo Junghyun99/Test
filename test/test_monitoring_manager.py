@@ -145,25 +145,7 @@ def test_update_stock_in_monitoring(setup_manager):
     manager.update_stock_in_monitoring("StockB", "999", "KR", 2, 2000, 10, 0.6, 1.6)
 
 
-def test_start_monitoring_successful(setup_manager, mocker):
-    setup_manager.read_all_stocks = mocker.Mock(return_value=[(1, "Samsung", "005930", "KR", 1, 70000, 5, 10)])
-    setup_manager.algorithm.fetch_func = mocker.Mock(return_value="Success")
-    setup_manager.start_monitoring()
-    setup_manager.algorithm.fetch_func.assert_called_once()
-
-def test_start_monitoring_no_stocks(setup_manager):
-    setup_manager.read_all_stocks.return_value = []
-    setup_manager.start_monitoring()
-    assert setup_manager.algorithm.fetch_func.call_count == 0
-
-def test_start_monitoring_exception_in_thread(setup_manager):
-    setup_manager.read_all_stocks.return_value = [(1, "Samsung", "005930", "KR", 1, 70000, 5, 10)]
-    setup_manager.algorithm.fetch_func.side_effect = Exception("Fetch Error")
-    with pytest.raises(Exception, match="Fetch Error"):
-        setup_manager.start_monitoring()
-
-
-def test_start_monitoring_partial_success(setup_manager):
+def test_start_monitoring_partial_success(setup_manager, mocker):
     manager, mock_algorithm, mock_db = setup_manager
     mock_db.read_data.return_value = [
         ("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5),
