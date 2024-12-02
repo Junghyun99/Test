@@ -13,6 +13,7 @@ def file_path(tmp_path):
 @pytest.fixture
 def temp_file(tmp_path):
     file_path = tmp_path / LOG_FILE
+    print(f"Temporary file path: {file_path}")
     yield file_path
     if file_path.exists():
         os.remove(file_path)
@@ -61,6 +62,7 @@ def test_log_info_enabled_when_above_level(logger, caplog):
 
 def test_log_info_file_output(logger,temp_file):
     logger.log_info("File output test")
+    print(f"File exists: {temp_file.exists()}")
     assert temp_file.exists() 
     with open(temp_file, "r") as file:
         assert "File output test" in file.read()
