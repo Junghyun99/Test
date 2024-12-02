@@ -55,7 +55,7 @@ class DummyBrokerAPI(BrokerAPI):
     def amend_order(self, order_id, new_price):
         if order_id not in self.order:
             return False
-        if self.order[order_id] is not "pending":
+        if self.order[order_id] != "pending":
             return False
 
         return True
@@ -63,7 +63,7 @@ class DummyBrokerAPI(BrokerAPI):
     def cancel_order(self, order_id):
         if order_id not in self.order:
             return False
-        if self.order[order_id] is not "pending":
+        if self.order[order_id] != "pending":
             return False
 
         self.order[order_id] = "cancel"
