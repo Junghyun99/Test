@@ -169,10 +169,13 @@ def test_start_monitoring_partial_success(setup_manager):
         ("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5),
         ("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)
     ]
+    mock_algorithm.run_algorithm.side_effect = [Exception("error"),
+mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)),
+    ]
     with pytest.raises(Exception):
         manager.start_monitoring()
    
-    assert mock_algorithm.run_algorithm.call_count == 3 
+    assert mock_algorithm.run_algorithm.call_count == 2
 
 
 
