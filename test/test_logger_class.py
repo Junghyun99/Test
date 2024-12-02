@@ -61,6 +61,7 @@ def test_log_info_enabled_when_above_level(logger, caplog):
     assert "This appear" in caplog.text
 
 def test_log_info_file_output(logger,temp_file):
+    print(logger.logger.handlers)
     logger.log_info("File output test")
     print(f"File exists: {temp_file.exists()}")
     assert temp_file.exists() 
