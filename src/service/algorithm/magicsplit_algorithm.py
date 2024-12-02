@@ -51,7 +51,7 @@ class MagicSplit(Algorithm):
         if status is False:
             return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*DUMMY))
         
-        if moniData.trade_round  is 1: # 1 차수 매도 성공, 모니터링 DB에서 지우기
+        if moniData.trade_round  == 1: # 1 차수 매도 성공, 모니터링 DB에서 지우기
             return AlgorithmData(QueryOp.DELETE, moniData)
         
         # 이전 차수에 산 매수금액과 수량
