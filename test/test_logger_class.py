@@ -61,7 +61,7 @@ def test_log_info_enabled_when_above_level(logger, caplog):
 
 def test_log_info_file_output(logger,temp_file):
     logger.log_info("File output test")
-    with open(temp_file "r") as file:
+    with open(temp_file, "r") as file:
         assert "File output test" in file.read()
 
 def test_log_warning_message(logger, caplog):
