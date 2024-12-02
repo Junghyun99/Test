@@ -16,7 +16,7 @@ class BaseLogger(ABC):
         self.logger.addHandler(console_handler)
 
         # 파일 핸들러
-        file_handler = logging.FileHandler(log_file)
+        file_handler = logging.FileHandler(log_file, mode="a")
         file_handler.setFormatter(self._get_formatter())
         self.logger.addHandler(file_handler)
 
