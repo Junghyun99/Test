@@ -1,5 +1,6 @@
 pytest
 pytest-mock
 pytest-html
+pytest-cov
 pyyaml
 requests
