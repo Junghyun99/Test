@@ -61,6 +61,7 @@ def test_log_info_enabled_when_above_level(logger, caplog):
 
 def test_log_info_file_output(logger,temp_file):
     logger.log_info("File output test")
+    assert temp_file.exists() 
     with open(temp_file, "r") as file:
         assert "File output test" in file.read()
 
