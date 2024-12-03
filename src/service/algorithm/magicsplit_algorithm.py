@@ -4,8 +4,8 @@ from src.util.enums import QueryOp
 from src.model.monitoring_db_model import AlgorithmData, MonitoringData, DUMMY
 from src.service.logging.logger_manager import logger_manager
 
-logger_manager.get_logger()
-
+system_logger = logger_manager.get_logger('SYSTEM')
+   
 class MagicSplit(Algorithm):
     def __init__(self, broker_manager, trade_db_manager, yaml_manager):        
         self.broker_manager = broker_manager
