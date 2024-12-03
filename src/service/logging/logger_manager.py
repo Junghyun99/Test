@@ -36,3 +36,7 @@ class LoggerManager:
             self.loggers[logger_type].get_logger().setLevel(level)
         else:
             raise ValueError(f"Logger type {logger_type} not found")
+
+
+
+logger_manager = LoggerManager()
