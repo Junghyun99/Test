@@ -2,6 +2,9 @@ from src.interface.algorithm import Algorithm
 from src.util.price_calculator import PriceCalculator
 from src.util.enums import QueryOp
 from src.model.monitoring_db_model import AlgorithmData, MonitoringData, DUMMY
+from src.service.logging.logger_manager import logger_manager
+
+logger_manager.get_logger()
 
 class MagicSplit(Algorithm):
     def __init__(self, broker_manager, trade_db_manager, yaml_manager):        
