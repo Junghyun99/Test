@@ -1,9 +1,15 @@
 import time
+from src.service.logging.logger_manager import logger_manager
+
+transaction_logger = logger_manager.get_logger('TRANSACTION')
 
 class BrokerManager:
     def __init__(self, broker):
         self.broker = broker
+        transaction_logger.log_info("create BrokerManager instance, init")
+
     def get_current_price(self, symbol):
+        transaction_logger.log_info("get_current_price #####")        
         return self.broker.get_current_price(symbol)
 
     def place_market_order(self, symbol, quantity, order_type):      
