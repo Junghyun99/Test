@@ -1,6 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 
+from logging.handlers import RotatingFileHandler
 
 class BaseLogger(ABC):
     def __init__(self, logger_name, log_file, level=logging.INFO):
@@ -17,7 +18,7 @@ class BaseLogger(ABC):
         self.logger.addHandler(console_handler)
 
         # 파일 핸들러
-        file_handler = logging.RotatingFileHandler(
+        file_handler = RotatingFileHandler(
     log_file, maxBytes=5*1024*1024, backupCount=3  # 5MB, 3개의 백업 파일
 )
         file_handler.setFormatter(self._get_formatter())
