@@ -15,7 +15,8 @@ class BrokerManager:
 
     def place_market_order(self, symbol, quantity, order_type):      
         order_id = self.broker.place_market_order(symbol, quantity, order_type)
-        transaction_logger.log_info("place_market_order code %s, quantity %s type %s id %s", symbol, quantity, order_type, order_id)
+
+        transaction_logger.log_transaction(code, order_type, quantity, 0) #todo      transaction_logger.log_info("place_market_order code %s, quantity %s type %s id %s", symbol, quantity, order_type, order_id)
 
         result = False
         count = 0
@@ -37,7 +38,8 @@ class BrokerManager:
 
     def place_limit_order(self, symbol, quantity, price, order_type):
         order_id = self.broker.place_limit_order(symbol, quantity, price, order_type)
-        transaction_logger.log_info("place_limit_order code %s, quantity %s price %s type %s id %s", symbol, quantity, price, order_type, order_id)
+
+        transaction_logger.log_transaction(code, order_type, quantity, price) transaction_logger.log_info("place_limit_order code %s, quantity %s price %s type %s id %s", symbol, quantity, price, order_type, order_id)
 
         result = False
         info = ()
