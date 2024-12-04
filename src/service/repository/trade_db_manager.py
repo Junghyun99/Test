@@ -63,7 +63,7 @@ class TradeDBManager:
     def record_buy_transaction(self, stock_name, code, transaction_id, country_code, trade_round, price, amount):
         query = '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status, pair_id) 
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
-    data = (stock_name, code, transaction_id, country_code, trade_round, 'buy', price, amount, 'processing', 0)
+        data = (stock_name, code, transaction_id, country_code, trade_round, 'buy', price, amount, 'processing', 0)
   
         self.db.insert_data(query, data)
 
@@ -72,7 +72,7 @@ class TradeDBManager:
         
         query = '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status, pair_id) 
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
-    data = (stock_name, code, transaction_id, country_code, trade_round, 'sell', price, amount, 'completed', instance['id'])
+        data = (stock_name, code, transaction_id, country_code, trade_round, 'sell', price, amount, 'completed', instance['id'])
   
         self.db.insert_data(query, data)
 
