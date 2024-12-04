@@ -15,3 +15,8 @@ class QueryOp(Enum):
     DELETE = 3
     UPDATE = 4
     DEFAULT = 5
+
+
+class OrderType(Enum):
+    BUY = 1
+    SELL = 2
