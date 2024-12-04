@@ -75,24 +75,19 @@ class TradeDBManager:
 
     # Writing Methods
     def record_buy_transaction(self, stock_name, code, transaction_id, country_code, trade_round, price, amount):
-        """Inserts a new buy transaction record.
-        query = '''
-            INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, 
-                                 trade_type, price, amount, status, pair_id) 
-            VALUES (?, ?, ?, ?, ?, 'buy', ?, ?, 'processing', 0)
-        '''
-        data = (stock_name, code, transaction_id, country_code, trade_round, price, amount)
+        query = '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status, pair_id) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+    data = (stock_name, code, transaction_id, country_code, trade_round, 'buy', price, amount, 'processing', 0)
+  
         self.db.insert_data(query, data)
-        """
-        pass
 
-    def record_sell_transaction(self, stock_name, code, transaction_id, country_code, trade_round, price, amount, pair_id):
-        """Inserts a new sell transaction record and updates the paired buy transaction.
-        # Insert the sell transaction
-        query = '''
-            INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, 
-                                 trade_type, price, amount, status, pair_id) 
-            VALUES (?, ?, ?, ?, ?, 'sell', ?, ?, 'completed', ?)
+    def record_sell_transaction(self, stock_name, code, transaction_id, country_code, trade_round, price, amount):
+        self.get_completed_pairs()
+        query = '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status, pair_id) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+    data = (stock_name, code, transaction_id, country_code, trade_round, 'sell', price, amount, 'completed', 0)
+  
+        self.db.insert_data(query, data) 
         '''
         data = (stock_name, code, transaction_id, country_code, trade_round, price, amount, pair_id)
         self.db.insert_data(query, data)
