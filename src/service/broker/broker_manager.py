@@ -10,7 +10,7 @@ class BrokerManager:
 
     def get_current_price(self, symbol):
         price = self.broker.get_current_price(symbol)
- transaction_logger.log_info("get_current_price code %s, price %s", symbol, price)        
+        transaction_logger.log_info("get_current_price code %s, price %s", symbol, price)        
         return price
 
     def place_market_order(self, symbol, quantity, order_type):      
