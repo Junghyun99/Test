@@ -16,28 +16,14 @@ class TradeDBManager:
         '''
         return dict(self.db.read_data(query, (code, round)))
     
-    def get_latest_active_stack(self, stock_code):
-        """
-        종목을 넣어주면 최신 스택을 리턴,
-        라운드 순으로 id, 매수 가격,양,총량을 리스트로 리턴,
-       
-        # Query to get active transactions ordered by trade_round
+    def get_last_round_data(self, code):             
         query = '''
-            SELECT trade_round, id, price, amount, total_value FROM history 
+            SELECT * FROM history 
             WHERE code = ? AND status = 'processing' 
             ORDER BY trade_round ASC
-        '''
-        # Fetch the data from the database
-        result = self.db.read_data(query, (stock_name,))
-        
-        # Process the result to extract prices in trade_round order
-        stack_list = [dict(record[1:]) for record in result]
-        
-        return stack_list
-        """
-        pass
-
-
+        '''        
+        result = self.db.read_data(query, (code,))
+        return dict(result[-1])            
 
     def get_completed_pairs(self, stock_name=None, date=None):
         """Returns completed trade pairs, filtered by stock name or date.
@@ -82,21 +68,23 @@ class TradeDBManager:
         self.db.insert_data(query, data)
 
     def record_sell_transaction(self, stock_name, code, transaction_id, country_code, trade_round, price, amount):
-        self.get_completed_pairs()
+        instance = self.get_last_round_data(code)
+        
         query = '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status, pair_id) 
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
-    data = (stock_name, code, transaction_id, country_code, trade_round, 'sell', price, amount, 'completed', 0)
+    data = (stock_name, code, transaction_id, country_code, trade_round, 'sell', price, amount, 'completed', instance['id'])
   
-        self.db.insert_data(query, data) 
-        '''
-        data = (stock_name, code, transaction_id, country_code, trade_round, price, amount, pair_id)
         self.db.insert_data(query, data)
 
+        query = '''
+            SELECT id FROM history 
+            WHERE code = ? AND transaction_id = ?
+        '''  
+        id = self.db.read_data(query, (code, transaction_id))
+
         # Update the paired buy transaction
-        update_query = "UPDATE history SET status = 'completed' WHERE id = ?"
-        self.db.update_data(update_query, (pair_id,))
-        """
-        pass
+        update_query = "UPDATE history SET status = 'COMPLETED' AND pair_id =? WHERE id = ?"
+        self.db.update_data(update_query, (id,instance['pair_id']))
 
     def manual_adjustment(self, transaction_id, new_status, new_pair_id=None):
         """Manually adjusts a transaction's status and optionally updates the pair ID.
