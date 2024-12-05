@@ -1,8 +1,7 @@
 import pytest
 import os
 import yaml
-from src.service.yaml.yaml_kr_manager import YamlKrManager
-from src.service.yaml.yaml_us_manager import YamlUsManager
+from src.service.yaml.yaml_manager import YamlKrManager, YamlUsManager
 
 @pytest.fixture
 def temp_file(tmp_path):
