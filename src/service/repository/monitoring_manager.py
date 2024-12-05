@@ -77,7 +77,7 @@ class MonitoringManager:
 
 
     def close_db(self):
-        self.db close()
+        self.db.close()
 
 class MonitoringKRManager(MonitoringManager):
     COUNTRY_CODE = CountryCode.KR
