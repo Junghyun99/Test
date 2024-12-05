@@ -7,9 +7,6 @@ class TradeDBManager:
 
     # Reading Methods
     def get_trade_round(self, code, round):
-        '''
-
-        '''
         query = '''
             SELECT trade_round, id, price, amount, total_value FROM history 
             WHERE code = ? AND status = 'processing' AND trade_round = ?
@@ -24,23 +21,6 @@ class TradeDBManager:
         '''        
         result = self.db.read_data(query, (code,))
         return dict(result[-1])            
-
-    def get_completed_pairs(self, stock_name=None, date=None):
-        """Returns completed trade pairs, filtered by stock name or date.
-        query = '''
-            SELECT * FROM history 
-            WHERE status = 'completed' AND pair_id != 0
-        '''
-        params = []
-        if stock_name:
-            query += " AND stock_name = ?"
-            params.append(stock_name)
-        if date:
-            query += " AND DATE(timestamp) = ?"
-            params.append(date)
-        return self.db.read_data(query, tuple(params))
-        """
-        pass
 
     def get_active_stacks(self, stock_name=None, date=None):
         """Returns all active stacks, optionally filtered by stock name or date.
