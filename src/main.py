@@ -6,7 +6,7 @@ from src.sevice.yaml.yaml_manager import YamlKrManager, YamlUsManager
 
 
 
-file_path = "src.config."
+file_path = "src/config/stock_round_config.yaml"
 def run_common():
     trade_db_manager = TradeDbManager()
     algorithm = MagicSplit()
