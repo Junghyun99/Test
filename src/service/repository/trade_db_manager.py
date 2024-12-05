@@ -78,3 +78,7 @@ class TradeDBManager:
         self.db.update_data(query, tuple(data))
         """
         pass
+
+
+    def close_db(self):
+        self.db.close()
