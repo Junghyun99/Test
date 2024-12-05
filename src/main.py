@@ -15,9 +15,9 @@ def run_common():
 
 def run_kr(algorithm):
     moni_manager = MonitoringKrManager(algorithm)
-    yaml_manager = YamlKrManager()
+    yaml_manager = YamlKrManager(file_path)
     
 
 def run_us(algorithm):
     moni_manager = MonitoringUsManager(algorithm) 
-    yaml_manager = YamlUsManager()
+    yaml_manager = YamlUsManager(file_path)
