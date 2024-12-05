@@ -42,8 +42,9 @@ def run(country_code):
 
 # 명령행 인자의 개수 확인
 if len(sys.argv) == 1:
-    print("No arguments were provided!")
+    run(CountryCode.KR)
 elif len(sys.argv) == 2:
-    print(f"Only one argument provided: {sys.argv[1]}")
-else:
-    print(f"Multiple arguments provided: {sys.argv[1:]}")
+    if sys.argv[1] == "KR":
+        run(CountryCode.KR)
+    elif sys.argv[1] == "US":
+        run(CountryCode.US)
