@@ -5,3 +5,8 @@ class YamlKrManager(YamlManager):
     COUNTRY_CODE = "KR"
     def __init__(self,file_path):
         super().__init__(file_path)
+
+class YamlUsManager(YamlManager):
+    COUNTRY_CODE = "US"
+    def __init__(self,file_path):
+        super().__init__(file_path)
