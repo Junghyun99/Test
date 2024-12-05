@@ -1,3 +1,5 @@
+import sys
+
 from src.service.repository.monitoring_manager import MonitoringKrManager, MonitoringUsManager
 from src.service.repository.trade_db_manager import TradeDbManager
 from src.service.algorithm.magicsplit_algorithm import MagicSplit
@@ -33,3 +35,15 @@ def run(country_code):
 
     trade.close()
     moni.close()
+
+
+
+
+
+# 명령행 인자의 개수 확인
+if len(sys.argv) == 1:
+    print("No arguments were provided!")
+elif len(sys.argv) == 2:
+    print(f"Only one argument provided: {sys.argv[1]}")
+else:
+    print(f"Multiple arguments provided: {sys.argv[1:]}")
