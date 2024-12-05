@@ -1,7 +1,7 @@
 class BaseDB:
     
     def _create_table(self):
-        pass
+        raise NotImplementedError("This method must be implemented by subclasses.")
 
     def insert_data(self, query, data):
         cursor = self.conn.cursor()
