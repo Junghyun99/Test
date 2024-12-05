@@ -3,8 +3,10 @@ from src.interface.db_class import BaseDB
 
 class StockTradeDB(BaseDB):
     def __init__(self, db_name='StockTrade.db'):
-        self.conn = sqlite3.connect(db_name)
+        super().__init__(db_name)
+        self.connect()  # Use the connect method from BaseDB
         self._create_table()
+
 
     def _create_table(self):
         cursor = self.conn.cursor()
