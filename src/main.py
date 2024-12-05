@@ -5,6 +5,8 @@ from src.sevice.broker.broker_manager import BrokerManager
 from src.sevice.yaml.yaml_manager import YamlKrManager, YamlUsManager 
 
 
+
+file_path = "src.config."
 def run_common():
     trade_db_manager = TradeDbManager()
     algorithm = MagicSplit()
