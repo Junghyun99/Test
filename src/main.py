@@ -11,11 +11,11 @@ def run_common():
     broker_manager = BrokerManager()
 
 
-def run_kr():
-    moni_manager = MonitoringKrManager()
+def run_kr(algorithm):
+    moni_manager = MonitoringKrManager(algorithm)
     yaml_manager = YamlKrManager()
     
 
-def run_us():
-    moni_manager = MonitoringUsManager() 
+def run_us(algorithm):
+    moni_manager = MonitoringUsManager(algorithm) 
     yaml_manager = YamlUsManager()
