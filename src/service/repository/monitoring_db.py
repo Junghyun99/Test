@@ -15,10 +15,10 @@ class MonitoringDB(BaseDB):
                        stock_name TEXT NOT NULL,                     -- 종목 이름
                        code TEXT NOT NULL UNIQUE,                            -- 심볼 혹은 번호
                        country_code TEXT NOT NULL, 
-                       trade_round INTEGER CHECK(trade_round > 0 AND trade_round < 1000), --라운드 MAX 1,000
-                       price REAL NOT NULL CHECK(price > 0 AND price < 10000000),     -- 거래 단가 , MAX 10,000,000
-                       quantity INTEGER NOT NULL CHECK(quantity > 0 AND quantity < 10000), -- MAX 10,000
-                       buy_rate INTEGER NOT NULL CHECK(buy_rate > 0 AND buy_rate < 100),
-                       sell_rate INTEGER NOT NULL CHECK(sell_rate > 0 AND sell_rate < 100)
+                       trade_round INTEGER CHECK(typeof(trade_round) == 'integer'), --라운드
+                       price REAL NOT NULL CHECK(typeof(price) == 'real'),     -- 거래 단가
+                       quantity INTEGER NOT NULL CHECK(typeof(quantity) == 'integer'), -- 수량
+                       buy_rate INTEGER NOT NULL CHECK(typeof(buy_rate) == 'integer' AND buy_rate > 0 AND buy_rate < 100),
+                       sell_rate INTEGER NOT NULL CHECK(typeof(sell_rate) == 'integer' AND sell_rate > 0 AND sell_rate < 100)
                        )''')
         self.conn.commit()
