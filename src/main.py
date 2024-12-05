@@ -4,7 +4,8 @@ from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.sevice.broker.broker_manager import BrokerManager
 from src.sevice.yaml.yaml_manager import YamlKrManager, YamlUsManager 
 
-from src.service.broker.dummy_broker_api import DummyBrokerAPI
+from src.service.broker.dummy_broker_api import DummyBrokerAPI 
+from src.util.enums import CountryCode
 
 file_path = "src/config/stock_round_config.yaml"
 
@@ -22,10 +23,13 @@ def get_monitoring_manager(country_code, algo):
         return MonitoringUsManager(algo) 
 
 
-def run_common(country_code):
+def run(country_code):
     trade = TradeDbManager()    
     yaml = get_yaml_manager(country_code)
     broker = BrokerManager(DummyBrokerAPI())
     algorithm = MagicSplit(broker, trade, yaml)
     moni = get_monitoring_manager(country_code, algorithm)
     moni.start_monitoring()
+
+    trade.close()
+    moni.close()
