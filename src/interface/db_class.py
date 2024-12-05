@@ -1,5 +1,9 @@
 import sqlite3
 
+from src.service.logging.logger_manager import logger_manager
+
+system_logger = logger_manager.get_logger('SYSTEM')
+
 class BaseDB:
     def __init__(self, db_path):
         self.db_path = db_path
@@ -13,7 +17,8 @@ class BaseDB:
     def _create_table(self):        
         raise NotImplementedError("This method must be implemented by subclasses.")
 
-    def execute_query(self, query, data=None):       
+    def execute_query(self, query, data=None):
+        system_logger.log_debug("exe query %s data %s", query, data)
         try:
             with self.conn.cursor() as cursor:
                 if data:
@@ -27,7 +32,7 @@ class BaseDB:
                 
                 return cursor.fetchall() if query.lower().startswith("select") else None
         except sqlite3.Error as e:
-            print(f"Database error: {e}")
+            system_logger.log_error("DB error : %s", e)
             raise e
 
     def insert_data(self, query, data):       
