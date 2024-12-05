@@ -76,6 +76,9 @@ class MonitoringManager:
             raise Exception("One or more errors occurred.")
 
 
+    def close_db(self):
+        self.db close()
+
 class MonitoringKRManager(MonitoringManager):
     COUNTRY_CODE = CountryCode.KR
 
