@@ -1,5 +1,5 @@
 *.key
-*.log
+#*.log
 *.pyc
 .vscode/
-*.db
+#*.db
