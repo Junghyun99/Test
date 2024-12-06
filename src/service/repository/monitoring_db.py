@@ -17,7 +17,7 @@ class MonitoringDB(BaseDB):
                        country_code TEXT NOT NULL, 
                        trade_round INTEGER CHECK(typeof(trade_round) == 'integer' AND trade_round > 0), --라운드
                        price REAL NOT NULL CHECK(typeof(price) == 'real' AND price > 0),     -- 거래 단가
-                       quantity INTEGER NOT NULL CHECK(typeof(quantity) == 'integer', quantity > 0), -- 수량
+                       quantity INTEGER NOT NULL CHECK(typeof(quantity) == 'integer' AND quantity > 0), -- 수량
                        buy_rate INTEGER NOT NULL CHECK(typeof(buy_rate) == 'integer' AND buy_rate > 0 AND buy_rate < 100),
                        sell_rate INTEGER NOT NULL CHECK(typeof(sell_rate) == 'integer' AND sell_rate > 0 AND sell_rate < 100)
                        )''')
