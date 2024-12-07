@@ -30,28 +30,20 @@ class BaseLogger(ABC):
     def get_logger(self):
         return self.logger
 
-    def log_debug(self, message, *args):
+    def log(self, level, message, *args):
         if args:
-            self.logger.debug(message, *args)
+            self.logger.log(level, message, *args)
         else:
-            self.logger.debug(message)
+            self.logger.log(level, message)
+
+    def log_debug(self, message, *args):
+        self.log(logging.DEBUG, message, *args)
 
     def log_info(self, message, *args):
-        if args:
-            self.logger.info(message, *args)
-        else:
-            self.logger.info(message)
- 
+        self.log(logging.INFO, message, *args)
 
     def log_warning(self, message, *args):
-        if args:
-            self.logger.warning(message, *args)
-        else:
-            self.logger.warning(message)
-
+        self.log(logging.WARNING, message, *args)
 
     def log_error(self, message, *args):
-        if args:
-            self.logger.error(message, *args)
-        else:
-            self.logger.error(message)
+        self.log(logging.ERROR, message, *args)
