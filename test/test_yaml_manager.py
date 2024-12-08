@@ -73,8 +73,8 @@ def test_create_duplicate_kr_stock(kr_stock_crud, sample_kr_data1):
     with pytest.raises(Exception):
         kr_stock_crud.create(sample_kr_data1)
         kr_stock_crud.create(sample_kr_data1)
-        data = kr_stock_crud.read()
-        assert len(data) == 1  # 중복 허용 시에 대한 테스트
+    data = kr_stock_crud.read()
+    assert len(data) == 1  # 중복 허용 시에 대한 테스트
 
 def test_create_empty_kr_stock(kr_stock_crud):
     kr_stock_crud.create({})
@@ -136,8 +136,9 @@ def test_update_existing_kr_stock(kr_stock_crud, sample_kr_data1):
     assert data[0]["name"] == "Samsung"
 
 def test_update_non_existing_kr_stock(kr_stock_crud):
-    result = kr_stock_crud.update("999999", {"name": "Non Existent"})
-    assert result is False
+    with pytest.raises(Exception):
+        kr_stock_crud.update("999999", {"name": "Non Existent"})
+   
 
 def test_update_multiple_orders_kr_stock(kr_stock_crud, sample_kr_data1):
     kr_stock_crud.create(sample_kr_data1)
@@ -151,8 +152,9 @@ def test_update_multiple_orders_kr_stock(kr_stock_crud, sample_kr_data1):
     assert data[0]["orders"][0]["buy_price"] == 62000
 
 def test_update_code_us_stock(us_stock_crud, sample_us_data1):
-    us_stock_crud.create(sample_us_data1)
-    us_stock_crud.update("AAPL", {"code": "AAPP"})
+    with pytest.raises(Exception):
+        us_stock_crud.create(sample_us_data1)
+        us_stock_crud.update("AAPL", {"code": "AAPP"})
     data = us_stock_crud.read()
     assert data[0]["code"] == "AAPL"
 
