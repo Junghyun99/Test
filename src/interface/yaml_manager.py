@@ -93,7 +93,7 @@ class YamlManager:
             if entry.get("code") == identifier:
                 entry.update(updated_data)
          
-        self._save_country_data(country_data)
+                self._save_country_data(country_data)
                 return
         raise KeyError(f"Entry with code '{identifier}' not found.")
  
