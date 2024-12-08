@@ -55,9 +55,9 @@ class YamlManager:
         self._write(data)
 
     def read_all(self):
-      """KR_STOCK 데이터를 모두 가져오기."""
+        """KR_STOCK 데이터를 모두 가져오기."""
         country_data = self._get_country_data()
-       return country_data.get(self.COUNTRY_CODE, [])
+        return country_data.get(self.COUNTRY_CODE, [])
 
     def read_by_id(self, identifier):
         """특정 ID로 데이터를 가져오기."""
