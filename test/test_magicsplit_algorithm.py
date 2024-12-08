@@ -70,11 +70,11 @@ def test_try_buy_stock_fail(setup_magic_split, mocker):
 def test_try_buy_stock_last_round(setup_magic_split, mocker):
     magic_split, mock_broker_manager, _, mock_yaml_manager = setup_magic_split
 
-    moni_data = MonitoringData("StockA", "ABC123", "KR", 1, 1000, 10, 0.5, 1.5)
+    moni_data = MonitoringData("StockA", "ABC123", "KR", 2, 1000, 10, 0.5, 1.5)
     yaml_mock_data = [{"orders": [{"order": 1, "buy_price": 950, "buy_rate": 0.5, "sell_rate": 1.5}, {"order": 2, "buy_price": 960, "buy_rate": 0.5, "sell_rate": 1.5}]}]
     mock_yaml_manager.read_by_id.return_value = yaml_mock_data
     # 3. YAML 데이터 마지막 차수
-    mock_yaml_manager.read_all.return_value = [{"orders": [{"order": 1}]}]
+    
     result = magic_split._try_buy_stock(960, moni_data)
     assert result.QueryOp == QueryOp.DEFAULT
 
