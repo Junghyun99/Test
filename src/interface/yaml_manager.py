@@ -98,7 +98,7 @@ class YamlManager:
         data = self._get_country_data()
         org_length = len(data)
         data = [entry for entry in data if entry.get("code") != identifier]
-        if len(data) < original_length:
+        if len(data) < org_length:
             self._write(data)
         else:
             raise ValueError("Cannot found the 'code' entry.")
