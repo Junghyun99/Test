@@ -29,6 +29,7 @@ class YamlManager:
     def _get_country_data(self):
         """현재 COUNTRY_CODE 데이터를 가져오거나 빈 리스트 생성."""
         data = self._read()
+        print ("%s",data)
         if self.COUNTRY_CODE not in data:
             data[self.COUNTRY_CODE] = []
         return data[self.COUNTRY_CODE]
@@ -52,6 +53,7 @@ class YamlManager:
     def read_all(self):
         """KR_STOCK 데이터를 모두 가져오기."""
         country_data = self._get_country_data()
+        print ("%s",country_data)
         return country_data.get(self.COUNTRY_CODE, [])
 
     def read_by_id(self, identifier):
