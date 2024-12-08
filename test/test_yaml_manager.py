@@ -6,6 +6,17 @@ from src.service.yaml.yaml_manager import YamlKrManager, YamlUsManager
 @pytest.fixture
 def temp_file(tmp_path):
     file_path = tmp_path / "test_stocks.yaml"
+
+    # 초기값 설정
+    initial_data = {
+        "KR": [],
+        "US": []
+    }
+
+    # 초기값을 test_stocks.yaml 파일에 작성
+    with open(file_path, 'w', encoding='utf-8') as file:
+        yaml.dump(initial_data, file, allow_unicode=True)
+
     yield file_path
     if file_path.exists():
         os.remove(file_path)
