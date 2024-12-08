@@ -28,7 +28,7 @@ class MagicSplit(Algorithm):
 
     def _try_buy_stock(self, current_price, moniData:MonitoringData):
         yaml_data = self.yaml_manager.read_by_id(moniData.code)
-        system_logger.log_info("_try_buy_stock price %s, moniData %s",current_price, moniData)
+        system_logger.log_info("_try_buy_stock price %s, moniData %s", yaml %s,current_price, moniData, yaml_data)
 
         if yaml_data[0]["orders"][moniData.trade_round-1]["order"] != moniData.trade_round:
             system_logger.log_info("_try_buy_stock 1st condition, round %s != moni round %s",yaml_data[0]["orders"][moniData.trade_round-1]["order"], moniData.trade_round)
