@@ -186,7 +186,8 @@ def test_delete_all_us_stocks(us_stock_crud, sample_us_data1, sample_us_data2):
 # --- COMPLEX TEST CASES ---
 def test_complex_create_update_delete(kr_stock_crud, sample_kr_data1, sample_kr_data2):
     kr_stock_crud.create(sample_kr_data1)
-    kr_stock_crud.create(sample_kr_data1)
+    with pytest.raises(Exception):
+        kr_stock_crud.create(sample_kr_data1)
     kr_stock_crud.create(sample_kr_data2)
     kr_stock_crud.update("005930", {"name": "Samsung"})
     kr_stock_crud.delete("005380")
