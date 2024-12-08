@@ -26,6 +26,20 @@ class YamlManager:
         except yaml.YAMLError as e:
             raise RuntimeError(f"Failed to parse YAML file {self.file_path}: {e}")
 
+    def _get_country_data(self):
+        """현재 COUNTRY_CODE 데이터를 가져오거나 빈 리스트 생성."""
+        data = self._read()
+        if self.COUNTRY_CODE not in data:
+            data[self.COUNTRY_CODE] = []
+        return data
+
+    def _save_country_data(self, country_data):
+        """COUNTRY_CODE 데이터를 저장."""
+        data = self._read()
+        data[self.COUNTRY_CODE] = country_data
+        self._write(data)
+
+
     def create(self, new_entry):
         """KR_STOCK 항목에 새 데이터를 추가."""
         data = self._read()
