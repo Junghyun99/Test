@@ -40,6 +40,19 @@ class YamlManager:
         data[self.COUNTRY_CODE].append(new_entry)
         self._write(data)
 
+    def read_all(self):
+      """KR_STOCK 데이터를 모두 가져오기."""
+        country_data = self._get_country_data()
+       return country_data.get(self.COUNTRY_CODE, [])
+
+    def read_by_id(self, identifier):
+        """특정 ID로 데이터를 가져오기."""
+        country_data = self.read_all()
+        for entry in country_data:
+            if entry.get("code") == identifier:
+                return entry
+        return []
+
 
     def read(self, identifier=None):
         """KR_STOCK 데이터 가져오기."""
