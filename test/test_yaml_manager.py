@@ -162,7 +162,10 @@ def test_update_code_us_stock(us_stock_crud, sample_us_data1):
 def test_delete_existing_kr_stock(kr_stock_crud, sample_kr_data1, sample_kr_data2):
     kr_stock_crud.create(sample_kr_data1)
     kr_stock_crud.create(sample_kr_data2)
-    result = kr_stock_crud.delete("005380")
+    data = kr_stock_crud.read()
+    print("%s",data)
+    assert len(data) == 2
+    kr_stock_crud.delete("005380")
     data = kr_stock_crud.read()
     assert len(data) == 1
 
