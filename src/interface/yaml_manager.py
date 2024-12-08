@@ -62,22 +62,6 @@ class YamlManager:
                 return entry
         return []
 
-
-    def read(self, identifier=None):
-        """KR_STOCK 데이터 가져오기."""
-        data = self._read() 
-        if self.COUNTRY_CODE not in data:
-            return []
-
-        filterd_data = data[self.COUNTRY_CODE]
-        if identifier:
-
-            for entry in filterd_data:
-                if entry.get("code") == identifier:
-                    return [entry]
-
-        return data[self.COUNTRY_CODE] 
-
     def update(self, identifier, updated_data):
         """KR_STOCK에서 특정 항목 수정."""
         if "code" in updated_data:
