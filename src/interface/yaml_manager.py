@@ -31,7 +31,7 @@ class YamlManager:
         data = self._read()
         if self.COUNTRY_CODE not in data:
             data[self.COUNTRY_CODE] = []
-        return data
+        return data[self.COUNTRY_CODE]
 
     def _save_country_data(self, country_data):
         """COUNTRY_CODE 데이터를 저장."""
