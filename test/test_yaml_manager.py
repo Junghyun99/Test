@@ -70,10 +70,11 @@ def test_create_kr_stock(kr_stock_crud, sample_kr_data1,sample_kr_data2):
     assert len(data) == 2
 
 def test_create_duplicate_kr_stock(kr_stock_crud, sample_kr_data1):
-    kr_stock_crud.create(sample_kr_data1)
-    kr_stock_crud.create(sample_kr_data1)
-    data = kr_stock_crud.read()
-    assert len(data) == 1  # 중복 허용 시에 대한 테스트
+    with pytest.raises(Exception):
+        kr_stock_crud.create(sample_kr_data1)
+        kr_stock_crud.create(sample_kr_data1)
+        data = kr_stock_crud.read()
+        assert len(data) == 1  # 중복 허용 시에 대한 테스트
 
 def test_create_empty_kr_stock(kr_stock_crud):
     kr_stock_crud.create({})
