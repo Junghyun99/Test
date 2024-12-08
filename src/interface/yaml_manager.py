@@ -39,21 +39,6 @@ class YamlManager:
         data[self.COUNTRY_CODE] = country_data
         self._write(data)
 
-def create(self, new_entry):
-    """KR_STOCK 항목에 새 데이터를 추가."""
-    logger.debug("Attempting to create new entry: %s", new_entry)
-    try:
-        data = self._get_country_data()
-        if any(entry.get("code") == new_entry.get("code") for entry in data):
-            logger.warning("Duplicate entry detected: %s", new_entry)
-            return
-        data.append(new_entry)
-        self._save_country_data(data)
-        logger.info("Entry created successfully: %s", new_entry)
-    except Exception as e:
-        logger.error("Failed to create entry: %s", e)
-        raise
-
     def create(self, new_entry):
         """KR_STOCK 항목에 새 데이터를 추가."""
         data = self._get_country_data() 
