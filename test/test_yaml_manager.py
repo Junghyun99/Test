@@ -163,13 +163,13 @@ def test_delete_existing_kr_stock(kr_stock_crud, sample_kr_data1, sample_kr_data
     kr_stock_crud.create(sample_kr_data1)
     kr_stock_crud.create(sample_kr_data2)
     result = kr_stock_crud.delete("005380")
-    assert result is True
     data = kr_stock_crud.read()
     assert len(data) == 1
 
 def test_delete_non_existing_kr_stock(kr_stock_crud):
-    result = kr_stock_crud.delete("999999")
-    assert result is False
+    with pytest.raises(Exception):
+        kr_stock_crud.delete("999999")
+    
 
 def test_delete_all_us_stocks(us_stock_crud, sample_us_data1, sample_us_data2):
     us_stock_crud.create(sample_us_data1)
