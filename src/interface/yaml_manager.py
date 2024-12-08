@@ -95,11 +95,10 @@ class YamlManager:
 
     def delete(self, identifier):
         """KR_STOCK에서 특정 항목 삭제."""
-        data = self._read()
-        if self.COUNTRY_CODE in data:
-            original_length = len(data[self.COUNTRY_CODE])
-            data[self.COUNTRY_CODE] = [entry for entry in data[self.COUNTRY_CODE] if entry.get("code") != identifier]
-            if len(data[self.COUNTRY_CODE]) < original_length:
-                self._write(data)
-                return True
-        return False
+        data = self._get_country_data()
+        org_length = len(data)
+        data = [entry for entry in data if entry.get("code") != identifier]
+        if len(data) < original_length:
+            self._write(data)
+        else:
+            raise ValueError("Cannot found the 'code' entry.")
