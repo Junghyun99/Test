@@ -85,19 +85,18 @@ class YamlManager:
 
     def update(self, identifier, updated_data):
         """KR_STOCK에서 특정 항목 수정."""
-        # Don't fix code
         if "code" in updated_data:
-            print("Don't fix code")
-            return False
+            raise ValueError("Cannot modify the 'code' field.")
 
-        data = self._read()
-        if self.COUNTRY_CODE in data:
-            for entry in data[self.COUNTRY_CODE]:
-                if entry.get("code") == identifier:
-                    entry.update(updated_data)
-                    self._write(data)
-                    return True
-        return False
+        country_data = self._get_country_data()
+        for entry in country_data:
+            if entry.get("code") == identifier:
+                entry.update(updated_data)
+         
+        self._save_country_data(country_data)
+                return
+        raise KeyError(f"Entry with code '{identifier}' not found.")
+ 
 
     def delete(self, identifier):
         """KR_STOCK에서 특정 항목 삭제."""
