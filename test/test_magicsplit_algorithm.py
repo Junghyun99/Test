@@ -44,7 +44,7 @@ def test_try_buy_stock_normal(setup_magic_split, mocker):
 
     moni_data = MonitoringData("StockA", "ABC123", "KR", 1, 1000, 10, 0.5, 1.5)
     yaml_mock_data = [{"orders": [{"order": 1, "buy_price": 950, "buy_rate": 0.5, "sell_rate": 1.5}, {"order": 2, "buy_price": 960, "buy_rate": 0.5, "sell_rate": 1.5}]}]
-    mock_yaml_manager.read_all.return_value = yaml_mock_data
+    mock_yaml_manager.read_by_id.return_value = yaml_mock_data
 
     # 1. 정상적인 매수
     mock_broker_manager.place_market_order.return_value = (True, (960, 10))
@@ -60,7 +60,7 @@ def test_try_buy_stock_fail(setup_magic_split, mocker):
 
     moni_data = MonitoringData("StockA", "ABC123", "KR", 1, 1000, 10, 0.5, 1.5)
     yaml_mock_data = [{"orders": [{"order": 1, "buy_price": 950, "buy_rate": 0.5, "sell_rate": 1.5}, {"order": 2, "buy_price": 960, "buy_rate": 0.5, "sell_rate": 1.5}]}]
-    mock_yaml_manager.read_all.return_value = yaml_mock_data
+    mock_yaml_manager.read_by_id.return_value = yaml_mock_data
 
     # 2. 매수 실패
     mock_broker_manager.place_market_order.return_value = (False, None)
@@ -72,7 +72,7 @@ def test_try_buy_stock_last_round(setup_magic_split, mocker):
 
     moni_data = MonitoringData("StockA", "ABC123", "KR", 1, 1000, 10, 0.5, 1.5)
     yaml_mock_data = [{"orders": [{"order": 1, "buy_price": 950, "buy_rate": 0.5, "sell_rate": 1.5}, {"order": 2, "buy_price": 960, "buy_rate": 0.5, "sell_rate": 1.5}]}]
-    mock_yaml_manager.read_all.return_value = yaml_mock_data
+    mock_yaml_manager.read_by_id.return_value = yaml_mock_data
     # 3. YAML 데이터 마지막 차수
     mock_yaml_manager.read_all.return_value = [{"orders": [{"order": 1}]}]
     result = magic_split._try_buy_stock(960, moni_data)
@@ -85,7 +85,7 @@ def test_try_sell_stock_normal(setup_magic_split, mocker):
 
     moni_data = MonitoringData("StockA", "ABC123", "KR", 2, 1000, 10, 0.5, 1.5)
     yaml_mock_data = [{"orders": [{"order": 1, "buy_price": 950, "buy_rate": 0.5, "sell_rate": 1.5}, {"order": 2, "buy_price": 960, "buy_rate": 0.5, "sell_rate": 1.5}]}]
-    mock_yaml_manager.read_all.return_value = yaml_mock_data
+    mock_yaml_manager.read_by_id.return_value = yaml_mock_data
     mock_broker_manager.place_market_order.return_value = (True, None)
     mock_trade_db_manager.get_trade_round.return_value = (950, 10)
 
