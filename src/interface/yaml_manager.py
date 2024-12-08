@@ -9,7 +9,7 @@ class YamlManager:
 
     def _write(self, data):
         try:
-        """YAML 파일 쓰기 (내부에서만 호출)"""
+            """YAML 파일 쓰기 (내부에서만 호출)"""
             with open(self.file_path, 'w', encoding='utf-8') as file:
                 yaml.dump(data, file, allow_unicode=True)
         except Exception as e:
