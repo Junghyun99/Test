@@ -1,5 +1,5 @@
 import pytest
-from src.model.monitoring_db_model import MonitoringData, FIELD_ORDER
+from src.model.monitoring_db_model import MonitoringData
 from src.util.enums import CountryCode
 
 
@@ -29,7 +29,7 @@ def test_create_object_keyword():
 def test_to_tuple_default_order():
     """to_tuple 메서드 테스트: 기본 필드 순서"""
     data = MonitoringData("Samsung", "005930", CountryCode.KR, 1, 70000.0, 10, 0.95, 1.05)
-    result = data.to_tuple(FIELD_ORDER)
+    result = data.to_tuple()
     expected = ("Samsung", "005930", CountryCode.KR, 1, 70000.0, 10, 0.95, 1.05)
     assert result == expected
 
@@ -37,13 +37,13 @@ def test_to_tuple_custom_order():
     """to_tuple 메서드 테스트: 사용자 정의 필드 순서"""
     data = MonitoringData("Samsung", "005930", CountryCode.KR, 1, 70000.0, 10, 0.95, 1.05)
     custom_order = ["code", "stock_name", "price"]
-    result = data.to_tuple(custom_order)
+    result = data.to_tuple_field(custom_order)
     expected = ("005930", "Samsung", 70000.0)
     assert result == expected
 
 def test_to_tuple_empty_order():
     """to_tuple 메서드 테스트: 빈 필드 순서"""
     data = MonitoringData("Samsung", "005930", CountryCode.KR, 1 , 70000.0, 10, 0.95, 1.05)
-    result = data.to_tuple([])
+    result = data.to_tuple_field([])
     expected = ()
     assert result == expected
