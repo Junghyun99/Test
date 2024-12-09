@@ -1,11 +1,6 @@
 from dataclasses import dataclass
 from src.util.enums import CountryCode, QueryOp
 
-
-# 기본 필드 순서
-FIELD_ORDER = ["stock_name", "code", "country_code", "trade_round", "price", "quantity", "buy_rate", "sell_rate"]
-DUMMY = ("stock","code",CountryCode.KR,0,0,0,0,0)
-
 @dataclass
 class MonitoringData:
     stock_name: str
@@ -17,7 +12,17 @@ class MonitoringData:
     buy_rate: int
     sell_rate: int
 
-    def to_tuple(self, field_order=FIELD_ORDER):
+    DUMMY = ("stock", "code", CountryCode.KR, 0, 0.0, 0, 0, 0)
+
+    def __post_init__(self):
+        if not isinstance(self.country_code, CountryCode):
+            raise ValueError(f"Invalid country_code: {self.country_code}")
+
+    def to_tuple(self):
+        return tuple(getattr(self, field) for field in self.__dataclass_fields__)
+
+
+    def to_tuple_field(self, field_order):
         # 필드 이름 순서에 따라 튜플 생성
         return tuple(getattr(self, field) for field in field_order)
 
@@ -25,3 +30,11 @@ class MonitoringData:
 class AlgorithmData:
     QueryOp: QueryOp
     MonitoringData: MonitoringData
+
+    def __post_init__(self):
+        if not isinstance(self.QueryOp, QueryOp):
+            raise ValueError(f"Invalid QueryOp: {self.QueryOp}")
+
+        if not isinstance(self.MonitoringData, MonitoringData):
+            raise ValueError(f"Invalid MonitoringData: {self.MonitoringData}")
+
