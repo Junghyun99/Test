@@ -59,7 +59,7 @@ class YamlManager:
         country_data = self.read_all()
         for entry in country_data:
             if entry.get("code") == identifier:
-                return entry
+                return [entry]
         return []
 
     def update(self, identifier, updated_data):
