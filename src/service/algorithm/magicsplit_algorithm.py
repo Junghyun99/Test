@@ -1,7 +1,7 @@
 from src.interface.algorithm import Algorithm
 from src.util.price_calculator import PriceCalculator
 from src.util.enums import QueryOp
-from src.model.monitoring_db_model import AlgorithmData, MonitoringData, DUMMY
+from src.model.monitoring_db_model import AlgorithmData, MonitoringData
 from src.service.logging.logger_manager import logger_manager
 
 system_logger = logger_manager.get_logger('SYSTEM')
@@ -32,17 +32,17 @@ class MagicSplit(Algorithm):
 
         if yaml_data[0]["orders"][moniData.trade_round-1]["order"] != moniData.trade_round:
             system_logger.log_info("_try_buy_stock 1st condition, round %s != moni round %s",yaml_data[0]["orders"][moniData.trade_round-1]["order"], moniData.trade_round)
-            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*DUMMY))
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
         if len(yaml_data[0]["orders"]) <= moniData.trade_round: # 설정된 마지막 차수라는 뜻
             system_logger.log_info("_try_buy_stock 2nd condition, len %s != moni round %s",len(yaml_data[0]["orders"]), moniData.trade_round)
-            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*DUMMY))
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
         
         quantity = PriceCalculator.calculate_quantity(yaml_data[0]["orders"][moniData.trade_round-1]["buy_price"], current_price)
         status, info = self.broker_manager.place_market_order(moniData.code, quantity, "BUY")
             
         if status is False:
             system_logger.log_info("_try_buy_stock place_market_order status false")
-            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*DUMMY))
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
 
         moniData.price = info[0] # 실제 거래 매수 금액
         moniData.quantity = info[1] # 실제 거래 매수 수량
@@ -59,13 +59,13 @@ class MagicSplit(Algorithm):
         
         if yaml_data[0]["orders"][moniData.trade_round-1]["order"] != moniData.trade_round:
             system_logger.log_info("_try_sell_stock 1st condition, round %s != moni round %s",yaml_data[0]["orders"][moniData.trade_round-1]["order"], moniData.trade_round)
-            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*DUMMY))
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
         
         status, info = self.broker_manager.place_market_order(moniData.code, moniData.quantity, "BUY")
             
         if status is False:
             system_logger.log_info("_try_sell_stock place_market_order status false")
-            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*DUMMY))
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
         
         if moniData.trade_round  == 1: # 1 차수 매도 성공, 모니터링 DB에서 지우기
             system_logger.log_info("_try_sell_stock 2nd condition, lst round sell..")
@@ -92,7 +92,7 @@ class MagicSplit(Algorithm):
         elif current_price >= target_sell_price:
             return self._try_sell_stock(current_price, moniData)
         else:
-            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*DUMMY))
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
 
 
 '''
