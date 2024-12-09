@@ -152,7 +152,7 @@ def test_start_monitoring_partial_success(setup_manager, mocker):
         ("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)
     ]
     mock_algorithm.run_algorithm.side_effect = [Exception("error"),
-mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)),
+mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData("StockB", "456", CountryCode.KR, 2, 2000, 10, 0.6, 1.6)),
     ]
     with pytest.raises(Exception):
         manager.start_monitoring()
@@ -172,8 +172,8 @@ def test_start_monitoring_normal(setup_manager, mocker):
     ]
 
     mock_algorithm.run_algorithm.side_effect = [
-        mocker.Mock(QueryOp=QueryOp.UPDATE, MonitoringData=MonitoringData("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)),
-        mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)),
+        mocker.Mock(QueryOp=QueryOp.UPDATE, MonitoringData=MonitoringData("StockA", "123", CountryCode.KR, 1, 1000, 10, 0.5, 1.5)),
+        mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData("StockB", "456", CountryCode.KR, 2, 2000, 10, 0.6, 1.6)),
     ]
 
     # 1. 정상 작동 확인
@@ -197,8 +197,8 @@ def test_start_monitoring_empty(setup_manager, mocker):
     ]
 
     mock_algorithm.run_algorithm.side_effect = [
-        mocker.Mock(QueryOp=QueryOp.UPDATE, MonitoringData=MonitoringData("StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)),
-        mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData("StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)),
+        mocker.Mock(QueryOp=QueryOp.UPDATE, MonitoringData=MonitoringData("StockA", "123", CountryCode.KR, 1, 1000, 10, 0.5, 1.5)),
+        mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData("StockB", "456", CountryCode.KR, 2, 2000, 10, 0.6, 1.6)),
     ]
 
   # 5. DB 연산 실패 시 처리
