@@ -4,8 +4,7 @@ from src.service.broker.broker_manager import BrokerManager
 from src.interface.yaml_manager import YamlManager
 from src.service.repository.trade_db_manager import TradeDBManager
 from src.model.monitoring_db_model import AlgorithmData, MonitoringData
-from src.util.enums import QueryOp
-
+from src.util.enums import QueryOp, CountryCode
 
 @pytest.fixture
 def setup_magic_split(mocker):
@@ -42,7 +41,7 @@ def test_get_prev_trade_round(setup_magic_split):
 def test_try_buy_stock_normal(setup_magic_split, mocker):
     magic_split, mock_broker_manager, _, mock_yaml_manager = setup_magic_split
 
-    moni_data = MonitoringData("StockA", "ABC123", "KR", 1, 1000, 10, 0.5, 1.5)
+    moni_data = MonitoringData("StockA", "ABC123", CountryCode.KR, 1, 1000, 10, 0.5, 1.5)
     yaml_mock_data = [{"orders": [{"order": 1, "buy_price": 950, "buy_rate": 0.5, "sell_rate": 1.5}, {"order": 2, "buy_price": 960, "buy_rate": 0.5, "sell_rate": 1.5}]}]
     mock_yaml_manager.read_by_id.return_value = yaml_mock_data
 
