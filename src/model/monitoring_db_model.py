@@ -15,6 +15,10 @@ class MonitoringData:
     DUMMY = ("stock", "code", CountryCode.KR, 0, 0.0, 0, 0, 0)
 
     def __post_init__(self):
+        if self.country_code == "KR": 
+            self.country_code = CountryCode.KR
+        if self.country_code == "US": 
+            self.country_code = CountryCode.US
         if not isinstance(self.country_code, CountryCode):
             raise ValueError(f"Invalid country_code: {self.country_code}")
 
