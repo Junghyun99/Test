@@ -31,10 +31,12 @@ def run(country_code):
     broker = BrokerManager(DummyBrokerAPI())
     algorithm = MagicSplit(broker, trade, yaml)
     moni = get_monitoring_manager(country_code, algorithm)
-    moni.start_monitoring()
 
-    trade.close()
-    moni.close()
+    try:
+        moni.start_monitoring()
+    finally:
+        trade.close()
+        moni.close()
 
 
 
