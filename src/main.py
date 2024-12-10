@@ -1,5 +1,5 @@
 from src.service.repository.monitoring_manager import MonitoringKRManager, MonitoringUSManager
-from src.service.repository.trade_db_manager import TradeDbManager
+from src.service.repository.trade_db_manager import TradeDBManager
 from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.sevice.broker.broker_manager import BrokerManager
 from src.sevice.yaml.yaml_manager import YamlKrManager, YamlUsManager 
@@ -25,7 +25,7 @@ def get_monitoring_manager(country_code, algo):
 
 
 def run(country_code):
-    trade = TradeDbManager()    
+    trade = TradeDBManager()    
     yaml = get_yaml_manager(country_code, file_path)
     broker = BrokerManager(DummyBrokerAPI())
     algorithm = MagicSplit(broker, trade, yaml)
