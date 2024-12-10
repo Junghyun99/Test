@@ -11,23 +11,24 @@ from src.util.enums import CountryCode
 
 file_path = "src/config/stock_round_config.yaml"
 
-
-def get_yaml_manager(country_code):
-    if country_code == CountryCode.KR:
-        return YamlKrManager(file_path)
-    else:
-        return YamlUsManager(file_path) 
+def get_yaml_manager(country_code, file_path):
+    manager_classes = {
+        CountryCode.KR: YamlKrManager,
+        CountryCode.US: YamlUsManager,
+    }
+    return manager_classes[country_code](file_path)
 
 def get_monitoring_manager(country_code, algo):
-    if country_code == CountryCode.KR:
-        return MonitoringKrManager(algo)
-    else:
-        return MonitoringUsManager(algo) 
+    manager_classes = {
+        CountryCode.KR: MonitoringKrManager,
+        CountryCode.US: MonitoringUsManager,
+    }
+    return manager_classes[country_code](algo)
 
 
 def run(country_code):
     trade = TradeDbManager()    
-    yaml = get_yaml_manager(country_code)
+    yaml = get_yaml_manager(country_code, file_path)
     broker = BrokerManager(DummyBrokerAPI())
     algorithm = MagicSplit(broker, trade, yaml)
     moni = get_monitoring_manager(country_code, algorithm)
