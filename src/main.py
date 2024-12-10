@@ -1,4 +1,4 @@
-from src.service.repository.monitoring_manager import MonitoringKrManager, MonitoringUsManager
+from src.service.repository.monitoring_manager import MonitoringKRManager, MonitoringUSManager
 from src.service.repository.trade_db_manager import TradeDbManager
 from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.sevice.broker.broker_manager import BrokerManager
@@ -18,8 +18,8 @@ def get_yaml_manager(country_code, file_path):
 
 def get_monitoring_manager(country_code, algo):
     manager_classes = {
-        CountryCode.KR: MonitoringKrManager,
-        CountryCode.US: MonitoringUsManager,
+        CountryCode.KR: MonitoringKRManager,
+        CountryCode.US: MonitoringUSManager,
     }
     return manager_classes[country_code](algo)
 
