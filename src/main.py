@@ -1,5 +1,3 @@
-import sys
-
 from src.service.repository.monitoring_manager import MonitoringKrManager, MonitoringUsManager
 from src.service.repository.trade_db_manager import TradeDbManager
 from src.service.algorithm.magicsplit_algorithm import MagicSplit
@@ -39,15 +37,48 @@ def run(country_code):
         trade.close()
         moni.close()
 
+def parse_country_code(arg):
+    country_code_map = {
+        "KR": CountryCode.KR,
+        "US": CountryCode.US,
+    }
+    return country_code_map.get(arg.upper())
 
 
 
+def main():
+    import argparse
 
-# 명령행 인자의 개수 확인
-if len(sys.argv) == 1:
-    run(CountryCode.KR)
-elif len(sys.argv) == 2:
-    if sys.argv[1] == "KR":
-        run(CountryCode.KR)
-    elif sys.argv[1] == "US":
-        run(CountryCode.US)
+    # ArgumentParser 객체 생성
+    parser = argparse.ArgumentParser(description="Run stock monitoring system")
+    
+    # country 인자를 추가 (선택적, 기본값은 'KR')
+    parser.add_argument(
+        "country",  # 명령행에서 받을 인자 이름
+        nargs="?",  # 선택적 인자
+        choices=["KR", "US"],  # 유효한 값 제한
+        default="KR",  # 기본값
+        help="Country code for the stock monitoring system (KR/US)"
+    )
+    
+    
+    # 명령행 인자 파싱
+    args = parser.parse_args()
+    
+    try:
+        # country 인자를 CountryCode로 변환
+        country_code = parse_country_code(args.country)
+        if country_code is None:
+            raise ValueError(f"Invalid country code: {args.country}")
+        
+        # run 함수 실행
+        run(country_code)
+    
+    except ValueError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
+
+
+if __name__ == "__main__":
+    main()
