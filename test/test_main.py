@@ -49,11 +49,14 @@ def test_main_invalid_country(mocker, capsys):
 
 def test_run_flow(mocker):
     """run 함수 내부 흐름 테스트"""
-    mock_trade = mocker.patch("src.main.TradeDbManager")
+    
     mock_yaml_manager = mocker.patch("src.main.get_yaml_manager")
     mock_broker = mocker.patch("src.main.BrokerManager")
     mock_algorithm = mocker.patch("src.main.MagicSplit")
-    mock_monitoring = mocker.patch("src.main.get_monitoring_manager")
+    
+
+    mock_trade = mocker.Mock(spec=TradeDBManager)
+    mock_monitoring = mocker.Mock(spec=MonitoringManager)
 
     run(CountryCode.KR)
 
