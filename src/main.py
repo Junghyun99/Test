@@ -35,8 +35,8 @@ def run(country_code):
     try:
         moni.start_monitoring()
     finally:
-        trade.close()
-        moni.close()
+        trade.close_db()
+        moni.close_db()
 
 def parse_country_code(arg):
     country_code_map = {
