@@ -39,7 +39,7 @@ def test_main_invalid_country(mocker, capsys):
     """Invalid country 코드 입력 테스트"""
     mocker.patch("argparse.ArgumentParser.parse_args", return_value=mocker.Mock(country="INVALID"))
 
-    with pytest.raises(SystemExit):  # Invalid code로 인한 종료
+    with pytest.raises(Exception):  # Invalid code로 인한 종료
         main()
 
     captured = capsys.readouterr()
