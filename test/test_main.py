@@ -1,7 +1,7 @@
 import pytest
 from src.main import main, parse_country_code, run
 from src.util.enums import CountryCode
-
+from src.service.repository.trade_db_manager import TradeDBManager
 
 def test_parse_country_code_valid():
     """Valid country code 테스트"""
