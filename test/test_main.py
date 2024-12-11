@@ -2,7 +2,7 @@ import pytest
 from src.main import main, parse_country_code, run
 from src.util.enums import CountryCode
 from src.service.repository.trade_db_manager import TradeDBManager
-from src.service.repository.monitoring_manager import MonitoringKRManager
+from src.service.repository.monitoring_manager import MonitoringManager
 
 from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.service.broker.broker_manager import BrokerManager
@@ -58,7 +58,7 @@ def test_run_flow(mocker):
     mock_broker = mocker.Mock(spec=BrokerManager)
     mock_yaml_manager = mocker.Mock(spec=YamlKrManager)  
     mock_trade = mocker.Mock(spec=TradeDBManager)
-    mock_monitoring = mocker.Mock(spec=MonitoringKRManager)
+    mock_monitoring = mocker.Mock(spec=MonitoringManager)
 
     run(CountryCode.KR)
 
@@ -79,7 +79,7 @@ def test_run_flow(mocker):
 def test_run_with_exception_handling(mocker):
     """run 함수에서 예외 발생 시 자원 해제 테스트"""
     mock_trade = mocker.Mock(spec=TradeDBManager)
-    mock_monitoring = mocker.Mock(spec=MonitoringKRManager)
+    mock_monitoring = mocker.Mock(spec=MonitoringManager)
 
     # start_monitoring에서 예외 발생
     mock_monitoring.start_monitoring.side_effect = Exception("Test Exception")
