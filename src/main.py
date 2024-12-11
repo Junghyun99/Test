@@ -10,8 +10,6 @@ from src.service.yaml.yaml_manager import YamlKrManager, YamlUsManager
 from src.service.broker.dummy_broker_api import DummyBrokerAPI 
 from src.util.enums import CountryCode
 
-file_path = "src/config/stock_round_config.yaml"
-
 
 class MainApp:
     def __init__(self):
