@@ -1,8 +1,8 @@
 from src.service.repository.monitoring_manager import MonitoringKRManager, MonitoringUSManager
 from src.service.repository.trade_db_manager import TradeDBManager
 from src.service.algorithm.magicsplit_algorithm import MagicSplit
-from src.sevice.broker.broker_manager import BrokerManager
-from src.sevice.yaml.yaml_manager import YamlKrManager, YamlUsManager 
+from src.service.broker.broker_manager import BrokerManager
+from src.service.yaml.yaml_manager import YamlKrManager, YamlUsManager 
 
 from src.service.broker.dummy_broker_api import DummyBrokerAPI 
 from src.util.enums import CountryCode
