@@ -8,24 +8,38 @@ from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.service.broker.broker_manager import BrokerManager
 from src.service.yaml.yaml_manager import YamlKrManager 
 
-def test_parse_country_code_valid():
+
+@pytest.fixture
+def setup_MainApp(mocker):
+    app = MainApp()
+    mock_algorithm = mocker.Mock(spec=MagicSplit)
+    mock_broker = mocker.Mock(spec=BrokerManager)
+    mock_yaml_manager = mocker.Mock(spec=YamlKrManager)  
+    mock_trade = mocker.Mock(spec=TradeDBManager)
+    mock_monitoring = mocker.Mock(spec=MonitoringManager)
+    return app, mock_algorithm, mock_broker, mock_yaml_manager, mock_trade, mock_monitoring
+
+
+def test_parse_country_code_valid(setup_MainApp):
     """Valid country code 테스트"""
-    assert parse_country_code("KR") == CountryCode.KR
-    assert parse_country_code("US") == CountryCode.US
+    app, _, _, _, _, _ = setup_MainApp
+    assert app.parse_country_code("KR") == CountryCode.KR
+    assert app.parse_country_code("US") == CountryCode.US
 
 
-def test_parse_country_code_invalid():
+def test_parse_country_code_invalid(setup_MainApp):
     """Invalid country code 테스트"""
-    assert parse_country_code("INVALID") is None
-    assert parse_country_code("") is None
+    app, _, _, _, _, _ = setup_MainApp
+    assert app.parse_country_code("INVALID") is None
+    assert app.parse_country_code("") is None
 
 
-def test_main_default_country(mocker):
+def test_main_default_country(setup_MainApp,mocker):
     """Default country 테스트 (KR)"""
-    mocker.patch("argparse.ArgumentParser.parse_args", return_value=mocker.Mock(country="KR"))
+    app, _, _, _, _, _ = setup_MainApp mocker.patch("argparse.ArgumentParser.parse_args", return_value=mocker.Mock(country="KR"))
     mock_run = mocker.patch("src.main.run")
 
-    main()
+    app.run()
 
     mock_run.assert_called_once_with(CountryCode.KR)
 
