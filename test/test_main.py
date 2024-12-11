@@ -1,5 +1,5 @@
 import pytest
-from src.main import main, parse_country_code, run
+from src.main import MainApp
 from src.util.enums import CountryCode
 from src.service.repository.trade_db_manager import TradeDBManager
 from src.service.repository.monitoring_manager import MonitoringManager
