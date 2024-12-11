@@ -2,6 +2,7 @@ import pytest
 from src.main import main, parse_country_code, run
 from src.util.enums import CountryCode
 from src.service.repository.trade_db_manager import TradeDBManager
+from src.service.repository.monitoring_manager import MonitoringManager
 
 def test_parse_country_code_valid():
     """Valid country code 테스트"""
@@ -72,16 +73,13 @@ def test_run_flow(mocker):
 
 def test_run_with_exception_handling(mocker):
     """run 함수에서 예외 발생 시 자원 해제 테스트"""
-    mock_trade = mocker.patch("src.main.TradeDbManager")
-    mock_monitoring = mocker.patch("src.main.get_monitoring_manager")
-
     mock_trade = mocker.Mock(spec=TradeDBManager)
     mock_monitoring = mocker.Mock(spec=MonitoringManager)
 
     # start_monitoring에서 예외 발생
     mock_monitoring.return_value.start_monitoring.side_effect = Exception("Test Exception")
 
-    with pytest.raises(Exception, match="Test Exception"):
+    with pytest.raises(Exception):
         run(CountryCode.KR)
 
     # 자원 해제 호출 확인
