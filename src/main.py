@@ -1,3 +1,4 @@
+import sys
 from src.service.repository.monitoring_manager import MonitoringKRManager, MonitoringUSManager
 from src.service.repository.trade_db_manager import TradeDBManager
 from src.service.algorithm.magicsplit_algorithm import MagicSplit
