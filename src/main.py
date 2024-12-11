@@ -19,6 +19,7 @@ class MainApp:
         self.country_code = CountryCode.KR
         self.parser_argument()
         self.parse_country_code()
+    
 
     def parser_argument(self):
         # ArgumentParser 객체 생성
@@ -36,62 +37,52 @@ class MainApp:
         # 명령행 인자 파싱
         self.args = parser.parse_args()
 
-    def parse_country_code():
+        
+    def parse_country_code(self):
         country_code_map = {
         "KR": CountryCode.KR,
         "US": CountryCode.US,
         }
         self.country_code = country_code_map.get(self.args.country.upper())
 
+        try:
+            if self.country_code is None:
+                raise ValueError(f"Invalid country code: {args.country}")
+        
+       
+        except ValueError as e:
+            print(f"Error: {e}")
+            sys.exit(1)
 
-
-    def get_yaml_manager(country_code, file_path):
-    manager_classes = {
+    def get_yaml_manager(self):
+        manager_classes = {
         CountryCode.KR: YamlKrManager,
         CountryCode.US: YamlUsManager,
     }
-    return manager_classes[country_code](file_path)
+        return manager_classes[self.country_code]
 
-def get_monitoring_manager(country_code, algo):
-    manager_classes = {
+    def get_monitoring_manager(self, algo):
+        manager_classes = {
         CountryCode.KR: MonitoringKRManager,
         CountryCode.US: MonitoringUSManager,
     }
-    return manager_classes[country_code](algo)
+        return manager_classes[self.country_code](algo)
 
 
-def run(country_code):
-    trade = TradeDBManager()    
-    yaml = get_yaml_manager(country_code, file_path)
-    broker = BrokerManager(DummyBrokerAPI())
-    algorithm = MagicSplit(broker, trade, yaml)
-    moni = get_monitoring_manager(country_code, algorithm)
+    def run(self):
+        trade = TradeDBManager()    
+        yaml = self.get_yaml_manager()
+        broker = BrokerManager(DummyBrokerAPI())
+        algorithm = MagicSplit(broker, trade, yaml)
+        moni = self.get_monitoring_manager(algorithm)
 
-    try:
-        moni.start_monitoring()
-    finally:
-        trade.close_db()
-        moni.close_db()
-
-    
-
-
-    
-        
-    try:
-        # country 인자를 CountryCode로 변환
-        country_code = parse_country_code(args.country)
-        if country_code is None:
-            raise ValueError(f"Invalid country code: {args.country}")
-        
-        # run 함수 실행
-        run(country_code)
-    
-    except ValueError as e:
-        print(f"Error: {e}")
-        sys.exit(1)
+        try:
+            moni.start_monitoring()
+        finally:
+            trade.close_db()
+            moni.close_db()
 
 
 
 if __name__ == "__main__":
-    main()
+    MainApp().run()
