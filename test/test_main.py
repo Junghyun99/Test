@@ -39,7 +39,7 @@ def test_main_default_country(setup_MainApp,mocker):
     app, _, _, _, _, _ = setup_MainApp mocker.patch("argparse.ArgumentParser.parse_args", return_value=mocker.Mock(country="KR"))
     mock_run = mocker.patch("src.main.run")
 
-    app.run()
+    app.parser_argument()
 
     mock_run.assert_called_once_with(CountryCode.KR)
 
