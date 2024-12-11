@@ -82,7 +82,7 @@ def test_run_with_exception_handling(mocker):
     mock_monitoring = mocker.Mock(spec=MonitoringKRManager)
 
     # start_monitoring에서 예외 발생
-    mock_monitoring.return_value.start_monitoring.side_effect = Exception("Test Exception")
+    mock_monitoring.start_monitoring.side_effect = Exception("Test Exception")
 
     with pytest.raises(Exception):
         run(CountryCode.KR)
