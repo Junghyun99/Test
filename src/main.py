@@ -41,7 +41,7 @@ class MainApp:
         "KR": CountryCode.KR,
         "US": CountryCode.US,
         }
-        self.country_code = country_code_map.get(self.args.country.uppet())
+        self.country_code = country_code_map.get(self.args.country.upper())
 
 
 
