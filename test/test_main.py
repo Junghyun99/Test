@@ -75,6 +75,9 @@ def test_run_with_exception_handling(mocker):
     mock_trade = mocker.patch("src.main.TradeDbManager")
     mock_monitoring = mocker.patch("src.main.get_monitoring_manager")
 
+    mock_trade = mocker.Mock(spec=TradeDBManager)
+    mock_monitoring = mocker.Mock(spec=MonitoringManager)
+
     # start_monitoring에서 예외 발생
     mock_monitoring.return_value.start_monitoring.side_effect = Exception("Test Exception")
 
