@@ -84,9 +84,9 @@ def test_get_yaml_manager_kr(mocker):
 
 def test_get_yaml_manager_us(mocker):
     mocker.patch("sys.argv", ["program", "US"])
+    mock_us_manager = mocker.patch("src.service.yaml.yaml_manager.YamlUsManager", return_value="Mocked US YAML")
     app = MainApp()
     app.run()
-    mock_us_manager = mocker.patch("src.service.yaml.yaml_manager.YamlUsManager", return_value="Mocked US YAML")
     yaml_manager = app.get_yaml_manager()
     mock_us_manager.assert_called_once_with()
     assert yaml_manager == "Mocked US YAML"
@@ -102,24 +102,24 @@ def test_get_yaml_manager_invalid_country(mocker):
 
 # === Test for `get_monitoring_manager` ===
 def test_get_monitoring_manager_kr(mocker):
-    mocker.patch("sys.argv", ["program", "KR"])
-    app = MainApp()
-    app.run()
+    mocker.patch("sys.argv", ["program", "KR"])    
     mock_monitor_manager = mocker.patch(
         "src.service.repository.monitoring_manager.MonitoringKRManager", return_value="Mocked KR Monitor"
     )
+    app = MainApp()
+    app.run()
     monitor_manager = app.get_monitoring_manager("mock_algorithm")
     mock_monitor_manager.assert_called_once_with("mock_algorithm")
     assert monitor_manager == "Mocked KR Monitor"
 
 
 def test_get_monitoring_manager_us(mocker):
-    mocker.patch("sys.argv", ["program", "US"])
-    app = MainApp()
-    app.run()
+    mocker.patch("sys.argv", ["program", "US"])    
     mock_monitor_manager = mocker.patch(
         "src.service.repository.monitoring_manager.MonitoringUSManager", return_value="Mocked US Monitor"
     )
+    app = MainApp()
+    app.run()
     monitor_manager = app.get_monitoring_manager("mock_algorithm")
     mock_monitor_manager.assert_called_once_with("mock_algorithm")
     assert monitor_manager == "Mocked US Monitor"
