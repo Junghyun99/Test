@@ -74,11 +74,13 @@ def test_parse_country_code_no_args(mocker):
 # === Test for `get_yaml_manager` ===
 def test_get_yaml_manager_kr(mocker):
     mocker.patch("sys.argv", ["program", "KR"])
+    
+    mock_kr_manager = mocker.patch("src.service.yaml.yaml_manager.YamlKrManager", return_value="Mocked KR YAML")
     app = MainApp()
     app.run()
-    mock_kr_manager = mocker.patch("src.service.yaml.yaml_manager.YamlKrManager", return_value="Mocked KR YAML")
     yaml_manager = app.get_yaml_manager()
-    mock_kr_manager.assert_called_once_with()
+    print(mock_kr_manager.called)
+     mock_kr_manager.assert_called_once_with()
     assert yaml_manager == "Mocked KR YAML"
 
 
