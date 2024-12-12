@@ -74,7 +74,8 @@ def test_parse_country_code_no_args(mocker):
 # === Test for `get_yaml_manager` ===
 def test_get_yaml_manager_kr(mocker):
     mocker.patch("sys.argv", ["program", "KR"])
-    app = MainApp().run()
+    app = MainApp()
+    app.run()
     mock_kr_manager = mocker.patch("src.service.yaml.yaml_manager.YamlKrManager", return_value="Mocked KR YAML")
     yaml_manager = app.get_yaml_manager()
     mock_kr_manager.assert_called_once_with()
@@ -83,7 +84,8 @@ def test_get_yaml_manager_kr(mocker):
 
 def test_get_yaml_manager_us(mocker):
     mocker.patch("sys.argv", ["program", "US"])
-    app = MainApp().run()
+    app = MainApp()
+    app.run()
     mock_us_manager = mocker.patch("src.service.yaml.yaml_manager.YamlUsManager", return_value="Mocked US YAML")
     yaml_manager = app.get_yaml_manager()
     mock_us_manager.assert_called_once_with()
@@ -93,14 +95,16 @@ def test_get_yaml_manager_us(mocker):
 def test_get_yaml_manager_invalid_country(mocker):
     mocker.patch("sys.argv", ["program", "INVALID"])
     with pytest.raises(SystemExit):
-        app = MainApp().run()
+        app = MainApp()
+        app.run()
         app.get_yaml_manager()
 
 
 # === Test for `get_monitoring_manager` ===
 def test_get_monitoring_manager_kr(mocker):
     mocker.patch("sys.argv", ["program", "KR"])
-    app = MainApp().run()
+    app = MainApp()
+    app.run()
     mock_monitor_manager = mocker.patch(
         "src.service.repository.monitoring_manager.MonitoringKRManager", return_value="Mocked KR Monitor"
     )
@@ -111,7 +115,8 @@ def test_get_monitoring_manager_kr(mocker):
 
 def test_get_monitoring_manager_us(mocker):
     mocker.patch("sys.argv", ["program", "US"])
-    app = MainApp().run()
+    app = MainApp()
+    app.run()
     mock_monitor_manager = mocker.patch(
         "src.service.repository.monitoring_manager.MonitoringUSManager", return_value="Mocked US Monitor"
     )
@@ -123,7 +128,8 @@ def test_get_monitoring_manager_us(mocker):
 def test_get_monitoring_manager_invalid_country(mocker):
     mocker.patch("sys.argv", ["program", "INVALID"])
     with pytest.raises(SystemExit):
-        app = MainApp().run()
+        app = MainApp()
+        app.run()
         app.get_monitoring_manager(None)
 
 
