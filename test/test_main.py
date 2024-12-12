@@ -80,7 +80,8 @@ def test_get_yaml_manager_kr(mocker):
     app.run()
     yaml_manager = app.get_yaml_manager()
     print(mock_kr_manager.called)
-     mock_kr_manager.assert_called_once_with()
+ 
+    mock_kr_manager.assert_called_once_with()
     assert yaml_manager == "Mocked KR YAML"
 
 
