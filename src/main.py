@@ -27,7 +27,7 @@ class MainApp:
         parser.add_argument(
         "country",  # 명령행에서 받을 인자 이름
         nargs="?",  # 선택적 인자
-        choices=["KR", "US"],  # 유효한 값 제한
+        choices=["KR", "US", "kr", "us"],  # 유효한 값 제한
         default="KR",  # 기본값
         help="Country code for the stock monitoring system (KR/US)"
     )
