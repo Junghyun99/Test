@@ -8,24 +8,6 @@ from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.service.broker.broker_manager import BrokerManager
 from src.service.yaml.yaml_manager import YamlKrManager 
 
-def test_get_yaml_manager_kr(mocker):
-    # sys.argv를 KR로 설정
-    mocker.patch("sys.argv", ["program", "KR"])
-
-    # YamlKrManager에 대한 Mock 객체 생성
-    mock_kr_manager = mocker.Mock(spec=YamlKrManager)
-    
-    # MainApp.get_yaml_manager에서 Mock 객체를 반환하도록 설정
-    mocker.patch("src.service.yaml.yaml_manager.YamlKrManager", return_value=mock_kr_manager)
-
-    # MainApp 객체 생성 및 메서드 호출
-    app = MainApp()
-    yaml_manager = app.get_yaml_manager()
-
-    # YamlKrManager가 정확히 호출되었는지 확인
-    assert yaml_manager == mock_kr_manager
-
-
 # === Test for `parser_argument` ===
 def test_parser_argument_default(mocker):
     mocker.patch("sys.argv", ["program"])
@@ -90,16 +72,23 @@ def test_parse_country_code_no_args(mocker):
 
 # === Test for `get_yaml_manager` ===
 def test_get_yaml_manager_kr(mocker):
+    # sys.argv를 KR로 설정
     mocker.patch("sys.argv", ["program", "KR"])
+
+    # YamlKrManager에 대한 Mock 객체 생성
+    mock_kr_manager = mocker.Mock(spec=YamlKrManager)
     
-    mock_kr_manager = mocker.patch("src.service.yaml.yaml_manager.YamlKrManager", return_value="Mocked KR YAML")
+    # MainApp.get_yaml_manager에서 Mock 객체를 반환하도록 설정
+    mocker.patch("src.service.yaml.yaml_manager.YamlKrManager", return_value=mock_kr_manager)
+
+    # MainApp 객체 생성 및 메서드 호출
     app = MainApp()
-    app.run()
     yaml_manager = app.get_yaml_manager()
-    print(mock_kr_manager.called)
- 
+
+    # YamlKrManager가 정확히 호출되었는지 확인
+    assert yaml_manager == mock_kr_manager
+
     mock_kr_manager.assert_called_once_with()
-    assert yaml_manager == "Mocked KR YAML"
 
 
 def test_get_yaml_manager_us(mocker):
