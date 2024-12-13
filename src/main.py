@@ -79,7 +79,7 @@ class MainApp:
         try:
             moni.start_monitoring()
         finally:
-            print("Actual module path:", TradeDBManager.__name__)
+            print("Actual module path:", TradeDBManager.__module__)
             print("Module attributes:", dir(TradeDBManager))
             print("close")
             trade.close_db()
