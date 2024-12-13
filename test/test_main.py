@@ -76,7 +76,8 @@ def test_get_yaml_manager_kr(mocker):
     mocker.patch("sys.argv", ["program", "KR"])
 
     # YamlKrManager에 대한 Mock 객체 생성
-    mock_kr_manager = mocker.Mock(spec= src.service.yaml.yaml_manager.YamlKrManager) 
+    mock_kr_manager = mocker.patch("src.service.yaml.yaml_manager.YamlKrManager", spec=True)
+
     # MainApp.get_yaml_manager에서 Mock 객체를 반환하도록 설정  
 
     mocker.patch("src.service.yaml.yaml_manager.YamlKrManager", return_value= mock_kr_manager)
