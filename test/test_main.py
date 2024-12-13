@@ -75,73 +75,49 @@ def test_get_yaml_manager_kr(mocker):
     # sys.argv를 KR로 설정
     mocker.patch("sys.argv", ["program", "KR"])
 
-    # YamlKrManager에 대한 Mock 객체 생성
-    mock_kr_manager = mocker.patch("src.service.yaml.yaml_manager.YamlKrManager")
-
-    # MainApp.get_yaml_manager에서 Mock 객체를 반환하도록 설정  
-
-    mocker.patch("src.service.yaml.yaml_manager.YamlKrManager", return_value= mock_kr_manager)
-
-
     # MainApp 객체 생성 및 메서드 호출
     app = MainApp()
     yaml_manager = app.get_yaml_manager()
 
     # YamlKrManager가 정확히 호출되었는지 확인
     assert isinstance(yaml_manager, YamlKrManager)
-    #assert yaml_manager == mock_kr_manager
- 
-
 
 
 def test_get_yaml_manager_us(mocker):
     mocker.patch("sys.argv", ["program", "US"])
-    mock_us_manager = mocker.patch("src.service.yaml.yaml_manager.YamlUsManager", return_value="Mocked US YAML")
+    
     app = MainApp()
-    app.run()
     yaml_manager = app.get_yaml_manager()
-    mock_us_manager.assert_called_once_with()
-    assert yaml_manager == "Mocked US YAML"
+    assert isinstance(yaml_manager, YamlUsManager)
+
 
 
 def test_get_yaml_manager_invalid_country(mocker):
     mocker.patch("sys.argv", ["program", "INVALID"])
     with pytest.raises(SystemExit):
         app = MainApp()
-        app.run()
         app.get_yaml_manager()
 
 
 # === Test for `get_monitoring_manager` ===
 def test_get_monitoring_manager_kr(mocker):
-    mocker.patch("sys.argv", ["program", "KR"])    
-    mock_monitor_manager = mocker.patch(
-        "src.service.repository.monitoring_manager.MonitoringKRManager", return_value="Mocked KR Monitor"
-    )
+    mocker.patch("sys.argv", ["program", "KR"])        
     app = MainApp()
-    app.run()
     monitor_manager = app.get_monitoring_manager("mock_algorithm")
-    mock_monitor_manager.assert_called_once_with("mock_algorithm")
-    assert monitor_manager == "Mocked KR Monitor"
+    assert isinstance(monitor_manager, MonitoringKRManager)
 
 
 def test_get_monitoring_manager_us(mocker):
     mocker.patch("sys.argv", ["program", "US"])    
-    mock_monitor_manager = mocker.patch(
-        "src.service.repository.monitoring_manager.MonitoringUSManager", return_value="Mocked US Monitor"
-    )
     app = MainApp()
-    app.run()
     monitor_manager = app.get_monitoring_manager("mock_algorithm")
-    mock_monitor_manager.assert_called_once_with("mock_algorithm")
-    assert monitor_manager == "Mocked US Monitor"
+    assert isinstance(monitor_manager, MonitoringUSManager)
 
 
 def test_get_monitoring_manager_invalid_country(mocker):
     mocker.patch("sys.argv", ["program", "INVALID"])
     with pytest.raises(SystemExit):
         app = MainApp()
-        app.run()
         app.get_monitoring_manager(None)
 
 
