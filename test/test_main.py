@@ -2,11 +2,11 @@ import pytest
 from src.main import MainApp
 from src.util.enums import CountryCode
 from src.service.repository.trade_db_manager import TradeDBManager
-from src.service.repository.monitoring_manager import MonitoringManager
+from src.service.repository.monitoring_manager import MonitoringKRManager, MonitoringUSManager 
 
 from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.service.broker.broker_manager import BrokerManager
-from src.service.yaml.yaml_manager import YamlKrManager 
+from src.service.yaml.yaml_manager import YamlKrManager, YamlUsManager 
 
 # === Test for `parser_argument` ===
 def test_parser_argument_default(mocker):
