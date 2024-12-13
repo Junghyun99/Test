@@ -5,6 +5,9 @@ system_logger = logger_manager.get_logger('SYSTEM')
 class TradeDBManager:
     def __init__(self, db_name='StockTrade.db'):
         self.db = StockTradeDB(db_name)
+        
+
+        system_logger.log_info("TradeDBManager init")
 
     # Reading Methods
     def get_trade_round(self, code, round):
