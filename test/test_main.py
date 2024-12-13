@@ -128,7 +128,14 @@ def test_run_close_methods_called(mocker):
     mock_monitor = mocker.patch("src.service.repository.monitoring_manager.MonitoringKRManager", autospec=True)
     app = MainApp()
     app.run()
-    mock_trade.return_value.close_db.assert_called_once()
+    print("Mock TradeDBManager instance:", mock_trade.return_value)
+    print("Mock MonitoringKRManager instance:", mock_monitor.return_value)
+
+    # 메서드 호출 확인
+    assert mock_trade.call_count == 1
+    assert mock_trade.return_value.close_db.call_count == 1
+    assert mock_monitor.return_value.close_db.call_count == 1
+ mock_trade.return_value.close_db.assert_called_once()
     mock_monitor.return_value.close_db.assert_called_once()
 
 
