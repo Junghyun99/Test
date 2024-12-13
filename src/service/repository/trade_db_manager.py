@@ -1,5 +1,6 @@
 from src.service.repository.stock_trade_db import StockTradeDB
 
+system_logger = logger_manager.get_logger('SYSTEM')
 
 class TradeDBManager:
     def __init__(self, db_name='StockTrade.db'):
