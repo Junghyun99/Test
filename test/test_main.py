@@ -80,7 +80,7 @@ def test_get_yaml_manager_kr(mocker):
     yaml_manager = app.get_yaml_manager()
 
     # YamlKrManager가 정확히 호출되었는지 확인
-    assert isinstance(yaml_manager, YamlKrManager):
+    assert isinstance(yaml_manager, YamlKrManager)
  
 def test_get_yaml_manager_us(mocker):
     mocker.patch("sys.argv", ["program", "US"])
