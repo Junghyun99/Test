@@ -135,7 +135,9 @@ def test_run_close_methods_called(mocker):
     assert mock_trade.call_count == 1
     assert mock_trade.return_value.close_db.call_count == 1
     assert mock_monitor.return_value.close_db.call_count == 1
- mock_trade.return_value.close_db.assert_called_once()
+ 
+
+    mock_trade.return_value.close_db.assert_called_once()
     mock_monitor.return_value.close_db.assert_called_once()
 
 
