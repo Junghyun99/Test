@@ -11,8 +11,7 @@ from src.service.broker.dummy_broker_api import DummyBrokerAPI
 from src.util.enums import CountryCode
 
 
-print("Actual module path:", TradeDBManager.__name__)
-print("Module attributes:", dir(TradeDBManager))
+
 
 class MainApp:
     def __init__(self):
@@ -80,6 +79,8 @@ class MainApp:
         try:
             moni.start_monitoring()
         finally:
+            print("Actual module path:", TradeDBManager.__name__)
+            print("Module attributes:", dir(TradeDBManager))
             print("close")
             trade.close_db()
             moni.close_db()
