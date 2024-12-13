@@ -71,6 +71,7 @@ class MainApp:
 
     def run(self):
         trade = TradeDBManager()    
+        print(trade)
         yaml = self.get_yaml_manager()
         broker = BrokerManager(DummyBrokerAPI())
         algorithm = MagicSplit(broker, trade, yaml)
