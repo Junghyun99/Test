@@ -77,6 +77,7 @@ class MainApp:
         try:
             moni.start_monitoring()
         finally:
+            print("close")
             trade.close_db()
             moni.close_db()
 
