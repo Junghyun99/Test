@@ -124,8 +124,8 @@ def test_get_monitoring_manager_invalid_country(mocker):
 # === Test for `run` ===
 def test_run_close_methods_called(mocker):
     mocker.patch("sys.argv", ["program", "KR"])
-    mock_trade = mocker.patch("src.service.repository.trade_db_manager.TradeDBManager")
-    mock_monitor = mocker.patch("src.service.repository.monitoring_manager.MonitoringKRManager")
+    mock_trade = mocker.patch("src.service.repository.trade_db_manager.TradeDBManager", autospec=True)
+    mock_monitor = mocker.patch("src.service.repository.monitoring_manager.MonitoringKRManager", autospec=True)
     app = MainApp()
     app.run()
     mock_trade.return_value.close_db.assert_called_once()
