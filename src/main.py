@@ -11,6 +11,9 @@ from src.service.broker.dummy_broker_api import DummyBrokerAPI
 from src.util.enums import CountryCode
 
 
+print("Actual module path:", TradeDBManager.__name__)
+print("Module attributes:", dir(TradeDBManager))
+
 class MainApp:
     def __init__(self):
         self.args = None
