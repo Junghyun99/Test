@@ -57,7 +57,7 @@ class MainApp:
         CountryCode.KR: YamlKrManager,
         CountryCode.US: YamlUsManager,
     }
-        return manager_classes[self.country_code]
+        return manager_classes[self.country_code]()
 
     def get_monitoring_manager(self, algo):
         manager_classes = {
