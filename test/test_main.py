@@ -126,7 +126,7 @@ from unittest.mock import patch
 
 def test_run_close_methods_called(mocker):
     mocker.patch("sys.argv", ["program", "KR"])
-    mock_trade = mocker.patch("src.service.repository.trade_db_manager.TradeDBManager")
+    
     with patch("src.service.repository.trade_db_manager.TradeDBManager") as mock_trade, \
          patch("src.service.repository.monitoring_manager.MonitoringKRManager") as mock_monitor:
         app = MainApp()
