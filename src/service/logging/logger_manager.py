@@ -4,11 +4,6 @@ from src.service.logging.transaction_logger import TransactionLogger
 import yaml
 from pathlib import Path
 
-logger_class:
-  log_dir: "log/"
-  system_log_file: "system.log"
-  transaction_log_file: "transaxtion.log"
-
 
 class LoggerManager:
     def __init__(self):
