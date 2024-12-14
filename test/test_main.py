@@ -170,4 +170,4 @@ def test_run_yaml_manager_initialized(mocker, caplog):
         app = MainApp()
         app.run()
                 
-        assert "YamlKrManager1" not in caplog.text
+        assert "ㄱㄷㄱㄷㅅ딪" not in caplog.text
