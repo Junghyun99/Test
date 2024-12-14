@@ -9,8 +9,11 @@ class YamlKrManager(YamlManager):
     COUNTRY_CODE = "KR"
     def __init__(self,file_path = "src/config/stock_round_config.yaml"):
         super().__init__(file_path)
+        system_logger.log_info("create YamlKrManager instance, init")
 
 class YamlUsManager(YamlManager):
     COUNTRY_CODE = "US"
     def __init__(self,file_path = "src/config/stock_round_config.yaml"):
         super().__init__(file_path)
+        system_logger.log_info("create YamlUsManager instance, init")
+
