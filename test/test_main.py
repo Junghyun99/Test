@@ -122,14 +122,17 @@ def test_get_monitoring_manager_invalid_country(mocker):
 
 
 # === Test for `run` ===
-def test_run_close_methods_called(mocker):
+def test_run_close_methods_called(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR"])
        
-    app = MainApp()
-    app.run()
         
     # 메서드 호출 확인
-        
+    with caplog.at_level(logging.DEBUG):
+        app = MainApp()
+        app.run()
+                
+        assert "db close" not in caplog.text
+            
 
 
 def test_run_monitoring_started(mocker):
