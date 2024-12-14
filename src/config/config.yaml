@@ -3,11 +3,10 @@ logging:
   system_log_file: "system.log"
   transaction_log_file: "transaxtion.log"
 
-
 db_class:
   db_dir: "db/"
-  monitoring_db_file: ""
-  stock_trade_db_file: ""
+  monitoring_db_file: "Monitoring.db"
+  stock_trade_db_file: "StockTrade.db"
 
 
 
