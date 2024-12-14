@@ -4,6 +4,12 @@ logging:
   transaction_log_file: "transaxtion.log"
 
 
+db_class:
+  db_dir: "db/"
+  monitoring_db_file: ""
+  stock_trade_db_file: ""
+
+
 
 company:
   name: OpenAI
