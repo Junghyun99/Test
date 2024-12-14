@@ -8,6 +8,7 @@ class CustomFormatter(logging.Formatter):
     def format(self, record):
         # 호출 스택에서 실제 호출 위치 추출
         stack = inspect.stack()
+        print("stack : ",stack)
         for frame in stack:
             module_name = frame.frame.f_globals["__name__"]
             if not module_name.startswith("logging"):  # 로깅 모듈 제외
