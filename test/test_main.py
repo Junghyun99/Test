@@ -177,4 +177,4 @@ def test_run_yaml_manager_initialized(mocker, caplog):
         app = MainApp()
         app.run()
                 
-        assert "ㄱㄷㄱㄷㅅ딪" in caplog.text
+        assert "YamlKrManager" in caplog.text
