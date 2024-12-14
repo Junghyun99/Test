@@ -8,18 +8,6 @@ db_class:
   monitoring_db_file: "Monitoring.db"
   stock_trade_db_file: "StockTrade.db"
 
+yaml_manager:
+  round_path: "src/config/stock_round_config.yaml"
 
-
-company:
-  name: OpenAI
-  address:
-    street: 123 AI Street
-    city: San Francisco
-    zip: 94111
-
- person:
-  name: Alice
-  hobbies:
-    - Reading
-    - Traveling
-    - Coding
