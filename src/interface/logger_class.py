@@ -6,12 +6,17 @@ from logging.handlers import RotatingFileHandler
 
 class CustomFormatter(logging.Formatter):
     def format(self, record):
-        # 호출 위치 정보 추가
-        frame = inspect.currentframe()
-        outer_frame = frame.f_back.f_back.f_back  # 로그 메서드 호출자의 두 단계 위
-        record.caller_info = f"{outer_frame.f_globals['__name__']}:{outer_frame.f_lineno}"
-        return super().format(record)
+        # 호출 스택에서 실제 호출 위치 추출
+        stack = inspect.stack()
+        for frame in stack:
+            module_name = frame.frame.f_globals["__name__"]
+            if not module_name.startswith("logging"):  # 로깅 모듈 제외
+                record.caller_info = f"{module_name}:{frame.lineno}"
+                break
+        else:
+            record.caller_info = "Unknown"
 
+        return super().format(record)
 
 class BaseLogger(ABC):
     def __init__(self, logger_name, log_file, level=logging.INFO):
