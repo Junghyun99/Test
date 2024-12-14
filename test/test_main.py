@@ -11,6 +11,7 @@ from src.service.yaml.yaml_manager import YamlKrManager, YamlUsManager
 
 from src.service.logging.logger_manager import logger_manager
 system_logger = logger_manager.get_logger('SYSTEM')
+transaction_logger = logger_manager.get_logger('TRANSACTION')
 
 # === Test for `parser_argument` ===
 def test_parser_argument_default(mocker):
@@ -152,7 +153,7 @@ def test_run_monitoring_started(mocker, caplog):
 
 def test_run_broker_manager_called(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR"])
-    system_logger.get_logger().propagate = True   
+    transaction_logger.get_logger().propagate = True   
     with caplog.at_level(logging.DEBUG):
         app = MainApp()
         app.run()
