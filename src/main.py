@@ -10,7 +10,7 @@ from src.service.yaml.yaml_manager import YamlKrManager, YamlUsManager
 from src.service.broker.dummy_broker_api import DummyBrokerAPI 
 from src.util.enums import CountryCode
 
-
+import src.service.repository.trade_db_manager as tdm
 
 
 class MainApp:
@@ -81,7 +81,7 @@ class MainApp:
             moni.start_monitoring()
         finally:
             print("Actual module path:", TradeDBManager.__module__)
-            print("Module attributes:", dir(TradeDBManager))
+            print("Module attributes:", dir(tdm))
             print("close")
             trade.close_db()
             moni.close_db()
