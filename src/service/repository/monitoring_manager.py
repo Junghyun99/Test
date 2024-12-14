@@ -77,6 +77,7 @@ class MonitoringManager:
 
 
     def close_db(self):
+        system_logger.log_info("MonitoringManager db close")
         self.db.close()
 
 class MonitoringKRManager(MonitoringManager):
