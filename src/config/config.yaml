@@ -1,1 +1,20 @@
-#
+logging:
+  log_dir: "log/"
+  system_log_file: "system.log"
+  transaction_log_file: "transaxtion.log"
+
+
+
+company:
+  name: OpenAI
+  address:
+    street: 123 AI Street
+    city: San Francisco
+    zip: 94111
+
+ person:
+  name: Alice
+  hobbies:
+    - Reading
+    - Traveling
+    - Coding
