@@ -1,6 +1,6 @@
 import logging
+import inspect
 from abc import ABC, abstractmethod
-
 from logging.handlers import RotatingFileHandler
 
 class BaseLogger(ABC):
@@ -24,8 +24,8 @@ class BaseLogger(ABC):
         file_handler.setFormatter(self._get_formatter())
         self.logger.addHandler(file_handler)
 
-    def _get_formatter(self):
-        return logging.Formatter('%(asctime)s - %(process)d - %(threadName)s - %(module)s - %(lineno)d - %(name)s - %(levelname)s - %(message)s')
+    def _get_formatter(self)
+        return CustomFormatter('%(asctime)s - %(threadName)s - %(name)s - %(levelname)s - %(message)s (호출위치: %(caller_info)s)')
 
     def get_logger(self):
         return self.logger
