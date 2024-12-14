@@ -4,6 +4,12 @@ from src.service.logging.transaction_logger import TransactionLogger
 import yaml
 from pathlib import Path
 
+logger_class:
+  log_dir: "log/"
+  system_log_file: "system.log"
+  transaction_log_file: "transaxtion.log"
+
+
 class LoggerManager:
     def __init__(self):
         self.loggers = {}
@@ -11,12 +17,13 @@ class LoggerManager:
 
     def _set_yaml_config(self):
         # YAML 설정 로드
-        with open("src/config/logging.yaml", "r") as file:
+        with open("src/config/config.yaml", "r") as file:
             config = yaml.safe_load(file)
 
-        log_dir = Path(config['log_dir'])
-        self.system_log_file = log_dir / config['system_log_file']
-        self.transaction_log_file = log_dir / config['transaction_log_file']
+        logger = config['logger_class']
+        log_dir = Path(logger['log_dir'])
+        self.system_log_file = log_dir / logger['system_log_file']
+        self.transaction_log_file = log_dir / logger['transaction_log_file']
 
         # 디렉토리 생성 (없으면 생성)
         log_dir.mkdir(parents=True, exist_ok=True)
