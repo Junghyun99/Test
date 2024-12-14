@@ -1,4 +1,5 @@
 import pytest
+import logging
 from src.main import MainApp
 from src.util.enums import CountryCode
 from src.service.repository.trade_db_manager import TradeDBManager
