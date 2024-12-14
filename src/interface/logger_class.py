@@ -10,7 +10,7 @@ class CustomFormatter(logging.Formatter):
         stack = inspect.stack()       
         for frame in stack:
             module_name = frame.frame.f_globals["__name__"]
-            if not module_name.startswith("logging") and not module_name.startswith("logger"):  # 로깅 모듈 제외
+            if not module_name.startswith("logging") and not module_name.startswith("logger_class"):  # 로깅 모듈 제외
                 record.caller_info = f"{module_name}:{frame.lineno}"
                 break
         else:
