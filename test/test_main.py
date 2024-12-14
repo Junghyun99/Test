@@ -126,7 +126,7 @@ def test_get_monitoring_manager_invalid_country(mocker):
 def test_run_close_methods_called(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR"])
        
-        
+    logger.get_logger().propagate = True   
     # 메서드 호출 확인
     with caplog.at_level(logging.DEBUG):
         app = MainApp()
