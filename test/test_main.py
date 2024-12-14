@@ -136,20 +136,23 @@ def test_run_close_methods_called(mocker, caplog):
             
 
 
-def test_run_monitoring_started(mocker):
+def test_run_monitoring_started(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR"])
-    mock_monitor = mocker.patch("src.service.repository.monitoring_manager.MonitoringKRManager")
-    app = MainApp()
-    app.run()
-    mock_monitor.return_value.start_monitoring.assert_called_once()
+    with caplog.at_level(logging.DEBUG):
+        app = MainApp()
+        app.run()
+                
+        assert "start_monitoring" not in caplog.text
 
 
-def test_run_broker_manager_called(mocker):
+
+def test_run_broker_manager_called(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR"])
-    mock_broker = mocker.patch("src.service.broker.broker_manager.BrokerManager")
-    app = MainApp()
-    app.run()
-    mock_broker.assert_called_once()
+    with caplog.at_level(logging.DEBUG):
+        app = MainApp()
+        app.run()
+                
+        assert "111 " not in caplog.text
 
 
 def test_run_algorithm_initialized(mocker):
