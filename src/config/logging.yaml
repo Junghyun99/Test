@@ -1,3 +1,1 @@
-log_dir: "log/"
-system_log_file: "system.log"
-transaction_log_file: "transaxtion.log"
+#
