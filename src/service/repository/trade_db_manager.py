@@ -86,4 +86,5 @@ class TradeDBManager:
 
 
     def close_db(self):
+        system_logger.log_info("TradeDBManager db close")
         self.db.close()
