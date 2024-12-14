@@ -10,8 +10,6 @@ from src.service.yaml.yaml_manager import YamlKrManager, YamlUsManager
 from src.service.broker.dummy_broker_api import DummyBrokerAPI 
 from src.util.enums import CountryCode
 
-import src.service.repository.trade_db_manager as tdm
-
 
 class MainApp:
     def __init__(self):
@@ -71,7 +69,6 @@ class MainApp:
 
     def run(self):
         trade = TradeDBManager()    
-        print(trade)
         yaml = self.get_yaml_manager()
         broker = BrokerManager(DummyBrokerAPI())
         algorithm = MagicSplit(broker, trade, yaml)
@@ -79,10 +76,7 @@ class MainApp:
 
         try:
             moni.start_monitoring()
-        finally:
-            print("Actual module path:", TradeDBManager.__module__)
-            print("Module attributes:", dir(tdm))
-            print("close")
+        finally:          
             trade.close_db()
             moni.close_db()
 
