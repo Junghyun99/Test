@@ -9,6 +9,8 @@ from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.service.broker.broker_manager import BrokerManager
 from src.service.yaml.yaml_manager import YamlKrManager, YamlUsManager 
 
+system_logger = logger_manager.get_logger('SYSTEM')
+
 # === Test for `parser_argument` ===
 def test_parser_argument_default(mocker):
     mocker.patch("sys.argv", ["program"])
@@ -126,7 +128,7 @@ def test_get_monitoring_manager_invalid_country(mocker):
 def test_run_close_methods_called(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR"])
        
-    logger.get_logger().propagate = True   
+    system_logger.get_logger().propagate = True   
     # 메서드 호출 확인
     with caplog.at_level(logging.DEBUG):
         app = MainApp()
