@@ -132,7 +132,7 @@ def test_run_close_methods_called(mocker, caplog):
         app = MainApp()
         app.run()
                 
-        assert "db close" not in caplog.text
+        assert "db close" in caplog.text
             
 
 
@@ -142,7 +142,7 @@ def test_run_monitoring_started(mocker, caplog):
         app = MainApp()
         app.run()
                 
-        assert "start_monitoring" not in caplog.text
+        assert "start_monitoring" in caplog.text
 
 
 
@@ -152,7 +152,7 @@ def test_run_broker_manager_called(mocker, caplog):
         app = MainApp()
         app.run()
                 
-        assert "BrokerManager" not in caplog.text
+        assert "BrokerManager" in caplog.text
 
 
 def test_run_algorithm_initialized(mocker, caplog):
@@ -161,7 +161,7 @@ def test_run_algorithm_initialized(mocker, caplog):
         app = MainApp()
         app.run()
                 
-        assert "MagicSplit" not in caplog.text
+        assert "MagicSplit" in caplog.text
 
 
 def test_run_yaml_manager_initialized(mocker, caplog):
@@ -170,4 +170,4 @@ def test_run_yaml_manager_initialized(mocker, caplog):
         app = MainApp()
         app.run()
                 
-        assert "ㄱㄷㄱㄷㅅ딪" not in caplog.text
+        assert "ㄱㄷㄱㄷㅅ딪" in caplog.text
