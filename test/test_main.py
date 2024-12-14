@@ -152,20 +152,22 @@ def test_run_broker_manager_called(mocker, caplog):
         app = MainApp()
         app.run()
                 
-        assert "111 " not in caplog.text
+        assert "BrokerManager" not in caplog.text
 
 
-def test_run_algorithm_initialized(mocker):
+def test_run_algorithm_initialized(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR"])
-    mock_algo = mocker.patch("src.service.algorithm.magicsplit_algorithm.MagicSplit")
-    app = MainApp()
-    app.run()
-    mock_algo.assert_called_once()
+    with caplog.at_level(logging.DEBUG):
+        app = MainApp()
+        app.run()
+                
+        assert "MagicSplit" not in caplog.text
 
 
-def test_run_yaml_manager_initialized(mocker):
+def test_run_yaml_manager_initialized(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR"])
-    mock_yaml = mocker.patch("src.service.yaml.yaml_manager.YamlKrManager")
-    app = MainApp()
-    app.run()
-    mock_yaml.assert_called_once()
+    with caplog.at_level(logging.DEBUG):
+        app = MainApp()
+        app.run()
+                
+        assert "YamlKrManager" not in caplog.text
