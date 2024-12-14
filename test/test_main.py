@@ -9,6 +9,7 @@ from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.service.broker.broker_manager import BrokerManager
 from src.service.yaml.yaml_manager import YamlKrManager, YamlUsManager 
 
+from src.service.logging.logger_manager import logger_manager
 system_logger = logger_manager.get_logger('SYSTEM')
 
 # === Test for `parser_argument` ===
