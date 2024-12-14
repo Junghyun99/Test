@@ -122,23 +122,26 @@ def test_get_monitoring_manager_invalid_country(mocker):
 
 
 # === Test for `run` ===
+from unittest.mock import patch
+
 def test_run_close_methods_called(mocker):
     mocker.patch("sys.argv", ["program", "KR"])
     mock_trade = mocker.patch("src.service.repository.trade_db_manager.TradeDBManager")
-    mock_monitor = mocker.patch("src.service.repository.monitoring_manager.MonitoringKRManager")
-    app = MainApp()
-    app.run()
-    print("Mock TradeDBManager instance:", mock_trade.return_value)
-    print("Mock MonitoringKRManager instance:", mock_monitor.return_value)
+    with patch("src.service.repository.trade_db_manager.TradeDBManager") as mock_trade, \
+         patch("src.service.repository.monitoring_manager.MonitoringKRManager") as mock_monitor:
+        app = MainApp()
+        app.run()
+        print("Mock TradeDBManager instance:", mock_trade.return_value)
+        print("Mock MonitoringKRManager instance:", mock_monitor.return_value)
 
     # 메서드 호출 확인
-    assert mock_trade.call_count == 1
-    assert mock_trade.return_value.close_db.call_count == 1
-    assert mock_monitor.return_value.close_db.call_count == 1
+        assert mock_trade.call_count == 1
+        assert mock_trade.return_value.close_db.call_count == 1
+        assert mock_monitor.return_value.close_db.call_count == 1
  
 
-    mock_trade.return_value.close_db.assert_called_once()
-    mock_monitor.return_value.close_db.assert_called_once()
+        mock_trade.return_value.close_db.assert_called_once()
+        mock_monitor.return_value.close_db.assert_called_once()
 
 
 def test_run_monitoring_started(mocker):
