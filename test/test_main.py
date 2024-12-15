@@ -7,7 +7,7 @@ from src.service.repository.monitoring_manager import MonitoringKRManager, Monit
 
 from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.service.broker.broker_manager import BrokerManager
-from src.service.yaml.yaml_manager import YamlKrManager, YamlUsManager 
+from src.service.algorithm.stock_round_yaml_manager import StockRoundYamlKrManager, StockRoundYamlUsManager 
 
 from src.service.logging.logger_manager import logger_manager
 system_logger = logger_manager.get_logger('SYSTEM')
@@ -82,18 +82,18 @@ def test_get_yaml_manager_kr(mocker):
 
     # MainApp 객체 생성 및 메서드 호출
     app = MainApp()
-    yaml_manager = app.get_yaml_manager()
+    yaml_manager = app.get_stock_round_yaml_manager()
 
     # YamlKrManager가 정확히 호출되었는지 확인
-    assert isinstance(yaml_manager, YamlKrManager)
+    assert isinstance(yaml_manager, StockRoundYamlKrManager)
 
 
 def test_get_yaml_manager_us(mocker):
     mocker.patch("sys.argv", ["program", "US"])
     
     app = MainApp()
-    yaml_manager = app.get_yaml_manager()
-    assert isinstance(yaml_manager, YamlUsManager)
+    yaml_manager = app.get_stock_round_yaml_manager()
+    assert isinstance(yaml_manager, StockRoundYamlUsManager)
 
 
 
@@ -101,7 +101,7 @@ def test_get_yaml_manager_invalid_country(mocker):
     mocker.patch("sys.argv", ["program", "INVALID"])
     with pytest.raises(SystemExit):
         app = MainApp()
-        app.get_yaml_manager()
+        app.get_stock_round_yaml_manager()
 
 
 # === Test for `get_monitoring_manager` ===
@@ -178,4 +178,4 @@ def test_run_yaml_manager_initialized(mocker, caplog):
         app = MainApp()
         app.run()
                 
-        assert "YamlKrManager" in caplog.text
+        assert "StockRoundYamlKrManager" in caplog.text

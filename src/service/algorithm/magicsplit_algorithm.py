@@ -7,10 +7,10 @@ from src.service.logging.logger_manager import logger_manager
 system_logger = logger_manager.get_logger('SYSTEM')
    
 class MagicSplit(Algorithm):
-    def __init__(self, broker_manager, trade_db_manager, yaml_manager):        
+    def __init__(self, broker_manager, trade_db_manager, stock_round_yaml_manager):        
         self.broker_manager = broker_manager
         self.trade_db_manager = trade_db_manager
-        self.yaml_manager = yaml_manager
+        self.stock_round_yaml_manager = stock_round_yaml_manager
         system_logger.log_info("create MagicSplit instance, init")
 
     def _calculate_price(self, buy_price, buy_rate, sell_rate):
@@ -27,7 +27,7 @@ class MagicSplit(Algorithm):
         return info[0], info[1] # price, quantity
 
     def _try_buy_stock(self, current_price, moniData:MonitoringData):
-        yaml_data = self.yaml_manager.read_by_id(moniData.code)
+        yaml_data = self.stock_round_yaml_manager.read_by_id(moniData.code)
         system_logger.log_info("_try_buy_stock price %s, moniData %s, yaml %s",current_price, moniData, yaml_data)
 
         if yaml_data[0]["orders"][moniData.trade_round-1]["order"] != moniData.trade_round:
@@ -53,7 +53,7 @@ class MagicSplit(Algorithm):
         return AlgorithmData(QueryOp.UPDATE, moniData)
         
     def _try_sell_stock(self, current_price, moniData:MonitoringData):
-        yaml_data = self.yaml_manager.read_by_id(moniData.code)
+        yaml_data = self.stock_round_yaml_manager.read_by_id(moniData.code)
         system_logger.log_info("_try_sell_stock price %s, moniData %s",current_price, moniData)
 
         

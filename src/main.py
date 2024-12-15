@@ -5,7 +5,7 @@ from src.service.repository.monitoring_manager import MonitoringKRManager, Monit
 from src.service.repository.trade_db_manager import TradeDBManager
 from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.service.broker.broker_manager import BrokerManager
-from src.service.yaml.yaml_manager import YamlKrManager, YamlUsManager 
+from src.service.algorithm.stock_round_yaml_manager import StockRoundYamlKrManager, StockRoundYamlUsManager 
 
 from src.service.broker.dummy_broker_api import DummyBrokerAPI 
 from src.util.enums import CountryCode
@@ -45,17 +45,17 @@ class MainApp:
 
         try:
             if self.country_code is None:
-                raise ValueError(f"Invalid country code: {args.country}")
+                raise ValueError(f"Invalid country code: {self.args.country}")
         
        
         except ValueError as e:
             print(f"Error: {e}")
             sys.exit(1)
 
-    def get_yaml_manager(self):
+    def get_stock_round_yaml_manager(self):
         manager_classes = {
-        CountryCode.KR: YamlKrManager,
-        CountryCode.US: YamlUsManager,
+        CountryCode.KR: StockRoundYamlKrManager,
+        CountryCode.US: StockRoundYamlUsManager,
     }
         return manager_classes[self.country_code]()
 
@@ -69,7 +69,7 @@ class MainApp:
 
     def run(self):
         trade = TradeDBManager()    
-        yaml = self.get_yaml_manager()
+        yaml = self.get_stock_round_yaml_manager()
         broker = BrokerManager(DummyBrokerAPI())
         algorithm = MagicSplit(broker, trade, yaml)
         moni = self.get_monitoring_manager(algorithm)

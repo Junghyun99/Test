@@ -8,6 +8,6 @@ db_class:
   monitoring_db_file: "Monitoring.db"
   stock_trade_db_file: "StockTrade.db"
 
-yaml_manager:
+stock_round_yaml:
   round_path: "src/config/stock_round_config.yaml"
 

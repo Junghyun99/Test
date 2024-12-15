@@ -1,7 +1,7 @@
 import pytest
 import os
 import yaml
-from src.service.yaml.yaml_manager import YamlKrManager, YamlUsManager
+from src.service.algorithm.stock_round_yaml_manager import StockRoundYamlKrManager, StockRoundYamlUsManager
 
 @pytest.fixture
 def temp_file(tmp_path):
@@ -63,11 +63,11 @@ def sample_us_data2():
                                                                                                                                                                                                                                
 @pytest.fixture
 def kr_stock_crud(temp_file):
-    return YamlKrManager(str(temp_file))
+    return StockRoundYamlKrManager(str(temp_file))
 
 @pytest.fixture
 def us_stock_crud(temp_file):
-    return YamlUsManager(str(temp_file))
+    return StockRoundYamlUsManager(str(temp_file))
 
 
 # --- CREATE TEST CASES ---
