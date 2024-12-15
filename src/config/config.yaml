@@ -9,5 +9,5 @@ db_class:
   stock_trade_db_file: "StockTrade.db"
 
 stock_round_yaml:
-  round_path: "src/config/stock_round_config.yaml"
+  path: "src/config/stock_round_config.yaml"
 

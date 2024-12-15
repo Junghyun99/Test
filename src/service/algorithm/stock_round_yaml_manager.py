@@ -7,13 +7,13 @@ system_logger = logger_manager.get_logger('SYSTEM')
 
 class StockRoundYamlKrManager(StockRoundYaml):
     COUNTRY_CODE = "KR"
-    def __init__(self,file_path = "src/config/stock_round_config.yaml"):
-        super().__init__(file_path)
+    def __init__(self):
+        super().__init__()
         system_logger.log_info("create StockRoundYamlKrManager instance, init")
 
 class StockRoundYamlUsManager(StockRoundYaml):
     COUNTRY_CODE = "US"
-    def __init__(self,file_path = "src/config/stock_round_config.yaml"):
-        super().__init__(file_path)
+    def __init__(self):
+        super().__init__()
         system_logger.log_info("create StockRoundYamlUsManager instance, init")
 
