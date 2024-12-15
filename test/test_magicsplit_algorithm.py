@@ -1,7 +1,7 @@
 import pytest
 from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.service.broker.broker_manager import BrokerManager
-from src.interface.stock_round_yaml import StockRoundManager
+from src.interface.stock_round_yaml import StockRoundYaml
 from src.service.repository.trade_db_manager import TradeDBManager
 from src.model.monitoring_db_model import AlgorithmData, MonitoringData
 from src.util.enums import QueryOp, CountryCode
