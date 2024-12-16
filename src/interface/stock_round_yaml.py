@@ -1,12 +1,17 @@
 from src.util.yaml_manager import YamlManager
 
+
+from src.service.logging.logger_manager import logger_manager
+
+system_logger = logger_manager.get_logger('SYSTEM')
+
 class StockRoundYaml(YamlManager):
     COUNTRY_CODE = "KR"
     def __int__(self, config_file):
         super().__init__(config_file)
-        self._set_stock_round_yaml_config()
+        system_logger.log_info("create StockRoundYaml init") self._set_stock_round_yaml_config()
         self.file_path = self.stock_round_path
-        print("file path %s",self.file_path)
+        system_logger.log_info("file_path %s", self.file_path)
         
     def _get_country_data(self):
         """현재 COUNTRY_CODE 데이터를 가져오거나 빈 리스트 생성."""
