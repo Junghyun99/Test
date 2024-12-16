@@ -2,9 +2,11 @@ import yaml
 from pathlib import Path
 
 class YamlManager:
+    def __init__(self, config_file = "src/config/config.yaml"):
+        self.config_file = config_file
     def _set_logger_class_yaml_config(self):
         # YAML 설정 로드
-        with open("src/config/config.yaml", "r") as file:
+        with open(self.config_file, "r") as file:
             config = yaml.safe_load(file)
 
         logger = config['logger_class']
@@ -17,7 +19,7 @@ class YamlManager:
     
     def _set_db_class_yaml_config(self):
         # YAML 설정 로드
-        with open("src/config/config.yaml", "r") as file:
+        with open(self.config_file, "r") as file:
             config = yaml.safe_load(file)
 
         sql_db = config['db_class']
@@ -30,7 +32,7 @@ class YamlManager:
     
     def _set_stock_round_yaml_config(self):
         # YAML 설정 로드
-        with open("src/config/config.yaml", "r") as file:
+        with open(self.config_file, "r") as file:
             config = yaml.safe_load(file)
 
         stock_round = config['stock_round_yaml']
