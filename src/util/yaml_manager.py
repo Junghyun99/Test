@@ -37,6 +37,8 @@ class YamlManager:
 
         stock_round = config['stock_round_yaml']
         self.stock_round_path = stock_round['path']
+        print("round %s", stock_round)
+        print("path %s", self.stock_round_path)
         
     def _write(self, data):
         try:
