@@ -10,21 +10,8 @@ from pathlib import Path
 class LoggerManager(YamlManager):
     def __init__(self):
         self.loggers = {}
-        self._set_yaml_config()
-
-    def _set_yaml_config(self):
-        # YAML 설정 로드
-        with open("src/config/config.yaml", "r") as file:
-            config = yaml.safe_load(file)
-
-        logger = config['logger_class']
-        log_dir = Path(logger['log_dir'])
-        self.system_log_file = log_dir / logger['system_log_file']
-        self.transaction_log_file = log_dir / logger['transaction_log_file']
-
-        # 디렉토리 생성 (없으면 생성)
-        log_dir.mkdir(parents=True, exist_ok=True)
-
+        self._set_logger_class_yaml_config()
+        
     def get_logger(self, logger_type):
         if logger_type not in self.loggers:
             if logger_type.upper() == 'SYSTEM':
