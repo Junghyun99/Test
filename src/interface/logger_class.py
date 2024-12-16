@@ -1,6 +1,5 @@
 import logging
 import inspect
-from abc import ABC, abstractmethod
 from logging.handlers import RotatingFileHandler
 
 
@@ -18,7 +17,7 @@ class CustomFormatter(logging.Formatter):
 
         return super().format(record)
 
-class BaseLogger(ABC):
+class BaseLogger:
     def __init__(self, logger_name, log_file, level=logging.INFO):
         self.logger = logging.getLogger(logger_name)
         self.logger.propagate = False
