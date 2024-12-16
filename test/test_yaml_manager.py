@@ -20,7 +20,7 @@ def temp_file():
         yaml.dump(initial_data, file, allow_unicode=True)
 
     yield file_path
-    if file_path.exists():
+    if os.path.exists(file_path):
         os.remove(file_path)
 
 @pytest.fixture
