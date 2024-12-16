@@ -7,7 +7,7 @@ system_logger = logger_manager.get_logger('SYSTEM')
 
 class StockRoundYaml(YamlManager):
     COUNTRY_CODE = "KR"
-    def __int__(self, config_file):
+    def __init__(self, config_file):
         super().__init__(config_file)
         system_logger.log_info("create StockRoundYaml init")
 
