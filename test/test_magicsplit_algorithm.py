@@ -11,7 +11,7 @@ def setup_magic_split(mocker):
     """MagicSplit 객체를 초기화하고 의존성을 모킹."""
     mock_broker_manager = mocker.Mock(spec=BrokerManager)
     mock_trade_db_manager = mocker.Mock(spec=TradeDBManager)
-    mock_yaml_manager = mocker.Mock(spec=StockRoundManager)
+    mock_yaml_manager = mocker.Mock(spec=StockRoundYaml)
     magic_split = MagicSplit(mock_broker_manager, mock_trade_db_manager, mock_yaml_manager)
     return magic_split, mock_broker_manager, mock_trade_db_manager, mock_yaml_manager
 
