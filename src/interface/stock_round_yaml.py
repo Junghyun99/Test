@@ -3,7 +3,8 @@ from src.util.yaml_manager import YamlManager
 class StockRoundYaml(YamlManager):
     COUNTRY_CODE = "KR"
     def __int__(self, config_file):
-        super().__init__(config_file)     self._set_stock_round_yaml_config()
+        super().__init__(config_file)
+        self._set_stock_round_yaml_config()
         self.file_path = self.stock_round_path
         
     def _get_country_data(self):
