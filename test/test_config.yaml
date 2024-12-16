@@ -1,0 +1,12 @@
+logger_class:
+  log_dir: "test/log/"
+  system_log_file: "system.log"
+  transaction_log_file: "transaxtion.log"
+
+db_class:
+  db_dir: "test/db/"
+  monitoring_db_file: "Monitoring.db"
+  stock_trade_db_file: "StockTrade.db"
+
+stock_round_yaml:
+  path: "test/stock_round_config.yaml"
