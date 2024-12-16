@@ -6,7 +6,7 @@ class StockRoundYaml(YamlManager):
         super().__init__(config_file)
         self._set_stock_round_yaml_config()
         self.file_path = self.stock_round_path
-        print("file path ",self.File_path)
+        print("file path %s",self.File_path)
         
     def _get_country_data(self):
         """현재 COUNTRY_CODE 데이터를 가져오거나 빈 리스트 생성."""
