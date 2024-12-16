@@ -3,12 +3,9 @@ from src.service.logging.transaction_logger import TransactionLogger
 
 from src.util.yaml_manager import YamlManager
 
-import yaml
-from pathlib import Path
-
-
 class LoggerManager(YamlManager):
-    def __init__(self):
+    def __init__(self, config_file):
+        super().__init__(config_file)
         self.loggers = {}
         self._set_logger_class_yaml_config()
         
