@@ -1,11 +1,13 @@
 import pytest
 import os
 import yaml
+
 from src.service.algorithm.stock_round_yaml_manager import StockRoundYamlKrManager, StockRoundYamlUsManager
 
+
 @pytest.fixture
-def temp_file(tmp_path):
-    file_path = tmp_path / "test_stocks.yaml"
+def temp_file():
+    file_path = "test/stock_round_config.yaml"
 
     # 초기값 설정
     initial_data = {
@@ -63,11 +65,11 @@ def sample_us_data2():
                                                                                                                                                                                                                                
 @pytest.fixture
 def kr_stock_crud(temp_file):
-    return StockRoundYamlKrManager(str(temp_file))
+    return StockRoundYamlKrManager("test/test_config.yaml")
 
 @pytest.fixture
 def us_stock_crud(temp_file):
-    return StockRoundYamlUsManager(str(temp_file))
+    return StockRoundYamlUsManager("test/test_config.yaml")
 
 
 # --- CREATE TEST CASES ---
