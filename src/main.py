@@ -17,7 +17,7 @@ class MainApp:
         self.country_code = CountryCode.KR
         self.parser_argument()
         self.parse_country_code()
-    
+        self.parse_config_file()
 
     def parser_argument(self):
         # ArgumentParser 객체 생성
@@ -31,9 +31,21 @@ class MainApp:
         default="KR",  # 기본값
         help="Country code for the stock monitoring system (KR/US)"
     )
+
+
+        # config 인자 추가 (선택적, 기본값은 'src/config/config.yaml')
+        parser.add_argument(
+        "--config",  # 명령행에서 사용할 옵션 이름
+        type=str,  # 입력 데이터 타입
+        default="src/config/config.yaml",  # 기본값
+        help="Path to the configuration file (default: src/config/config.yaml)"
+)
       
         # 명령행 인자 파싱
         self.args = parser.parse_args()
+
+    def parse_config_file(self):
+        self.config_file = self.args.config
 
         
     def parse_country_code(self):
@@ -57,7 +69,7 @@ class MainApp:
         CountryCode.KR: StockRoundYamlKrManager,
         CountryCode.US: StockRoundYamlUsManager,
     }
-        return manager_classes[self.country_code]()
+        return manager_classes[self.country_code](self.config_file)
 
     def get_monitoring_manager(self, algo):
         manager_classes = {
