@@ -3,9 +3,6 @@ import os
 from src.service.repository.monitoring_db import MonitoringDB
 from src.model.monitoring_db_model import MonitoringData
 from src.util.enums import CountryCode, QueryOp
-from src.service.logging.logger_manager import logger_manager
-
-system_logger = logger_manager.get_logger('SYSTEM')
 
 
 class MonitoringManager:
