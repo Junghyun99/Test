@@ -12,6 +12,9 @@ def setup_magic_split(mocker):
     mock_broker_manager = mocker.Mock(spec=BrokerManager)
     mock_trade_db_manager = mocker.Mock(spec=TradeDBManager)
     mock_yaml_manager = mocker.Mock(spec=StockRoundYaml)
+
+    logger = LoggerManager("")
+
     magic_split = MagicSplit(mock_broker_manager, mock_trade_db_manager, mock_yaml_manager)
     return magic_split, mock_broker_manager, mock_trade_db_manager, mock_yaml_manager
 
