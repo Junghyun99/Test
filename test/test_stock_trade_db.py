@@ -3,6 +3,9 @@ import os
 import sqlite3
 from src.service.repository.stock_trade_db import StockTradeDB
 
+from src.service.logging.logger_manager import LoggerManager
+
+
 @pytest.fixture
 def temp_file(tmp_path):
     file_path = tmp_path / "test_stock_db.db"
@@ -12,7 +15,8 @@ def temp_file(tmp_path):
 
 @pytest.fixture
 def stock_db(temp_file):
-    db = StockTradeDB(str(temp_file))
+    logger = LoggerManager("test/test_config.yaml")
+    db = StockTradeDB(logger, str(temp_file))
     yield db
     db.close()
 
