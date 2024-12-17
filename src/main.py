@@ -73,7 +73,7 @@ class MainApp:
         CountryCode.KR: StockRoundYamlKrManager,
         CountryCode.US: StockRoundYamlUsManager,
     }
-        return manager_classes[self.country_code](self.Config_file, logger)
+        return manager_classes[self.country_code](self.config_file, logger)
 
     def get_monitoring_manager(self, algo, logger):
         manager_classes = {
