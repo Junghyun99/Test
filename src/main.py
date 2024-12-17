@@ -80,6 +80,7 @@ class MainApp:
 
 
     def run(self):
+        logger = LoggerManager()
         trade = TradeDBManager()    
         yaml = self.get_stock_round_yaml_manager()
         broker = BrokerManager(DummyBrokerAPI())
