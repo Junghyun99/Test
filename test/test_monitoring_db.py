@@ -3,6 +3,9 @@ import os
 import sqlite3
 from src.service.repository.monitoring_db import MonitoringDB
 
+from src.service.logging.logger_manager import LoggerManager
+
+
 @pytest.fixture
 def temp_file(tmp_path):
     file_path = tmp_path / "test_monitoring_db.db"
@@ -12,7 +15,8 @@ def temp_file(tmp_path):
 
 @pytest.fixture
 def moni_db(temp_file):
-    db = MonitoringDB(str(temp_file))
+    logger = LoggerManager("test/test_config.yaml")
+    db = MonitoringDB(logger, str(temp_file))
     yield db
     db.close()
 
