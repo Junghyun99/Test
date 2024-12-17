@@ -10,7 +10,7 @@ from src.service.logging.logger_manager import LoggerManager
 
 @pytest.fixture
 def setup_manager(mocker):
-    logger = LoggerManager("test/test_config.yaml")
+    logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
     mock_algorithm = mocker.Mock(spec=MagicSplit)
     mock_db = mocker.Mock(spec=MonitoringDB)
     manager = MonitoringManager(mock_algorithm, logger)
