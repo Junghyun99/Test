@@ -9,12 +9,6 @@ from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.service.broker.broker_manager import BrokerManager
 from src.service.algorithm.stock_round_yaml_manager import StockRoundYamlKrManager, StockRoundYamlUsManager 
 
-from src.service.logging.logger_manager import LoggerManager
-
-logger = LoggerManager("test/test_config.yaml")
-system_logger = logger.get_logger('SYSTEM')
-transaction_logger = logger.get_logger('TRANSACTION')
-
 # === Test for `parser_argument` ===
 def test_parser_argument_default(mocker):
     mocker.patch("sys.argv", ["program","--config","test/test_config.yaml"])
@@ -131,11 +125,11 @@ def test_get_monitoring_manager_invalid_country(mocker):
 # === Test for `run` ===
 def test_run_close_methods_called(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR","--config","test/test_config.yaml"])
-       
-    system_logger.get_logger().propagate = True   
+    app = MainApp()
+    app.logger.get_logger('SYSTEM').get_logger().propagate = True   
+
     # 메서드 호출 확인
-    with caplog.at_level(logging.DEBUG):
-        app = MainApp()
+    with caplog.at_level(logging.DEBUG):        
         app.run()
                 
         assert "db close" in caplog.text
@@ -144,9 +138,8 @@ def test_run_close_methods_called(mocker, caplog):
 
 def test_run_monitoring_started(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR","--config","test/test_config.yaml"])
-    system_logger.get_logger().propagate = True   
-    with caplog.at_level(logging.DEBUG):
-        app = MainApp()
+    app = MainApp()   app.logger.get_logger('SYSTEM').get_logger().propagate = True  
+    with caplog.at_level(logging.DEBUG):        
         app.run()
                 
         assert "start_monitoring" in caplog.text
@@ -155,9 +148,9 @@ def test_run_monitoring_started(mocker, caplog):
 
 def test_run_broker_manager_called(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR","--config","test/test_config.yaml"])
-    transaction_logger.get_logger().propagate = True   
-    with caplog.at_level(logging.DEBUG):
-        app = MainApp()
+
+    app = MainApp() app.logger.get_logger('TRANSACTION').get_logger().propagate = True     
+    with caplog.at_level(logging.DEBUG):        
         app.run()
                 
         assert "BrokerManager" in caplog.text
@@ -165,9 +158,8 @@ def test_run_broker_manager_called(mocker, caplog):
 
 def test_run_algorithm_initialized(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR","--config","test/test_config.yaml"])
-    system_logger.get_logger().propagate = True   
+    app = MainApp()    app.logger.get_logger('SYSTEM').get_logger().propagate = True  
     with caplog.at_level(logging.DEBUG):
-        app = MainApp()
         app.run()
                 
         assert "MagicSplit" in caplog.text
@@ -175,9 +167,8 @@ def test_run_algorithm_initialized(mocker, caplog):
 
 def test_run_yaml_manager_initialized(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR","--config","test/test_config.yaml"])
-    system_logger.get_logger().propagate = True   
-    with caplog.at_level(logging.DEBUG):
-        app = MainApp()
+    app = MainApp()    app.logger.get_logger('SYSTEM').get_logger().propagate = True  
+    with caplog.at_level(logging.DEBUG):        
         app.run()
                 
         assert "StockRoundYamlKrManager" in caplog.text
