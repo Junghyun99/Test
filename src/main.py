@@ -82,7 +82,7 @@ class MainApp:
 
     def run(self):
         logger = LoggerManager(self.config_file)
-        trade = TradeDBManager()    
+        trade = TradeDBManager(logger.get_logger('SYSTEM'))    
         yaml = self.get_stock_round_yaml_manager()
         broker = BrokerManager(DummyBrokerAPI(),logger.get_logger('TRANSACTION'))
         algorithm = MagicSplit(broker, trade, yaml)
