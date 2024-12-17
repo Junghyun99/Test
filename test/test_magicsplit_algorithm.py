@@ -6,6 +6,8 @@ from src.service.repository.trade_db_manager import TradeDBManager
 from src.model.monitoring_db_model import AlgorithmData, MonitoringData
 from src.util.enums import QueryOp, CountryCode
 
+from src.service.logging.logger_manager import LoggerManager
+
 @pytest.fixture
 def setup_magic_split(mocker):
     """MagicSplit 객체를 초기화하고 의존성을 모킹."""
