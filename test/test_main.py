@@ -78,7 +78,7 @@ def test_get_yaml_manager_kr(mocker):
 
     # MainApp 객체 생성 및 메서드 호출
     app = MainApp()
-    yaml_manager = app.get_stock_round_yaml_manager()
+    yaml_manager = app.get_stock_round_yaml_manager(app.logger.get_logger("SYSTEM"))
 
     # YamlKrManager가 정확히 호출되었는지 확인
     assert isinstance(yaml_manager, StockRoundYamlKrManager)
@@ -88,7 +88,7 @@ def test_get_yaml_manager_us(mocker):
     mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])
     
     app = MainApp()
-    yaml_manager = app.get_stock_round_yaml_manager()
+    yaml_manager = app.get_stock_round_yaml_manager(app.logger.get_logger("SYSTEM"))
     assert isinstance(yaml_manager, StockRoundYamlUsManager)
 
 
@@ -97,21 +97,21 @@ def test_get_yaml_manager_invalid_country(mocker):
     mocker.patch("sys.argv", ["program", "INVALID","--config","test/test_config.yaml"])
     with pytest.raises(SystemExit):
         app = MainApp()
-        app.get_stock_round_yaml_manager()
+        app.get_stock_round_yaml_manager(app.logger.get_logger("SYSTEM"))
 
 
 # === Test for `get_monitoring_manager` ===
 def test_get_monitoring_manager_kr(mocker):
     mocker.patch("sys.argv", ["program", "KR","--config","test/test_config.yaml"])        
     app = MainApp()
-    monitor_manager = app.get_monitoring_manager("mock_algorithm")
+    monitor_manager = app.get_monitoring_manager("mock_algorithm",app.logger.get_logger("SYSTEM"))
     assert isinstance(monitor_manager, MonitoringKRManager)
 
 
 def test_get_monitoring_manager_us(mocker):
     mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])    
     app = MainApp()
-    monitor_manager = app.get_monitoring_manager("mock_algorithm")
+    monitor_manager = app.get_monitoring_manager("mock_algorithm",app.logger.get_logger("SYSTEM"))
     assert isinstance(monitor_manager, MonitoringUSManager)
 
 
@@ -119,7 +119,7 @@ def test_get_monitoring_manager_invalid_country(mocker):
     mocker.patch("sys.argv", ["program", "INVALID","--config","test/test_config.yaml"])
     with pytest.raises(SystemExit):
         app = MainApp()
-        app.get_monitoring_manager(None)
+        app.get_monitoring_manager(None,app.logger.get_logger("SYSTEM"))
 
 
 # === Test for `run` ===
