@@ -84,7 +84,7 @@ class MainApp:
         logger = LoggerManager(self.config_file)
         trade = TradeDBManager()    
         yaml = self.get_stock_round_yaml_manager()
-        broker = BrokerManager(DummyBrokerAPI())
+        broker = BrokerManager(DummyBrokerAPI(),logger.get_logger('TRANSACTION'))
         algorithm = MagicSplit(broker, trade, yaml)
         moni = self.get_monitoring_manager(algorithm)
 
