@@ -48,9 +48,9 @@ class MainApp:
         parser.add_argument(
         "--broker",  # 명령행에서 사용할 옵션 이름
         nargs="?",  # 선택적 인자
-        choices=["KR", "US", "kr", "us"],  # 유효한 값 제한
-        default="KR",  # 기본값
-        help="Country code for the stock monitoring system (KR/US)"
+        choices=["dummy", "real", "DUMMY ", "REAL"],  # 유효한 값 제한
+        default="DUMMY",  # 기본값
+        help="broker setting dummy, real"
     )
  
         # 명령행 인자 파싱
@@ -76,6 +76,13 @@ class MainApp:
             print(f"Error: {e}")
             sys.exit(1)
 
+    def get_broker(self):
+        broker_map = {
+        "DUMMY": DummyBrokerAPI,
+        "REAL": RealBrokerAPI,
+        }
+        return broker_map[self.args.broker.upper()]()        
+
     def get_stock_round_yaml_manager(self, logger):
         manager_classes = {
         CountryCode.KR: StockRoundYamlKrManager,
@@ -99,7 +106,7 @@ class MainApp:
         sys_logger = self.logger.get_logger('SYSTEM')    
         trade = TradeDBManager(sys_logger)    
         yaml = self.get_stock_round_yaml_manager(sys_logger)
-        broker = BrokerManager(DummyBrokerAPI(),self.logger.get_logger('TRANSACTION'))
+        broker = BrokerManager(self.get_broker(),self.logger.get_logger('TRANSACTION'))
         algorithm = MagicSplit(broker, trade, yaml, sys_logger)
         moni = self.get_monitoring_manager(algorithm, sys_logger)
 
