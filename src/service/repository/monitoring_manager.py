@@ -4,8 +4,9 @@ from src.service.repository.monitoring_db import MonitoringDB
 from src.model.monitoring_db_model import MonitoringData
 from src.util.enums import CountryCode, QueryOp
 
+from src.util.yaml_manager import YamlManager
 
-class MonitoringManager:
+class MonitoringManager(YamlManager):
     COUNTRY_CODE = CountryCode.KR
 
     def __init__(self, algorithm, logger):
