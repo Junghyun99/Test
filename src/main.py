@@ -10,6 +10,7 @@ from src.service.algorithm.stock_round_yaml_manager import StockRoundYamlKrManag
 from src.service.broker.dummy_broker_api import DummyBrokerAPI 
 from src.util.enums import CountryCode
 
+from src.service.logging.logger_manager import LoggerManager
 
 class MainApp:
     def __init__(self):
