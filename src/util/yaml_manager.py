@@ -2,15 +2,10 @@ import yaml
 from pathlib import Path
 
 
-from src.service.logging.logger_manager import logger_manager
-
-system_logger = logger_manager.get_logger('SYSTEM')
-
-
 class YamlManager:
     def __init__(self, config_file = "src/config/config.yaml"):
         self.config_file = config_file
-        system_logger.log_info("create YamlManager init")
+        
     def _set_logger_class_yaml_config(self):
         # YAML 설정 로드
         with open(self.config_file, "r") as file:
@@ -38,15 +33,13 @@ class YamlManager:
         db_dir.mkdir(parents=True, exist_ok=True)
     
     def _set_stock_round_yaml_config(self):
-        system_logger.log_info("stock round setting")
         # YAML 설정 로드
         with open(self.config_file, "r") as file:
             config = yaml.safe_load(file)
 
         stock_round = config['stock_round_yaml']
         self.stock_round_path = stock_round['path']
-        system_logger.log_info("yaml %s, path %s",stock_round, self.stock_round_path)
-        
+       
     def _write(self, data):
         try:
             """YAML 파일 쓰기 (내부에서만 호출)"""
