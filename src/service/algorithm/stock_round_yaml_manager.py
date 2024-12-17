@@ -1,19 +1,18 @@
 from src.interface.stock_round_yaml import StockRoundYaml
 from src.util.enums import CountryCode
 
-from src.service.logging.logger_manager import logger_manager
-
-system_logger = logger_manager.get_logger('SYSTEM')
 
 class StockRoundYamlKrManager(StockRoundYaml):
     COUNTRY_CODE = "KR"
-    def __init__(self, config_file):
-        super().__init__(config_file)
-        system_logger.log_info("create StockRoundYamlKrManager instance, init")
+    def __init__(self, config_file, logger):
+        super().__init__(config_file, logger)
+        self.logger = logger
+        self.logger.log_info("create StockRoundYamlKrManager instance, init")
 
 class StockRoundYamlUsManager(StockRoundYaml):
     COUNTRY_CODE = "US"
-    def __init__(self, config_file):
-        super().__init__(config_file)
-        system_logger.log_info("create StockRoundYamlUsManager instance, init")
+    def __init__(self, config_file, logger):
+        super().__init__(config_file, logger)
+        self.logger = logger
+        self.logger.log_info("create StockRoundYamlUsManager instance, init")
 
