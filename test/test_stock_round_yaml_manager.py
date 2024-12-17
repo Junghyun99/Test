@@ -4,6 +4,8 @@ import yaml
 
 from src.service.algorithm.stock_round_yaml_manager import StockRoundYamlKrManager, StockRoundYamlUsManager
 
+from src.service.logging.logger_manager import LoggerManager
+
 
 @pytest.fixture
 def temp_file():
@@ -65,11 +67,13 @@ def sample_us_data2():
                                                                                                                                                                                                                                
 @pytest.fixture
 def kr_stock_crud(temp_file):
-    return StockRoundYamlKrManager("test/test_config.yaml")
+    logger = LoggerManager("test/test_config.yaml")
+    return StockRoundYamlKrManager("test/test_config.yaml", logger)
 
 @pytest.fixture
 def us_stock_crud(temp_file):
-    return StockRoundYamlUsManager("test/test_config.yaml")
+    logger = LoggerManager("test/test_config.yaml")
+    return StockRoundYamlUsManager("test/test_config.yaml", logger)
 
 
 # --- CREATE TEST CASES ---
