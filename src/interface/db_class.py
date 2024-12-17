@@ -5,9 +5,10 @@ from src.service.logging.logger_manager import logger_manager
 system_logger = logger_manager.get_logger('SYSTEM')
 
 class BaseDB:
-    def __init__(self, db_path):
+    def __init__(self, db_path, logger):
         self.db_path = db_path
         self.conn = None
+        self.logger = logger
 
     def connect(self):
         if not self.conn:
@@ -18,7 +19,7 @@ class BaseDB:
         raise NotImplementedError("This method must be implemented by subclasses.")
 
     def execute_write_query(self, query, data=None):
-        system_logger.log_info("exe query %s data %s", query, data)
+        self.logger.log_info("exe query %s data %s", query, data)
         try:
             cursor = self.conn.cursor()
             if data:
@@ -27,11 +28,11 @@ class BaseDB:
                 cursor.execute(query)
             self.conn.commit()
         except sqlite3.Error as e:
-            system_logger.log_error("DB Write Error: %s", e)
+            self.logger.log_error("DB Write Error: %s", e)
             raise e
 
     def execute_read_query(self, query, data=None):
-        system_logger.log_info("exe query %s data %s", query, data)
+        self.logger.log_info("exe query %s data %s", query, data)
         try:
             cursor = self.conn.cursor()
             if data:
@@ -40,7 +41,7 @@ class BaseDB:
                 cursor.execute(query)
             return cursor.fetchall()
         except sqlite3.Error as e:
-            system_logger.log_error("DB Read Error: %s", e)
+            self.logger.log_error("DB Read Error: %s", e)
             raise e
 
     def insert_data(self, query, data):       
