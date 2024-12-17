@@ -1,7 +1,7 @@
 import sqlite3
 
 class BaseDB:
-    def __init__(self, db_path, logger):
+    def __init__(self, logger, db_path):
         self.db_path = db_path
         self.conn = None
         self.logger = logger
