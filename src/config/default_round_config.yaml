@@ -1,0 +1,17 @@
+US:
+  - name: default
+    code: DEFAULT
+    orders:
+      - order_num: 10
+        buy_price: 100
+        buy_rate: 5
+        sell_rate: 3
+
+KR:
+  - name: default
+    code: DEFAULT
+    orders:
+      - order_num: 10
+        buy_price: 100000
+        buy_rate: 5
+        sell_rate: 3
