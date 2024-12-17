@@ -9,9 +9,11 @@ from src.service.algorithm.magicsplit_algorithm import MagicSplit
 from src.service.broker.broker_manager import BrokerManager
 from src.service.algorithm.stock_round_yaml_manager import StockRoundYamlKrManager, StockRoundYamlUsManager 
 
-from src.service.logging.logger_manager import logger_manager
-system_logger = logger_manager.get_logger('SYSTEM')
-transaction_logger = logger_manager.get_logger('TRANSACTION')
+from src.service.logging.logger_manager import LoggerManager
+
+logger = LoggerManager()
+system_logger = logger.get_logger('SYSTEM')
+transaction_logger = logger.get_logger('TRANSACTION')
 
 # === Test for `parser_argument` ===
 def test_parser_argument_default(mocker):
