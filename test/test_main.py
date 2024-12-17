@@ -138,7 +138,8 @@ def test_run_close_methods_called(mocker, caplog):
 
 def test_run_monitoring_started(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR","--config","test/test_config.yaml"])
-    app = MainApp()   app.logger.get_logger('SYSTEM').get_logger().propagate = True  
+    app = MainApp()  
+    app.logger.get_logger('SYSTEM').get_logger().propagate = True  
     with caplog.at_level(logging.DEBUG):        
         app.run()
                 
@@ -149,7 +150,8 @@ def test_run_monitoring_started(mocker, caplog):
 def test_run_broker_manager_called(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR","--config","test/test_config.yaml"])
 
-    app = MainApp() app.logger.get_logger('TRANSACTION').get_logger().propagate = True     
+    app = MainApp() 
+    app.logger.get_logger('TRANSACTION').get_logger().propagate = True     
     with caplog.at_level(logging.DEBUG):        
         app.run()
                 
@@ -158,7 +160,8 @@ def test_run_broker_manager_called(mocker, caplog):
 
 def test_run_algorithm_initialized(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR","--config","test/test_config.yaml"])
-    app = MainApp()    app.logger.get_logger('SYSTEM').get_logger().propagate = True  
+    app = MainApp()    
+    app.logger.get_logger('SYSTEM').get_logger().propagate = True  
     with caplog.at_level(logging.DEBUG):
         app.run()
                 
@@ -167,7 +170,8 @@ def test_run_algorithm_initialized(mocker, caplog):
 
 def test_run_yaml_manager_initialized(mocker, caplog):
     mocker.patch("sys.argv", ["program", "KR","--config","test/test_config.yaml"])
-    app = MainApp()    app.logger.get_logger('SYSTEM').get_logger().propagate = True  
+    app = MainApp()    
+    app.logger.get_logger('SYSTEM').get_logger().propagate = True  
     with caplog.at_level(logging.DEBUG):        
         app.run()
                 
