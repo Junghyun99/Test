@@ -1,14 +1,14 @@
 from src.service.repository.stock_trade_db import StockTradeDB
 from src.service.logging.logger_manager import logger_manager
 
-system_logger = logger_manager.get_logger('SYSTEM')
 
 class TradeDBManager:
-    def __init__(self, db_name='StockTrade.db'):
-        self.db = StockTradeDB(db_name)
+    def __init__(self, db_name='StockTrade.db', logger):
+        self.db = StockTradeDB(db_name, logger)
+        self.logger = logger
         
 
-        system_logger.log_info("TradeDBManager init")
+        self.logger.log_info("TradeDBManager init")
 
     # Reading Methods
     def get_trade_round(self, code, round):
@@ -86,5 +86,5 @@ class TradeDBManager:
 
 
     def close_db(self):
-        system_logger.log_info("TradeDBManager db close")
+        self.logger.log_info("TradeDBManager db close")
         self.db.close()
