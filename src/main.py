@@ -82,11 +82,12 @@ class MainApp:
 
     def run(self):
         logger = LoggerManager(self.config_file)
-        trade = TradeDBManager(logger.get_logger('SYSTEM'))    
-        yaml = self.get_stock_round_yaml_manager(logger.get_logger('SYSTEM'))
+        sys_logger = logger.get_logger('SYSTEM')    
+        trade = TradeDBManager(sys_logger)    
+        yaml = self.get_stock_round_yaml_manager(sys_logger)
         broker = BrokerManager(DummyBrokerAPI(),logger.get_logger('TRANSACTION'))
-        algorithm = MagicSplit(broker, trade, yaml, logger.get_logger('SYSTEM'))
-        moni = self.get_monitoring_manager(algorithm, logger.get_logger('SYSTEM'))
+        algorithm = MagicSplit(broker, trade, yaml, sys_logger)
+        moni = self.get_monitoring_manager(algorithm, sys_logger)
 
         try:
             moni.start_monitoring()
