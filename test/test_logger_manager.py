@@ -5,7 +5,7 @@ from src.service.logging.logger_manager import LoggerManager
 @pytest.fixture
 def logger_manager():
     # Fixture to create an instance of LoggerManager
-    return LoggerManager()
+    return LoggerManager("test/test_config.yaml")
 
 def test_get_logger_system_type(logger_manager):
     # Test to get a SystemLogger instance
