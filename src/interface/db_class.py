@@ -1,9 +1,5 @@
 import sqlite3
 
-from src.service.logging.logger_manager import logger_manager
-
-system_logger = logger_manager.get_logger('SYSTEM')
-
 class BaseDB:
     def __init__(self, db_path, logger):
         self.db_path = db_path
