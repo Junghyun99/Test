@@ -1,5 +1,5 @@
 from src.service.repository.stock_trade_db import StockTradeDB
-from src.service.logging.logger_manager import logger_manager
+
 
 
 class TradeDBManager:
