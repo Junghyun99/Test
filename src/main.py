@@ -16,10 +16,13 @@ class MainApp:
     def __init__(self):
         self.args = None
         self.country_code = CountryCode.KR
+        self.logger = None
         self.parser_argument()
         self.parse_country_code()
         self.parse_config_file()
+        self.parse_logger()
 
+    
     def parser_argument(self):
         # ArgumentParser 객체 생성
         parser = argparse.ArgumentParser(description="Run stock monitoring system")
@@ -79,13 +82,16 @@ class MainApp:
     }
         return manager_classes[self.country_code](algo, logger)
 
+    def parse_logger(self):
+        self.logger = LoggerManager(self.config_file)
+
 
     def run(self):
-        logger = LoggerManager(self.config_file)
-        sys_logger = logger.get_logger('SYSTEM')    
+        
+        sys_logger = self.logger.get_logger('SYSTEM')    
         trade = TradeDBManager(sys_logger)    
         yaml = self.get_stock_round_yaml_manager(sys_logger)
-        broker = BrokerManager(DummyBrokerAPI(),logger.get_logger('TRANSACTION'))
+        broker = BrokerManager(DummyBrokerAPI(),self.logger.get_logger('TRANSACTION'))
         algorithm = MagicSplit(broker, trade, yaml, sys_logger)
         moni = self.get_monitoring_manager(algorithm, sys_logger)
 
