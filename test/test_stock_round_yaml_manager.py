@@ -67,12 +67,12 @@ def sample_us_data2():
                                                                                                                                                                                                                                
 @pytest.fixture
 def kr_stock_crud(temp_file):
-    logger = LoggerManager("test/test_config.yaml")
+    logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
     return StockRoundYamlKrManager("test/test_config.yaml", logger)
 
 @pytest.fixture
 def us_stock_crud(temp_file):
-    logger = LoggerManager("test/test_config.yaml")
+    logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
     return StockRoundYamlUsManager("test/test_config.yaml", logger)
 
 
