@@ -15,7 +15,7 @@ def temp_file(tmp_path):
 
 @pytest.fixture
 def stock_db(temp_file):
-    logger = LoggerManager("test/test_config.yaml")
+    logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
     db = StockTradeDB(logger, str(temp_file))
     yield db
     db.close()
