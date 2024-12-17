@@ -6,11 +6,14 @@ from src.model.monitoring_db_model import MonitoringData
 
 from src.util.enums import QueryOp, CountryCode
 
+from src.service.logging.logger_manager import LoggerManager
+
 @pytest.fixture
 def setup_manager(mocker):
+    logger = LoggerManager("test/test_config.yaml")
     mock_algorithm = mocker.Mock(spec=MagicSplit)
     mock_db = mocker.Mock(spec=MonitoringDB)
-    manager = MonitoringManager(mock_algorithm)
+    manager = MonitoringManager(mock_algorithm, logger)
     manager.db = mock_db
     return manager, mock_algorithm, mock_db
 
