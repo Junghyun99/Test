@@ -13,7 +13,7 @@ def setup_manager(mocker):
     logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
     mock_algorithm = mocker.Mock(spec=MagicSplit)
     mock_db = mocker.Mock(spec=MonitoringDB)
-    manager = MonitoringManager(mock_algorithm, logger)
+    manager = MonitoringManager(mock_algorithm, logger, "test/test_config.yaml")
     manager.db = mock_db
     return manager, mock_algorithm, mock_db
 
