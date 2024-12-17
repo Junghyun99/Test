@@ -2,8 +2,8 @@ import sqlite3
 from src.interface.db_class import BaseDB
 
 class MonitoringDB(BaseDB):
-    def __init__(self, db_name='Monitoring.db', logger):
-        super().__init__(db_name, logger)
+    def __init__(self, logger,  db_name='Monitoring.db'):
+        super().__init__(logger, db_name)
         self.connect()  # Use the connect method from BaseDB
         self._create_table()
 
