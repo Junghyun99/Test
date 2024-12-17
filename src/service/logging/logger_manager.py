@@ -27,4 +27,3 @@ class LoggerManager(YamlManager):
 
 
 
-logger_manager = LoggerManager()
