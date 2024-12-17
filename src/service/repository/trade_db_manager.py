@@ -3,8 +3,8 @@ from src.service.repository.stock_trade_db import StockTradeDB
 
 
 class TradeDBManager:
-    def __init__(self, db_name='StockTrade.db', logger):
-        self.db = StockTradeDB(db_name, logger)
+    def __init__(self, logger,  db_name='StockTrade.db'):
+        self.db = StockTradeDB(logger, db_name)
         self.logger = logger
         
 
