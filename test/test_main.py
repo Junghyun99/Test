@@ -11,7 +11,7 @@ from src.service.algorithm.stock_round_yaml_manager import StockRoundYamlKrManag
 
 from src.service.logging.logger_manager import LoggerManager
 
-logger = LoggerManager()
+logger = LoggerManager("test/test_config.yaml")
 system_logger = logger.get_logger('SYSTEM')
 transaction_logger = logger.get_logger('TRANSACTION')
 
