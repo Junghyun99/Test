@@ -2,8 +2,8 @@ import sqlite3
 from src.interface.db_class import BaseDB
 
 class StockTradeDB(BaseDB):
-    def __init__(self, db_name='StockTrade.db'):
-        super().__init__(db_name)
+    def __init__(self, db_name='StockTrade.db', logger):
+        super().__init__(db_name, logger)
         self.connect()  # Use the connect method from BaseDB
         self._create_table()
 
