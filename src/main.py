@@ -97,7 +97,7 @@ class MainApp:
         CountryCode.KR: MonitoringKRManager,
         CountryCode.US: MonitoringUSManager,
     }
-        return manager_classes[self.country_code](algo, logger)
+        return manager_classes[self.country_code](algo, logger, self.config_file)
 
     def parse_logger(self):
         self.logger = LoggerManager(self.config_file)
@@ -106,7 +106,7 @@ class MainApp:
     def run(self):
         
         sys_logger = self.logger.get_logger('SYSTEM')    
-        trade = TradeDBManager(sys_logger)    
+        trade = TradeDBManager(sys_logger, self.config_file)    
         yaml = self.get_stock_round_yaml_manager(sys_logger)
         broker = BrokerManager(self.get_broker(),self.logger.get_logger('TRANSACTION'))
         algorithm = MagicSplit(broker, trade, yaml, sys_logger)
