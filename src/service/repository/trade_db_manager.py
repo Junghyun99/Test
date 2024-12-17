@@ -1,9 +1,11 @@
 from src.service.repository.stock_trade_db import StockTradeDB
 
+from src.util.yaml_manager import YamlManager
 
-
-class TradeDBManager:
-    def __init__(self, logger,  db_name='StockTrade.db'):
+class TradeDBManager(YamlManager):
+    def __init__(self, logger, config_file db_name='StockTrade.db'):
+        super().__init__(config_file)
+        self._set_stock_db_yaml_config()
         self.db = StockTradeDB(logger, db_name)
         self.logger = logger
         
