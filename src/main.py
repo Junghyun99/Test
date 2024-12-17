@@ -65,28 +65,28 @@ class MainApp:
             print(f"Error: {e}")
             sys.exit(1)
 
-    def get_stock_round_yaml_manager(self):
+    def get_stock_round_yaml_manager(self, logger):
         manager_classes = {
         CountryCode.KR: StockRoundYamlKrManager,
         CountryCode.US: StockRoundYamlUsManager,
     }
-        return manager_classes[self.country_code](self.config_file)
+        return manager_classes[self.country_code](self.Config_file, logger)
 
-    def get_monitoring_manager(self, algo):
+    def get_monitoring_manager(self, algo, logger):
         manager_classes = {
         CountryCode.KR: MonitoringKRManager,
         CountryCode.US: MonitoringUSManager,
     }
-        return manager_classes[self.country_code](algo)
+        return manager_classes[self.country_code](algo, logger)
 
 
     def run(self):
         logger = LoggerManager(self.config_file)
         trade = TradeDBManager(logger.get_logger('SYSTEM'))    
-        yaml = self.get_stock_round_yaml_manager()
+        yaml = self.get_stock_round_yaml_manager(logger.get_logger('SYSTEM'))
         broker = BrokerManager(DummyBrokerAPI(),logger.get_logger('TRANSACTION'))
-        algorithm = MagicSplit(broker, trade, yaml)
-        moni = self.get_monitoring_manager(algorithm)
+        algorithm = MagicSplit(broker, trade, yaml, logger.get_logger('SYSTEM'))
+        moni = self.get_monitoring_manager(algorithm, logger.get_logger('SYSTEM'))
 
         try:
             moni.start_monitoring()
