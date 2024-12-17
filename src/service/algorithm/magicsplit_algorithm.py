@@ -2,46 +2,45 @@ from src.interface.algorithm import Algorithm
 from src.util.price_calculator import PriceCalculator
 from src.util.enums import QueryOp
 from src.model.monitoring_db_model import AlgorithmData, MonitoringData
-from src.service.logging.logger_manager import logger_manager
 
-system_logger = logger_manager.get_logger('SYSTEM')
    
 class MagicSplit(Algorithm):
-    def __init__(self, broker_manager, trade_db_manager, stock_round_yaml_manager):        
+    def __init__(self, broker_manager, trade_db_manager, stock_round_yaml_manager, logger):        
         self.broker_manager = broker_manager
         self.trade_db_manager = trade_db_manager
         self.stock_round_yaml_manager = stock_round_yaml_manager
-        system_logger.log_info("create MagicSplit instance, init")
+        self.logger = logger
+        self.logger.log_info("create MagicSplit instance, init")
 
     def _calculate_price(self, buy_price, buy_rate, sell_rate):
         target_buy_price = PriceCalculator.calculate_price(buy_price, buy_rate, True)
         target_sell_price = PriceCalculator.calculate_price(buy_price, sell_rate, False)
-        system_logger.log_info("_calculate_price input buy price %s, rate buy/sell %s, %s", buy_price, buy_rate, sell_rate)
-        system_logger.log_info("_calculate_price output target buy price %s, target sell price %s",target_buy_price, target_sell_price)
+        self.logger.log_info("_calculate_price input buy price %s, rate buy/sell %s, %s", buy_price, buy_rate, sell_rate)
+        self.logger.log_info("_calculate_price output target buy price %s, target sell price %s",target_buy_price, target_sell_price)
         return target_buy_price, target_sell_price
     
     def _get_prev_trade_round(self, code, trade_round):
         info = self.trade_db_manager.get_trade_round(code, trade_round)
-        system_logger.log_info("_get_prev_trade_round input code %s, trade_round %s",code, trade_round)
-        system_logger.log_info("_get_prev_trade_round price %s, quantity %s",info[0], info[1])
+        self.logger.log_info("_get_prev_trade_round input code %s, trade_round %s",code, trade_round)
+        self.logger.log_info("_get_prev_trade_round price %s, quantity %s",info[0], info[1])
         return info[0], info[1] # price, quantity
 
     def _try_buy_stock(self, current_price, moniData:MonitoringData):
         yaml_data = self.stock_round_yaml_manager.read_by_id(moniData.code)
-        system_logger.log_info("_try_buy_stock price %s, moniData %s, yaml %s",current_price, moniData, yaml_data)
+        self.logger.log_info("_try_buy_stock price %s, moniData %s, yaml %s",current_price, moniData, yaml_data)
 
         if yaml_data[0]["orders"][moniData.trade_round-1]["order"] != moniData.trade_round:
-            system_logger.log_info("_try_buy_stock 1st condition, round %s != moni round %s",yaml_data[0]["orders"][moniData.trade_round-1]["order"], moniData.trade_round)
+            self.logger.log_info("_try_buy_stock 1st condition, round %s != moni round %s",yaml_data[0]["orders"][moniData.trade_round-1]["order"], moniData.trade_round)
             return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
         if len(yaml_data[0]["orders"]) <= moniData.trade_round: # 설정된 마지막 차수라는 뜻
-            system_logger.log_info("_try_buy_stock 2nd condition, len %s != moni round %s",len(yaml_data[0]["orders"]), moniData.trade_round)
+            self.logger.log_info("_try_buy_stock 2nd condition, len %s != moni round %s",len(yaml_data[0]["orders"]), moniData.trade_round)
             return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
         
         quantity = PriceCalculator.calculate_quantity(yaml_data[0]["orders"][moniData.trade_round-1]["buy_price"], current_price)
         status, info = self.broker_manager.place_market_order(moniData.code, quantity, "BUY")
             
         if status is False:
-            system_logger.log_info("_try_buy_stock place_market_order status false")
+            self.logger.log_info("_try_buy_stock place_market_order status false")
             return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
 
         moniData.price = info[0] # 실제 거래 매수 금액
@@ -49,26 +48,26 @@ class MagicSplit(Algorithm):
         moniData.buy_rate = yaml_data[0]["orders"][moniData.trade_round]["buy_rate"]
         moniData.sell_rate = yaml_data[0]["orders"][moniData.trade_round]["sell_rate"]
         moniData.trade_round = yaml_data[0]["orders"][moniData.trade_round]["order"]
-        system_logger.log_info("_try_buy_stock success, moniData %s",moniData)
+        self.logger.log_info("_try_buy_stock success, moniData %s",moniData)
         return AlgorithmData(QueryOp.UPDATE, moniData)
         
     def _try_sell_stock(self, current_price, moniData:MonitoringData):
         yaml_data = self.stock_round_yaml_manager.read_by_id(moniData.code)
-        system_logger.log_info("_try_sell_stock price %s, moniData %s",current_price, moniData)
+        self.logger.log_info("_try_sell_stock price %s, moniData %s",current_price, moniData)
 
         
         if yaml_data[0]["orders"][moniData.trade_round-1]["order"] != moniData.trade_round:
-            system_logger.log_info("_try_sell_stock 1st condition, round %s != moni round %s",yaml_data[0]["orders"][moniData.trade_round-1]["order"], moniData.trade_round)
+            self.logger.log_info("_try_sell_stock 1st condition, round %s != moni round %s",yaml_data[0]["orders"][moniData.trade_round-1]["order"], moniData.trade_round)
             return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
         
         status, info = self.broker_manager.place_market_order(moniData.code, moniData.quantity, "BUY")
             
         if status is False:
-            system_logger.log_info("_try_sell_stock place_market_order status false")
+            self.logger.log_info("_try_sell_stock place_market_order status false")
             return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
         
         if moniData.trade_round  == 1: # 1 차수 매도 성공, 모니터링 DB에서 지우기
-            system_logger.log_info("_try_sell_stock 2nd condition, lst round sell..")
+            self.logger.log_info("_try_sell_stock 2nd condition, lst round sell..")
             return AlgorithmData(QueryOp.DELETE, moniData)
         
         # 이전 차수에 산 매수금액과 수량
@@ -79,13 +78,13 @@ class MagicSplit(Algorithm):
         moniData.quantity = quantity
         moniData.buy_rate = yaml_data[0]["orders"][moniData.trade_round-2]["buy_rate"]
         moniData.sell_rate = yaml_data[0]["orders"][moniData.trade_round-2]["sell_rate"]
-        system_logger.log_info("_try_sell_stock success, moniData %s",moniData)
+        self.logger.log_info("_try_sell_stock success, moniData %s",moniData)
         return AlgorithmData(QueryOp.UPDATE, moniData)
     
     def run_algorithm(self, moniData:MonitoringData):
         target_buy_price, target_sell_price = self._calculate_price(moniData.price, moniData.buy_rate, moniData.sell_rate)
         current_price = self.broker_manager.get_current_price(moniData.code)
-        system_logger.log_info("run_algorithm current price %s, target_buy_price  %s, target_sell_price %s",current_price, target_buy_price, target_sell_price)
+        self.logger.log_info("run_algorithm current price %s, target_buy_price  %s, target_sell_price %s",current_price, target_buy_price, target_sell_price)
             
         if current_price <= target_buy_price:
             return self._try_buy_stock(current_price, moniData)
