@@ -44,7 +44,15 @@ class MainApp:
         default="src/config/config.yaml",  # 기본값
         help="Path to the configuration file (default: src/config/config.yaml)"
 )
-      
+        # broker 인자 추가 (선택적, 기본값은 'dummy')
+        parser.add_argument(
+        "--broker",  # 명령행에서 사용할 옵션 이름
+        nargs="?",  # 선택적 인자
+        choices=["KR", "US", "kr", "us"],  # 유효한 값 제한
+        default="KR",  # 기본값
+        help="Country code for the stock monitoring system (KR/US)"
+    )
+ 
         # 명령행 인자 파싱
         self.args = parser.parse_args()
 
