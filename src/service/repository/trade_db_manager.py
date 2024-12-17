@@ -6,7 +6,7 @@ class TradeDBManager(YamlManager):
     def __init__(self, logger, config_file):
         super().__init__(config_file)
         self._set_stock_db_yaml_config()
-        self.db = StockTradeDB(logger,         self.stock_trade_db_file)
+        self.db = StockTradeDB(logger, self.stock_trade_db_file)
         self.logger = logger
         
 
