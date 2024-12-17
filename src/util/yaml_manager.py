@@ -19,7 +19,7 @@ class YamlManager:
         # 디렉토리 생성 (없으면 생성)
         log_dir.mkdir(parents=True, exist_ok=True)
     
-    def _set_db_class_yaml_config(self):
+    def _set_monitoring_db_yaml_config(self):
         # YAML 설정 로드
         with open(self.config_file, "r") as file:
             config = yaml.safe_load(file)
@@ -27,6 +27,17 @@ class YamlManager:
         sql_db = config['db_class']
         db_dir = Path(sql_db['db_dir'])
         self.monitoring_db_file = db_dir / sql_db['monitoring_db_file']
+        
+        # 디렉토리 생성 (없으면 생성)
+        db_dir.mkdir(parents=True, exist_ok=True)
+
+    def _set_stock_trade_db_yaml_config(self):
+        # YAML 설정 로드
+        with open(self.config_file, "r") as file:
+            config = yaml.safe_load(file)
+
+        sql_db = config['db_class']
+        db_dir = Path(sql_db['db_dir'])       
         self.stock_trade_db_file = db_dir / sql_db['stock_trade_db_file']
 
         # 디렉토리 생성 (없으면 생성)
