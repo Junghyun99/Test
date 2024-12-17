@@ -8,8 +8,10 @@ from src.util.yaml_manager import YamlManager
 
 class MonitoringManager(YamlManager):
     COUNTRY_CODE = CountryCode.KR
-
-    def __init__(self, algorithm, logger):
+    
+    def __init__(self, algorithm, logger, config_file):
+        super().__init__(config_file)
+        self._set_monitoring_db_yaml_config()
         self.db = MonitoringDB(logger)
         self.algorithm = algorithm
         self.logger = logger
