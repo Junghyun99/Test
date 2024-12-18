@@ -36,7 +36,7 @@ jobs:
       if: failure()
       uses: actions/upload-artifact@v3
       with:
-        name: pytest-report  # 아티팩트 이름
+        name: pytest-mark-report  # 아티팩트 이름
         path: report.xml     # 업로드할 파일
 
     - name: Extract failed tests and send Slack notification
