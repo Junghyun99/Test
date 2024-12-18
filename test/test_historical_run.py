@@ -8,6 +8,11 @@ class TestHistoricalRun:
         # 각 테스트 메서드 실행 전에 실행되는 setup 코드
         pass
 
-    def test_add(self):
-        # 더하기 테스트        
-        assert 1 == 1
+    @freeze_time("2024-01-01 00:00:00")
+    def test_main():
+    initial_time = datetime.now()
+
+    for i in range(100):
+        with freeze_time(initial_time + timedelta(days=i)):
+            print(f"Iteration {i + 1}, 날짜: {datetime.now()}")
+            #main()
