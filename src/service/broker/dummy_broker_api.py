@@ -1,7 +1,7 @@
 import random
 import time
-from datetime import datetime
 from src.interface.broker_api import BrokerAPI
+import yfinance as yf
 
 class DummyBrokerAPI(BrokerAPI):
     def __init__(self):
@@ -12,6 +12,17 @@ class DummyBrokerAPI(BrokerAPI):
         return f"TX_{index}"
     
     def get_current_price(self, symbol):
+        """
+        Yahoo Finance에서 현재 주가를 가져옵니다.
+        :param symbol: 주식 티커 심볼 (e.g., "AAPL", "MSFT")
+        :return: 현재 주가(float) 또는 에러 메시지(str)
+        """
+        try:
+            stock = yf.Ticker(symbol)
+            current_price = stock.history(period="1d")["Close"].iloc[-1]
+            return round(current_price, 2)
+        except Exception as e:
+            print(f"Error fetching data for symbol '{symbol}': {e}")
         return round(random.uniform(100, 500), 2)
 
     def place_market_order(self, symbol, quantity, order_type):
