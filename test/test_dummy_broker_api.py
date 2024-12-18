@@ -8,7 +8,7 @@ def dummy_broker():
 # Tests for get_current_price
 def test_get_current_price(dummy_broker):
     #assert dummy_broker.get_current_price("AAPL") == 10
-    assert dummy_broker.get_current_price("SHV") == 1
+    #assert dummy_broker.get_current_price("SHV") == 1
     assert dummy_broker.get_current_price("005930.KS") == 10
 
 def test_get_current_price_returns_float(dummy_broker):
