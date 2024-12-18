@@ -13,9 +13,9 @@ class TestHistoricalRun:
 
     @freeze_time("2024-01-01 00:00:00")
     def test_main():
-    initial_time = datetime.now()
+        initial_time = datetime.now()
 
-    for i in range(100):
-        with freeze_time(initial_time + timedelta(days=i)):
-            print(f"Iteration {i + 1}, 날짜: {datetime.now()}")
-            #main()
+        for i in range(100):
+            with freeze_time(initial_time + timedelta(days=i)):
+                print(f"Iteration {i + 1}, 날짜: {datetime.now()}")
+                #main()
