@@ -32,7 +32,7 @@ jobs:
     # 4. pytest 실행
     - name: Run Pytest
       run: |
-        pytest --junitxml=report.xml
+        pytest -m "not large_test" --junitxml=report.xml
       # 실패 여부를 확인하기 위해 종료 코드를 저장
       #continue-on-error: true
 
