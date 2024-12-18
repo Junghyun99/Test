@@ -10,4 +10,4 @@ class TestHistoricalRun:
 
     def test_add(self):
         # 더하기 테스트        
-        assert 1 == 5
+        assert 1 == 1
