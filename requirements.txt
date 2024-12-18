@@ -4,3 +4,4 @@ pytest-html
 pytest-cov
 pyyaml
 requests
+freezegun
