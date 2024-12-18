@@ -1,0 +1,61 @@
+name: Run Pytest mark
+
+on:
+  
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+
+    steps:
+    # 1. 저장소를 클론
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Python 환경 설정
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10' # 원하는 Python 버전
+
+    # 3. 필요한 의존성 설치
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # 4. pytest 실행
+    - name: Run Pytest
+      run: |
+        pytest -m large_test --junitxml=report.xml
+      # 실패 여부를 확인하기 위해 종료 코드를 저장
+      #continue-on-error: true
+
+
+    - name: Upload Test Report
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: pytest-report  # 아티팩트 이름
+        path: report.xml     # 업로드할 파일
+
+    - name: Extract failed tests and send Slack notification
+      if: failure()  # 실패한 테스트가 있을 때만 실행
+      run: |
+        python parse_failed_tests.py
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        GITHUB_REF_NAME: ${{ github.ref_name }}
+        GITHUB_SHA: ${{ github.sha }} 
+
+
+    - name: Run tests with coverage
+      run: |
+        pytest -m large_test --cov=src --cov-report=term-missing --cov-report=xml:coverage.xml --cov-fail-under=80
+
+    - name: Upload coverage report
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: coverage.xml 
