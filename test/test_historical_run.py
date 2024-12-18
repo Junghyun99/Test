@@ -1,6 +1,6 @@
 import pytest
 
-# 테스트 클래스
+@pytest.mark.large_test
 class TestHistoricalRun:
 
     @pytest.fixture(autouse=True)
