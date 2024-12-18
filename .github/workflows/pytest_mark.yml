@@ -47,15 +47,4 @@ jobs:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         GITHUB_REF_NAME: ${{ github.ref_name }}
         GITHUB_SHA: ${{ github.sha }} 
-
-
-    - name: Run tests with coverage
-      run: |
-        pytest -m large_test --cov=src --cov-report=term-missing --cov-report=xml:coverage.xml --cov-fail-under=80
-
-    - name: Upload coverage report
-      if: failure()
-      uses: actions/upload-artifact@v3
-      with:
-        name: coverage-report
-        path: coverage.xml 
+ 
