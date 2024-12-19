@@ -8,22 +8,18 @@ from src.service.broker.dummy_broker_api import DummyBrokerAPI
 import pandas as pd
 
 @pytest.fixture
-def temp_file():
-    file_path = "test/stock_round_config.yaml"
+def temp_round_file():
+    file_path = "test/csv/stock_round_config.yaml"
 
-    # 초기값 설정
-    initial_data = {
-        "KR": [],
-        "US": [{"name": "Apple", "code": "AAPL", "orders": [{"order": 1, "buy_price": 150,  "buy_rate": 5, "sell_rate":3},{"order": 2, "buy_price": 155,  "buy_rate": 5, "sell_rate":3}]}]
-    }
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            return yaml.safe_load(file) or {}
+    except FileNotFoundError:
+        return {}        
+    except yaml.YAMLError as e:
+        raise RuntimeError(f"Failed to parse YAML file {self.file_path}: {e}")
 
-    # 초기값을 test_stocks.yaml 파일에 작성
-    with open(file_path, 'w', encoding='utf-8') as file:
-        yaml.dump(initial_data, file, allow_unicode=True)
-
-    yield file_path
-    if os.path.exists(file_path):
-        os.remove(file_path)
+    
 
 
 
