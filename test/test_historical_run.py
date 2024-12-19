@@ -31,6 +31,8 @@ def mock_patch(mocker):
 
     mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])
 
+mock_patch()
+
 
 @pytest.fixture(scope ="module")
 def mock_broker():
