@@ -3,6 +3,7 @@ from src.util.enums import CountryCode, QueryOp
 
 @dataclass
 class MonitoringData:
+    id: int
     stock_name: str
     code: str
     country_code: CountryCode
@@ -12,7 +13,7 @@ class MonitoringData:
     buy_rate: int
     sell_rate: int
 
-    DUMMY = ("stock", "code", CountryCode.KR, 0, 0.0, 0, 0, 0)
+    DUMMY = (0, "stock", "code", CountryCode.KR, 0, 0.0, 0, 0, 0)
 
     def __post_init__(self):
         if self.country_code == "KR": 
