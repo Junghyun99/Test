@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 from freezegun import freeze_time
 from src.service.logging.logger_manager import LoggerManager
 from src.service.repository.monitoring_db import MonitoringDB
+from src.service.repository.stock_trade_db import StockTradeDB
+
 from src.service.broker.dummy_broker_api import DummyBrokerAPI
 from src.main import MainApp
 import pandas as pd
@@ -103,7 +105,7 @@ class TestHistoricalMonitoring:
                        
         query = '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate) 
                VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
-        data = ('aaple', 'AAPL', 'US', 0, 0, 0, 5, 3)
+        data = ('aaple', 'AAPL', 'US', 0, 100000.0, 1, 5, 3)
         db.insert_data(query, data)
         db.close()
         yield
@@ -133,7 +135,7 @@ class TestHistoricalRun:
                        
         query = '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate) 
                VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
-        data = ('aaple', 'AAPL', 'US', 0, 0, 0, 5, 3)
+        data = ('aaple', 'AAPL', 'US', 0, 10000.0, 1, 5, 3)
         db.insert_data(query, data)
         db.close()
         yield
@@ -156,4 +158,14 @@ class TestHistoricalRun:
     @freeze_time("2024-11-12 00:00:00")
     def test_main_one_shot(self):
         self.app.run()
+        file_path = "test/db/StockTrade.db"
+        
+        self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
+        db = StockTradeDB(self.logger, file_path)
+        result = db.read_data("SELECT * FROM history")
+        assert result[0][3] == 'TX123'
+
+        db.close()
+        if os.path.exists(self.file_path):
+            os.remove(self.file_path)
         assert 1 == 2
