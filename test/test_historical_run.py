@@ -106,6 +106,10 @@ class TestHistoricalMonitoring:
         data = ('aaple', 'AAPL', 'US', 0, 0, 0, 5, 3)
         db.insert_data(query, data)
         db.close()
+        yield
+        if os.path.exists(self.file_path):
+            os.remove(self.file_path)
+
 
     def test_monitoring(self):
         db = MonitoringDB(self.logger, self.file_path)
@@ -132,6 +136,11 @@ class TestHistoricalRun:
         data = ('aaple', 'AAPL', 'US', 0, 0, 0, 5, 3)
         db.insert_data(query, data)
         db.close()
+        yield
+        if os.path.exists(self.file_path):
+            os.remove(self.file_path)
+
+
 
 
     @pytest.fixture(autouse=True)
