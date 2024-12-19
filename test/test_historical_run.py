@@ -8,26 +8,7 @@ from src.service.broker.dummy_broker_api import DummyBrokerAPI
 from src.main import MainApp
 import pandas as pd
 
-@pytest.fixture
-def temp_round_file():
-    file_path = "test/csv/stock_round_config.yaml"
 
-    try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            return yaml.safe_load(file) or {}
-    except FileNotFoundError:
-        return {}        
-    except yaml.YAMLError as e:
-        raise RuntimeError(f"Failed to parse YAML file {self.file_path}: {e}")
-
-    
-
-
-
-
-@pytest.mark.large_test
-class TestHistoriRound:
-    pass
 
 def mock_get_current_price(symbol):
     initial_time = datetime.now()
@@ -135,16 +116,35 @@ class TestHistoricalMonitoring:
 @pytest.mark.large_test
 class TestHistoricalRun:
 
+    def mock_get_broker(self):
+        return self.broker 
+
     @pytest.fixture(autouse=True)
-    def setup(self):
-        # 각 테스트 메서드 실행 전에 실행되는 setup 코드
-        pass
+    def setup_monitoring_db(self):
+        self.file_path ="test/db/Monitoring.db"
+        if not os.path.exists(os.path.dirname(self.file_path)):
+            os.makedirs(os.path.dirname(self.file_path))  # 디렉토리 생성  
+        self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
+        db = MonitoringDB(self.logger, self.file_path)
+                       
+        query = '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+        data = ('aaple', 'AAPL', 'US', 0, 0, 0, 5, 3)
+        db.insert_data(query, data)
+        db.close()
 
-    @freeze_time("2024-01-01 00:00:00")
-    def test_main(self):
-        initial_time = datetime.now()
 
-        for i in range(100):
-            with freeze_time(initial_time + timedelta(days=i)):
-                print(f"Iteration {i + 1}, 날짜: {datetime.now()}")
-                #main()
+    @pytest.fixture(autouse=True)
+    def setup(self, mocker):
+        mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", side_effect=mock_get_current_price)
+
+        mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])
+        mocker.patch("src.main.MainApp.get_broker", side_effect=self.mock_get_broker)
+
+        self.broker = DummyBrokerAPI()    
+        self.app = MainApp()    
+
+    @freeze_time("2024-11-12 00:00:00")
+    def test_main_one_shot(self):
+        self.app.run()
+        assert 1 == 2
