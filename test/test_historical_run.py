@@ -108,6 +108,14 @@ class TestHistoricalMock:
         mocker.patch("src.main.MainApp.get_broker", side_effect=self.mock_get_broker)
         assert MainApp().get_broker().get_current_price(symbol) == 224.23
 
+@pytest.mark.large_test
+class TestHistoricalMonitoring:
+
+    @pytest.fixture(autouse=True)
+    def setup(self):        
+        pass
+
+
 
 @pytest.mark.large_test
 class TestHistoricalRun:
