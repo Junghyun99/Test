@@ -14,7 +14,7 @@ import pandas as pd
 def mock_broker(mocker):
     mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", side_effect=mock_get_current_price)
 
-        return DummyBrokerAPI()
+    return DummyBrokerAPI()
     
 
 def mock_get_current_price(symbol):
