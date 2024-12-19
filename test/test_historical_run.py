@@ -96,12 +96,12 @@ class TestHistoricalMock:
         return self.broker 
     
     @pytest.fixture(autouse=True)
-    def setup(self):        
+    def setup(self, mocker):        
         mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", side_effect=mock_get_current_price)
 
         self.broker = DummyBrokerAPI() 
     
-    def test_get_broker(self):
+    def test_get_broker(self, mocker):
         mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])
         mocker.patch("src/main.MainApp.get_broker", side_effect=mock_get_broker)
         print(MainApp().get_broker())
