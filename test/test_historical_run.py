@@ -12,7 +12,7 @@ class TestHistoricalPrice:
 
     @pytest.fixture(autouse=True)
     def setup(self, mocker):
-        mocker.patch("src.service.broker.dummy_broker_api DummyBrokerAPI.get_current_price", return_value=mock_get_current_price)
+        mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", return_value=mock_get_current_price)
 
         self.broker = DummyBrokerAPI()
  
