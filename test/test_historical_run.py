@@ -9,7 +9,15 @@ import pandas as pd
 
 
 def mock_get_current_price(symbol):
-    return 
+    initial_time = datetime.now()
+    formatted_time = initial_time.strftime("%d/%m/%Y")
+
+    # CSV 파일 읽기
+    file_name = f"test/csv/historical_data_{symbol}.csv"
+    df = pd.read_csv(file_name)
+    df_price = df[df["Date"] == formatted_time] 
+
+    return df_price["Price"].values[0]
 
 @pytest.mark.large_test
 class TestHistoricalPrice:
@@ -30,24 +38,21 @@ class TestHistoricalPrice:
 
         assert df_price["Price"].values[0] == 224.23
 
-    def test_get_price(self):
-        symbol = "AAPL"
-        # CSV 파일 읽기
-        file_name = f"test/csv/historical_data_{symbol}.csv"
-        df = pd.read_csv(file_name)
-        df_price = df[df["Date"] == "12/11/2024"]       
-
-        price = self.broker.get_current_price(symbol)
-
-
     @freeze_time("2024-11-12 00:00:00")
     def test_time(self):
         initial_time = datetime.now()
         formatted_time = initial_time.strftime("%d/%m/%Y")
 
-        print(formatted_time)
-        assert 1 == 2
-    
+        assert formatted_time == "12/11/2024"
+
+    @freeze_time("2024-11-12 00:00:00")
+    def test_get_current_price(self):
+        symbol = "AAPL"
+        
+        price = self.broker.get_current_price(symbol) 
+        assert price == 1
+
+
 
 
 @pytest.mark.large_test
