@@ -16,6 +16,8 @@ def mock_get_current_price(symbol):
     file_name = f"test/csv/historical_data_{symbol}.csv"
     df = pd.read_csv(file_name)
     df_price = df[df["Date"] == formatted_time] 
+    if df.empty:
+        return 0
 
     return df_price["Price"].values[0]
 
