@@ -128,7 +128,9 @@ class TestHistoricalMonitoring:
 
     def test_monitoring(self):
         db = MonitoringDB(self.logger, self.file_path)
-        assert 1 == 2
+        result = db.read_data("SELECT * FROM monitoring WHERE code=?", ('AAPL',))
+        assert result[0][1] == 'AAPL'
+        
 
 @pytest.mark.large_test
 class TestHistoricalRun:
