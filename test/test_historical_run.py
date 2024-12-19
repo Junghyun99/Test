@@ -1,5 +1,5 @@
 import pytest
-
+import os
 from datetime import datetime, timedelta
 from freezegun import freeze_time
 from src.service.logging.logger_manager import LoggerManager
@@ -113,9 +113,10 @@ class TestHistoricalMock:
 class TestHistoricalMonitoring:
 
     @pytest.fixture(autouse=True)
-    def setup(self):        
+    def setup(self):  
         file_path ="test/db/Monitoring.db"
-          
+        if not os.path.exists(os.path.dirname(file_path)):
+            os.makedirs(os.path.dirname(file_path))  # 디렉토리 생성  
         logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
         db = MonitoringDB(logger, file_path)
                        
