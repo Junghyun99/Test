@@ -26,7 +26,22 @@ class MagicSplit(Algorithm):
         return info[0], info[1] # price, quantity
 
     def _try_buy_stock_zero(self, current_price, moniData:MonitoringData):
-        pass
+        yaml_data = self.stock_round_yaml_manager.read_by_id(moniData.code)
+        self.logger.log_info("_try_buy_stock_zero price %s, moniData %s, yaml %s",current_price, moniData, yaml_data)
+        quantity = PriceCalculator.calculate_quantity(yaml_data[0]["orders"][0]["buy_price"], current_price)
+        status, info = self.broker_manager.place_market_order(moniData.code, quantity, "BUY")
+
+        if status is False:
+            self.logger.log_info("_try_buy_stock_zero place_market_order status false")
+            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
+
+        moniData.price = info[0] # 실제 거래 매수 금액
+        moniData.quantity = info[1] # 실제 거래 매수 수량
+        moniData.buy_rate = yaml_data[0]["orders"][1]["buy_rate"]
+        moniData.sell_rate = yaml_data[0]["orders"][1]["sell_rate"]
+        moniData.trade_round = yaml_data[0]["orders"][1]["order"]
+        self.logger.log_info("_try_buy_stock_zero success, moniData %s",moniData)
+        return AlgorithmData(QueryOp.UPDATE, moniData)
 
     def _try_buy_stock(self, current_price, moniData:MonitoringData):
         yaml_data = self.stock_round_yaml_manager.read_by_id(moniData.code)
