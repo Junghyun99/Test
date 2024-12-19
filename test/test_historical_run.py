@@ -2,6 +2,7 @@ import pytest
 
 from datetime import datetime, timedelta
 from freezegun import freeze_time
+from src.service.logging.logger_manager import LoggerManager
 
 from src.service.broker.dummy_broker_api import DummyBrokerAPI
 from src.main import MainApp
