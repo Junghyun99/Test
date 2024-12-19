@@ -93,7 +93,7 @@ class TestHistoricalPrice:
 class TestHistoricalMock:
     
     def mock_get_broker(self):
-    return self.broker 
+        return self.broker 
     
     @pytest.fixture(autouse=True)
     def setup(self):        
