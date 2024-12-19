@@ -114,22 +114,21 @@ class TestHistoricalMonitoring:
 
     @pytest.fixture(autouse=True)
     def setup(self):  
-        file_path ="test/db/Monitoring.db"
+        self.file_path ="test/db/Monitoring.db"
         if not os.path.exists(os.path.dirname(file_path)):
             os.makedirs(os.path.dirname(file_path))  # 디렉토리 생성  
-        logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
+        self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
         db = MonitoringDB(logger, file_path)
                        
         query = '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate) 
                VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
         data = ('aaple', 'AAPL', 'US', 0, 0, 0, 5, 3)
         db.insert_data(query, data)
-        self.db = db
-        yield self.db
-        self.db.close()
+        db.close()
 
     def test_monitoring(self):
-        pass
+        db = MonitoringDB(self.logger, self.file_path)
+        assert 1 == 2
 
 @pytest.mark.large_test
 class TestHistoricalRun:
