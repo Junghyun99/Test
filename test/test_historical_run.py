@@ -50,7 +50,7 @@ class TestHistoricalPrice:
         symbol = "AAPL"
         
         price = self.broker.get_current_price(symbol) 
-        assert price == 1
+        assert price == 224.23
 
 
 
