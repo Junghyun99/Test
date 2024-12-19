@@ -53,6 +53,15 @@ class TestHistoricalPrice:
         assert price == 224.23
 
 
+    @freeze_time("2024-11-12 00:00:00")
+    def test_time_range(self):
+        initial_time = datetime.now()
+        prices = []
+
+        for i in range(10):
+            with freeze_time(initial_time + timedelta(days=i)):
+                print(f"Iteration {i + 1}, 날짜: {datetime.now()}")
+                assert self.broker.get_current_price(symbol) == prices[i]
 
 
 @pytest.mark.large_test
