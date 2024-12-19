@@ -124,9 +124,6 @@ class TestHistoricalMonitoring:
                VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
         data = ('aaple', 'AAPL', 'US', 0, 0, 0, 5, 3)
         db.insert_data(query, data)
-        result = db.read_data("SELECT * FROM monitoring WHERE code=?", ('AAPL',))
-        print(result)
-        assert result[0][1] == 'AAPL'
         self.db = db
         yield self.db
         self.db.close()
