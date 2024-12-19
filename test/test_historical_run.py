@@ -10,7 +10,7 @@ from src.service.broker.dummy_broker_api import DummyBrokerAPI
 from src.main import MainApp
 import pandas as pd
 
-@pytest.fixture(scope = module)
+@pytest.fixture(scope ="module")
 def mock_broker(mocker):
     mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", side_effect=mock_get_current_price)
 
