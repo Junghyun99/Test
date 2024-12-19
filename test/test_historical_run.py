@@ -53,10 +53,10 @@ class TestHistoricalPrice:
         assert price == 224.23
 
 
-    @freeze_time("2024-11-12 00:00:00")
+    @freeze_time("2024-11-11 00:00:00")
     def test_time_range(self):
         initial_time = datetime.now()
-        prices = []
+        prices = [224.23, 224.23, 225.12, 228.22, 225, 0, 0, 228.02, 228.28, 229]
 
         for i in range(10):
             with freeze_time(initial_time + timedelta(days=i)):
