@@ -94,6 +94,9 @@ class TestHistoricalMock:
         mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", side_effect=mock_get_current_price)
 
         self.broker = DummyBrokerAPI() 
+    def get_broker(self):
+
+        mocker.patch("src/main.MainApp.", side_effect=mock_get_current_price)
 
 
 @pytest.mark.large_test
