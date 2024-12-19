@@ -113,9 +113,24 @@ class TestHistoricalMonitoring:
 
     @pytest.fixture(autouse=True)
     def setup(self):        
+        file_path = tmp_path / "test_monitoring_db.db"
+          
+        logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
+        db = MonitoringDB(logger, str(temp_file))
+                       
+        query = '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+        data = ('aaple', 'AAPL', 'US', 0, 150.0, 10, 5, 3)
+        db.insert_data(query, data)
+        result = db.read_data("SELECT * FROM monitoring WHERE code=?", ('AAPL',))
+        print(result)
+        assert result[0][1] == 'AAPL'
+        self.db = db
+        yield self.db
+        self.db.close()
+
+    def test_monitoring(self):
         pass
-
-
 
 @pytest.mark.large_test
 class TestHistoricalRun:
