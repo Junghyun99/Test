@@ -115,8 +115,8 @@ class TestHistoricalMonitoring:
     @pytest.fixture(autouse=True)
     def setup(self):  
         self.file_path ="test/db/Monitoring.db"
-        if not os.path.exists(os.path.dirname(file_path)):
-            os.makedirs(os.path.dirname(file_path))  # 디렉토리 생성  
+        if not os.path.exists(os.path.dirname(self.file_path)):
+            os.makedirs(os.path.dirname(self.file_path))  # 디렉토리 생성  
         self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
         db = MonitoringDB(logger, file_path)
                        
