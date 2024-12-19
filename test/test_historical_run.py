@@ -4,29 +4,21 @@ from datetime import datetime, timedelta
 from freezegun import freeze_time
 
 
-def mock_get_
-
+def mock_get_current_price(self, symbol):
+    return 1
 
 @pytest.mark.large_test
 class TestHistoricalPrice:
 
     @pytest.fixture(autouse=True)
-    def setup(self):
-        # 각 테스트 메서드 실행 전에 실행되는 setup 코드
-        pass
+    def setup(self, mocker):
+    mocker.patch("src.service.broker.dummy_broker_api.get_current_price", return_value=mock_get_current_price)
 
-    def test_get_price(mocker):
-    # 특정 함수만 모킹
-    mocker.patch(".method_to_mock", return_value="Mocked Response")
+        self.broker = DummyBrokerAPI()
+ 
 
-    obj = ExampleClass()
-
-    # 모킹된 함수 확인
-    assert obj.method_to_mock() == "Mocked Response"
-
-    # 다른 메서드는 원래 동작 유지
-    assert obj.method_to_keep() == "Keep Original Behavior"
-
+    def test_get_price(self):
+        assert self.broker.get_current_price("AAPL") == 2
 
 
 
