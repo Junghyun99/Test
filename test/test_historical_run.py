@@ -25,10 +25,11 @@ def mock_get_current_price(symbol):
     return df_price["Price"].values[0]
 
 
+def mock_patch(mocker):
 
-mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", side_effect=mock_get_current_price)
+    mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", side_effect=mock_get_current_price)
 
-mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])
+    mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])
 
 
 @pytest.fixture(scope ="module")
