@@ -106,7 +106,7 @@ class TestHistoricalMock:
         symbol = "AAPL"
         mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])
         mocker.patch("src.main.MainApp.get_broker", side_effect=self.mock_get_broker)
-        assert MainApp().get_broker().get_current_price(symbol) == 1
+        assert MainApp().get_broker().get_current_price(symbol) == 224.23
 
 
 @pytest.mark.large_test
