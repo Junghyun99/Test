@@ -88,6 +88,15 @@ class TestHistoricalPrice:
 
 
 @pytest.mark.large_test
+class TestHistoricalMock:   
+    @pytest.fixture(autouse=True)
+    def setup(self):        
+        mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", side_effect=mock_get_current_price)
+
+        self.broker = DummyBrokerAPI() 
+
+
+@pytest.mark.large_test
 class TestHistoricalRun:
 
     @pytest.fixture(autouse=True)
