@@ -14,14 +14,7 @@ def temp_file():
     # 초기값 설정
     initial_data = {
         "KR": [],
-        "US" : [
-        "name": "Apple",
-        "code": "AAPL",
-        "orders": [
-            {"order": 1, "buy_price": 150,  "buy_rate": 5, "sell_rate":3},
-            {"order": 2, "buy_price": 155,  "buy_rate": 5, "sell_rate":3}
-          ]
-        ]
+        "US" : ["name": "Apple", "code": "AAPL", "orders": [{"order": 1, "buy_price": 150,  "buy_rate": 5, "sell_rate":3},{"order": 2, "buy_price": 155,  "buy_rate": 5, "sell_rate":3}]]
     }
 
     # 초기값을 test_stocks.yaml 파일에 작성
