@@ -9,4 +9,4 @@ db_class:
   stock_trade_db_file: "StockTrade.db"
 
 stock_round_yaml:
-  path: "test/stock_round_config.yaml"
+  path: "test/csv/stock_round_config.yaml"
