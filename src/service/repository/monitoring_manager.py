@@ -15,7 +15,7 @@ class MonitoringManager(YamlManager):
         self.db = MonitoringDB(logger, self.monitoring_db_file)
         self.algorithm = algorithm
         self.logger = logger
-        self.logger.log_info("create MonitoringManager instance, init")
+        self.logger.log_info("create MonitoringManager instance, init %s",self.monitoring_db_file)
 
     def read_all_stocks(self, country_code):
         """모니터링 DB에서 모든 종목 읽기"""
