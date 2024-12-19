@@ -73,7 +73,7 @@ class MonitoringManager(YamlManager):
         if errors:
         # 에러 상세 정보 출력
             for error in errors:
-                system_logger.log_error("start_monitoring error %s", error)
+                self.logger.log_error("start_monitoring error %s", error)
             raise Exception("One or more errors occurred.")
 
 
