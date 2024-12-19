@@ -113,7 +113,7 @@ class TestHistoricalMonitoring:
 
     @pytest.fixture(autouse=True)
     def setup(self):        
-        file_path = tmp_path / "test_monitoring_db.db"
+        file_path ="test/db/monitoring.db"
           
         logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
         db = MonitoringDB(logger, str(temp_file))
