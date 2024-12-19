@@ -55,6 +55,7 @@ class TestHistoricalPrice:
 
     @freeze_time("2024-11-11 00:00:00")
     def test_time_range(self):
+        symbol = "AAPL"
         initial_time = datetime.now()
         prices = [224.23, 224.23, 225.12, 228.22, 225, 0, 0, 228.02, 228.28, 229]
 
