@@ -122,7 +122,7 @@ class TestHistoricalMonitoring:
                        
         query = '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate) 
                VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
-        data = ('aaple', 'AAPL', 'US', 0, 150.0, 10, 5, 3)
+        data = ('aaple', 'AAPL', 'US', 0, 0, 0, 5, 3)
         db.insert_data(query, data)
         result = db.read_data("SELECT * FROM monitoring WHERE code=?", ('AAPL',))
         print(result)
