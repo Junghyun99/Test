@@ -7,6 +7,37 @@ from src.service.broker.dummy_broker_api import DummyBrokerAPI
 
 import pandas as pd
 
+@pytest.fixture
+def temp_file():
+    file_path = "test/stock_round_config.yaml"
+
+    # 초기값 설정
+    initial_data = {
+        "KR": [],
+        "US" : [
+        "name": "Apple",
+        "code": "AAPL",
+        "orders": [
+            {"order": 1, "buy_price": 150,  "buy_rate": 5, "sell_rate":3},
+            {"order": 2, "buy_price": 155,  "buy_rate": 5, "sell_rate":3}
+          ]
+        ]
+    }
+
+    # 초기값을 test_stocks.yaml 파일에 작성
+    with open(file_path, 'w', encoding='utf-8') as file:
+        yaml.dump(initial_data, file, allow_unicode=True)
+
+    yield file_path
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+
+
+
+@pytest.mark.large_test
+class TestHistoriRound:
+    pass
 
 def mock_get_current_price(symbol):
     initial_time = datetime.now()
