@@ -24,7 +24,7 @@ class TestHistoricalPrice:
     def test_get_price(self):
         symbol = "AAPL"
         # CSV 파일 읽기
-        file_name = f"csv/historical_data_{symbol}.csv"
+        file_name = f"test/csv/historical_data_{symbol}.csv"
         df = pd.read_csv(file_name)
         df_price = df[df["Date"] == "2024-11-12"]
         print(df_price)
