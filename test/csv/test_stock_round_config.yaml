@@ -1,0 +1,30 @@
+US:
+  - name: Apple
+    code: AAPL
+    orders:
+      - order: 1
+        buy_price: 150
+        buy_rate: 5
+        sell_rate: 3
+      - order: 2
+        buy_price: 155
+        buy_rate: 5
+        sell_rate: 3  
+
+KR:
+  - name: 삼성전자
+    code: 005930
+    orders:
+      - order: 1
+        buy_price: 70000
+        buy_rate: 6
+        sell_rate: 3
+      - order: 2
+        buy_price: 71000
+        buy_rate: 6
+        sell_rate: 3
+      - order: 3
+        buy_price: 72000
+        buy_rate: 6
+        sell_rate: 3
+
