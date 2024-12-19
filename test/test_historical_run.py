@@ -102,6 +102,7 @@ class TestHistoricalMock:
         self.broker = DummyBrokerAPI() 
     
     def test_get_broker(self):
+        mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])
         mocker.patch("src/main.MainApp.get_broker", side_effect=mock_get_broker)
         print(MainApp().get_broker())
 
