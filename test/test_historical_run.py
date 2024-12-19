@@ -5,6 +5,9 @@ from freezegun import freeze_time
 
 from src.service.broker.dummy_broker_api import DummyBrokerAPI
 
+import pandas as pd
+
+
 def mock_get_current_price(symbol):
     return 1
 
@@ -19,7 +22,15 @@ class TestHistoricalPrice:
  
 
     def test_get_price(self):
-        assert self.broker.get_current_price("AAPL") == 2
+        symbol = "AAPL"
+        # CSV 파일 읽기
+        file_name = f"test_{symbol}.csv"
+        df = pd.read_csv(file_name)
+        df_price = df[df["Date"] == "2024-11-12"]
+        print(df_price)
+
+
+        assert self.broker.get_current_price(symbol) == 2
 
 
 
