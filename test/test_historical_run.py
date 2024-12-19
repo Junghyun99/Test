@@ -100,12 +100,13 @@ class TestHistoricalMock:
         mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", side_effect=mock_get_current_price)
 
         self.broker = DummyBrokerAPI() 
-    
+   
+    @freeze_time("2024-11-12 00:00:00")
     def test_get_broker(self, mocker):
+        symbol = "AAPL"
         mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])
         mocker.patch("src.main.MainApp.get_broker", side_effect=self.mock_get_broker)
-        print(MainApp().get_broker())
-        assert 1 == 2
+        assert MainApp().get_broker().get_current_price(symbol) == 1
 
 
 @pytest.mark.large_test
