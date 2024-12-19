@@ -103,7 +103,7 @@ class TestHistoricalMock:
     
     def test_get_broker(self, mocker):
         mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])
-        mocker.patch("src/main.MainApp.get_broker", side_effect=self.mock_get_broker)
+        mocker.patch("src.main.MainApp.get_broker", side_effect=self.mock_get_broker)
         print(MainApp().get_broker())
         assert 1 == 2
 
