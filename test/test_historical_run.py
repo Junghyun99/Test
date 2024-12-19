@@ -10,7 +10,12 @@ from src.service.broker.dummy_broker_api import DummyBrokerAPI
 from src.main import MainApp
 import pandas as pd
 
+@pytest.fixture(scope = module)
+def set_mock(mocker):
+    mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", side_effect=mock_get_current_price)
 
+        broker = DummyBrokerAPI()
+    
 
 def mock_get_current_price(symbol):
     initial_time = datetime.now()
@@ -29,10 +34,8 @@ def mock_get_current_price(symbol):
 class TestHistoricalPrice:
 
     @pytest.fixture(autouse=True)
-    def setup(self, mocker):
-        mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", side_effect=mock_get_current_price)
-
-        self.broker = DummyBrokerAPI()
+    def setup(self):
+        self.broker = broker
  
 
     def test_get_csv(self):
@@ -80,10 +83,8 @@ class TestHistoricalMock:
         return self.broker 
     
     @pytest.fixture(autouse=True)
-    def setup(self, mocker):        
-        mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", side_effect=mock_get_current_price)
-
-        self.broker = DummyBrokerAPI() 
+    def setup(self):        
+        self.broker = broker 
    
     @freeze_time("2024-11-12 00:00:00")
     def test_get_broker(self, mocker):
