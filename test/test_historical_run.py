@@ -43,9 +43,10 @@ class TestHistoricalPrice:
     @freeze_time("2024-11-12 00:00:00")
     def test_time(self):
         initial_time = datetime.now()
-        print(initial_time)
+        formatted_time = initial_time.strftime("%d/%m/%Y")
+print(formatted_time)
 
-        assert 1 == 2
+       assert 1 == 2
     
 
 
