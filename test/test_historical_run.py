@@ -3,6 +3,7 @@ import pytest
 from datetime import datetime, timedelta
 from freezegun import freeze_time
 
+from src.service.broker.dummy_broker_api import DummyBrokerAPI
 
 def mock_get_current_price(self, symbol):
     return 1
