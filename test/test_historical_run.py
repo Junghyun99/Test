@@ -43,7 +43,7 @@ class TestHistoricalRun:
         pass
 
     @freeze_time("2024-01-01 00:00:00")
-    def test_main():
+    def test_main(self):
         initial_time = datetime.now()
 
         for i in range(100):
