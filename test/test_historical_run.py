@@ -94,8 +94,7 @@ class TestHistoricalMock:
    
     @freeze_time("2024-11-12 00:00:00")
     def test_get_broker(self, mocker):
-        symbol = "AAPL"
-        mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])
+        symbol = "AAPL"       
         mocker.patch("src.main.MainApp.get_broker", side_effect=self.mock_get_broker)
         assert MainApp().get_broker().get_current_price(symbol) == 224.23
 
