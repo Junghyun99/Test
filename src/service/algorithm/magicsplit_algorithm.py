@@ -25,6 +25,9 @@ class MagicSplit(Algorithm):
         self.logger.log_info("_get_prev_trade_round price %s, quantity %s",info[0], info[1])
         return info[0], info[1] # price, quantity
 
+    def _try_buy_stock_zero(self, current_price, moniData:MonitoringData):
+        pass
+
     def _try_buy_stock(self, current_price, moniData:MonitoringData):
         yaml_data = self.stock_round_yaml_manager.read_by_id(moniData.code)
         self.logger.log_info("_try_buy_stock price %s, moniData %s, yaml %s",current_price, moniData, yaml_data)
@@ -85,8 +88,11 @@ class MagicSplit(Algorithm):
         target_buy_price, target_sell_price = self._calculate_price(moniData.price, moniData.buy_rate, moniData.sell_rate)
         current_price = self.broker_manager.get_current_price(moniData.code)
         self.logger.log_info("run_algorithm current price %s, target_buy_price  %s, target_sell_price %s",current_price, target_buy_price, target_sell_price)
-            
-        if current_price <= target_buy_price:
+      
+
+        if moniData trade_round == 0 and current_price <= target_buy_price:
+            return self._try_buy_stock_zero(current_price, moniData)
+        elif current_price <= target_buy_price:
             return self._try_buy_stock(current_price, moniData)
         elif current_price >= target_sell_price:
             return self._try_sell_stock(current_price, moniData)
