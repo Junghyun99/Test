@@ -44,8 +44,8 @@ class TestHistoricalPrice:
     def test_time(self):
         initial_time = datetime.now()
         formatted_time = initial_time.strftime("%d/%m/%Y")
-print(formatted_time)
 
+        print(formatted_time)
         assert 1 == 2
     
 
