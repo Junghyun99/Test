@@ -13,7 +13,7 @@ US:
 
 KR:
   - name: 삼성전자
-    code: 005930
+    code: 005930.KR
     orders:
       - order: 1
         buy_price: 70000
