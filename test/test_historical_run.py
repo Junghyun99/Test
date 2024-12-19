@@ -26,7 +26,7 @@ class TestHistoricalPrice:
         # CSV 파일 읽기
         file_name = f"test/csv/historical_data_{symbol}.csv"
         df = pd.read_csv(file_name)
-        df_price = df[df["Date"] == "2024-11-12"]
+        df_price = df[df["Date"] == "12/11/2024"]
         print(df_price)
 
 
