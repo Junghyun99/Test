@@ -105,6 +105,7 @@ class TestHistoricalMock:
         mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])
         mocker.patch("src/main.MainApp.get_broker", side_effect=mock_get_broker)
         print(MainApp().get_broker())
+        assert 1 == 2
 
 
 @pytest.mark.large_test
