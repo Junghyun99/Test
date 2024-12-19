@@ -117,7 +117,7 @@ class TestHistoricalMonitoring:
         file_path ="test/db/Monitoring.db"
           
         logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
-        db = MonitoringDB(logger, str(temp_file))
+        db = MonitoringDB(logger, file_path)
                        
         query = '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate) 
                VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
