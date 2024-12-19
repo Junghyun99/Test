@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from freezegun import freeze_time
 
 from src.service.broker.dummy_broker_api import DummyBrokerAPI
-
+from src.main import MainApp
 import pandas as pd
 
 @pytest.fixture
@@ -87,16 +87,23 @@ class TestHistoricalPrice:
                 assert self.broker.get_current_price(symbol) == prices[i]
 
 
+
+
 @pytest.mark.large_test
-class TestHistoricalMock:   
+class TestHistoricalMock:
+    
+    def mock_get_broker(self):
+    return self.broker 
+    
     @pytest.fixture(autouse=True)
     def setup(self):        
         mocker.patch("src.service.broker.dummy_broker_api.DummyBrokerAPI.get_current_price", side_effect=mock_get_current_price)
 
         self.broker = DummyBrokerAPI() 
-    def get_broker(self):
-
-        mocker.patch("src/main.MainApp.", side_effect=mock_get_current_price)
+    
+    def test_get_broker(self):
+        mocker.patch("src/main.MainApp.get_broker", side_effect=mock_get_broker)
+        print(MainApp().get_broker())
 
 
 @pytest.mark.large_test
