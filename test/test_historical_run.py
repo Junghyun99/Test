@@ -151,11 +151,7 @@ class TestHistoricalRun:
 
 
     @pytest.fixture(autouse=True)
-    def setup(self, mock_broker):
-        
-        mocker.patch("sys.argv", ["program", "US","--config","test/test_config.yaml"])
-        mocker.patch("src.main.MainApp.get_broker", side_effect=self.mock_get_broker)
-
+    def setup(self, mock_broker):                        
         self.broker = mock_broker    
         self.app = MainApp()    
 
