@@ -9,7 +9,7 @@ from src.service.logging.logger_manager import LoggerManager
 
 @pytest.fixture
 def temp_file():
-    file_path = "test/stock_round_config.yaml"
+    file_path = "test/csv/stock_round_config.yaml"
 
     # 초기값 설정
     initial_data = {
