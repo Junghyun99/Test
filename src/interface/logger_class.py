@@ -63,17 +63,17 @@ class BaseLogger:
             self.log(value) 
 
     def log_debug(self, message, *args, **kwargs):
-        name = self. _valid_thread_name() 
+        name = self._valid_thread_name() 
         self.log_dict[name].append(logging.DEBUG, message, *args, **kwargs)
 
     def log_info(self, message, *args, **kwargs):
-        name = self. _valid_thread_name() 
+        name = self._valid_thread_name() 
         self.log_dict[name].append(logging.INFO, message, *args, **kwargs)
 
     def log_warning(self, message, *args, **kwargs):
-        name = self. _valid_thread_name() 
+        name = self._valid_thread_name() 
         self.log_dict[name].append(logging.WARNING, message, *args, **kwargs)
 
     def log_error(self, message, *args, **kwargs):
-        name = self. _valid_thread_name() 
+        name = self._valid_thread_name() 
         self.log_dict[name].append(logging.ERROR, message, *args, **kwargs)
