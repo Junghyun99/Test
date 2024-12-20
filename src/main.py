@@ -115,8 +115,7 @@ class MainApp:
         try:
             moni.start_monitoring()
         finally:          
-            trade.close_db()
-            moni.close_db()
+            pass
 
 
 
