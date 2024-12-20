@@ -1,4 +1,6 @@
 import sqlite3
+import time
+import random
 
 class BaseDB:
     def __init__(self, logger, db_path):
@@ -28,6 +30,7 @@ class BaseDB:
             except sqlite3.Error as e:
                 self.logger.log_error("DB Write Error: %s", e)
                 error = e
+                time.sleep(round(random.random(),1))
         if error:
             raise error 
 
@@ -48,6 +51,7 @@ class BaseDB:
             except sqlite3.Error as e:
                 self.logger.log_error("DB Read Error: %s", e)
                 error = e
+                time.sleep(round(random.random(),1))
         if error:
             raise error
 
