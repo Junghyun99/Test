@@ -52,6 +52,7 @@ def test_log_debug_enabled(logger):
 def test_log_debug_message_content(logger, caplog):
     with caplog.at_level(logging.DEBUG):
         logger.log_debug("Debug message")
+        logger.proc_log()
     assert "Debug message" not in caplog.text
     logger.get_logger().handlers.clear()
 
@@ -67,13 +68,14 @@ def test_log_info_enabled_when_above_level(logger, caplog):
     logger.get_logger().propagate = True
     with caplog.at_level(logging.WARNING):
         logger.log_warning("This appear")
+        logger.proc_log()
     assert "This appear" in caplog.text
     logger.get_logger().handlers.clear()
 
 def test_log_info_file_output(logger,temp_file):
-    print(logger.get_logger().handlers)
+    
     logger.log_info("File output test")
-    print(f"File exists: {temp_file.exists()}")
+    
     assert temp_file.exists() 
     with open(temp_file, "r") as file:
         assert "File output test" in file.read()
@@ -83,6 +85,7 @@ def test_log_warning_message(logger, caplog):
     logger.get_logger().propagate = True
     with caplog.at_level(logging.WARNING):
         logger.log_warning("Warning message")
+        logger.proc_log()
     assert "Warning message" in caplog.text
     assert "WARNING" in caplog.text
     logger.get_logger().handlers.clear()
@@ -91,6 +94,7 @@ def test_log_error_message(logger, caplog):
     logger.get_logger().propagate = True
     with caplog.at_level(logging.ERROR):
         logger.log_error("Error message")
+        logger.proc_log()
     assert "Error message" in caplog.text
     assert "ERROR" in caplog.text
     logger.get_logger().handlers.clear()
@@ -103,6 +107,7 @@ def test_multiple_log_levels(logger, caplog):
         logger.log_info("Info message")
         logger.log_warning("Warning message")
         logger.log_error("Error message")
+        logger.proc_log()
     assert "Debug message" not in caplog.text
     assert "Info message" in caplog.text
     assert "Warning message" in caplog.text
