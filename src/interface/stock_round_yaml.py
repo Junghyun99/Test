@@ -13,7 +13,7 @@ class StockRoundYaml(YamlManager):
     def _get_country_data(self):
         """현재 COUNTRY_CODE 데이터를 가져오거나 빈 리스트 생성."""
         data = self._read()
-        print ("%s",data)
+        
         if self.COUNTRY_CODE not in data:
             data[self.COUNTRY_CODE] = []
         return data[self.COUNTRY_CODE]
