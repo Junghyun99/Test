@@ -48,7 +48,7 @@ class BaseLogger:
 
     def _valid_thread_name(self):
         thread = current_thread()
-        if self.log_dict.get(thread.name):
+        if self.log_dict.get(thread.name) == None:
             self.log_dict[thread.name] = []
         return name
 
