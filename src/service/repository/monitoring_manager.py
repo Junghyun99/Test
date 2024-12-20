@@ -26,9 +26,9 @@ class MonitoringManager(YamlManager):
 
     def add_stock_in_monitoring(self, id, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate):
         """새로운 종목 추가"""
-        query = '''INSERT INTO monitoring (id, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'''
-        data = (id, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
+        query = '''INSERT INTO monitoring (stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+        data = (stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
         self.logger.log_info("add_stock_in_monitoring query %s, data %s", query, data)
         self.db.insert_data(query, data)
 
@@ -40,8 +40,8 @@ class MonitoringManager(YamlManager):
         self.db.delete_data(query, data)
  
     def update_stock_in_monitoring(self, id, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate):
-        query = '''UPDATE monitoring SET id = ?, trade_round =?, price=?, quantity=?, buy_rate=?, sell_rate=? WHERE code = ?'''
-        data = (id, trade_round, price, quantity, buy_rate, sell_rate, code)
+        query = '''UPDATE monitoring SET trade_round =?, price=?, quantity=?, buy_rate=?, sell_rate=? WHERE code = ?'''
+        data = (trade_round, price, quantity, buy_rate, sell_rate, code)
         self.logger.log_info("update_stock_in_monitoring query %s, data %s", query, data)
         self.db.update_data(query, data)
         
