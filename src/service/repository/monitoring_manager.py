@@ -24,11 +24,11 @@ class MonitoringManager(YamlManager):
         self.logger.log_info("read_all_stocks country code %s", country_code)
         return self.db.read_data(query, data)
 
-    def add_stock_in_monitoring(self, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate):
+    def add_stock_in_monitoring(self, id, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate):
         """새로운 종목 추가"""
-        query = '''INSERT INTO monitoring (stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
-        data = (stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
+        query = '''INSERT INTO monitoring (id, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+        data = (id, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
         self.logger.log_info("add_stock_in_monitoring query %s, data %s", query, data)
         self.db.insert_data(query, data)
 
