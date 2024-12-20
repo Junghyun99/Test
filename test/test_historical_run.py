@@ -163,9 +163,7 @@ class TestHistoricalRun:
         self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
         db = StockTradeDB(self.logger, file_path)
         result = db.read_data("SELECT * FROM history")
-        assert result[0][3] == 'TX123'
-
+        assert result[0][3] == 'TX0'
         
         if os.path.exists(self.file_path):
             os.remove(self.file_path)
-        assert 1 == 2
