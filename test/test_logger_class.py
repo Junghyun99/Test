@@ -46,6 +46,7 @@ def test_get_logger_file_handler_type(logger):
 
 def test_log_debug_enabled(logger):
     logger.log_debug("Debug message")
+    logger.proc_log()
     assert logger.get_logger().isEnabledFor(logging.DEBUG) == False
     logger.get_logger().handlers.clear()
 
@@ -75,6 +76,7 @@ def test_log_info_enabled_when_above_level(logger, caplog):
 def test_log_info_file_output(logger,temp_file):
     
     logger.log_info("File output test")
+    logger.proc_log()
     
     assert temp_file.exists() 
     with open(temp_file, "r") as file:
@@ -117,21 +119,25 @@ def test_multiple_log_levels(logger, caplog):
 
 def test_logger_info(logger):
     logger.log_info("This is an info message")
+    logger.proc_log()
     assert logger.get_logger().isEnabledFor(logging.INFO)
     logger.get_logger().handlers.clear()
 
 def test_logger_warning(logger):
     logger.log_warning("This is a warning message")
+    logger.proc_log()
     assert logger.get_logger().isEnabledFor(logging.WARNING)
     logger.get_logger().handlers.clear()
 
 def test_logger_error(logger):
     logger.log_error("This is an error message")
+    logger.proc_log()
     assert logger.get_logger().isEnabledFor(logging.ERROR)
     logger.get_logger().handlers.clear()
 
 def test_log_file_created(logger, temp_file):
     logger.log_info("Testing file creation")
+    logger.proc_log()
     assert os.path.exists(temp_file)
     logger.get_logger().handlers.clear()
 
@@ -141,6 +147,7 @@ def test_logger_multiple_levels(logger):
     logger.log_info("Info level message")
     logger.log_warning("Warning level message")
     logger.log_error("Error level message")
+    logger.proc_log()
     assert logger.get_logger().isEnabledFor(logging.DEBUG) == False
     assert logger.get_logger().isEnabledFor(logging.INFO)
     assert logger.get_logger().isEnabledFor(logging.WARNING)
