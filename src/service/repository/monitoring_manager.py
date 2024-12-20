@@ -39,9 +39,9 @@ class MonitoringManager(YamlManager):
         self.logger.log_info("delete_stock_in_monitoring query %s, data %s", query, data)
         self.db.delete_data(query, data)
  
-    def update_stock_in_monitoring(self, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate):
-        query = '''UPDATE INTO monitoring SET trade_round =?, price=?, quantity=?, buy_rate=?, sell_rate=? WHERE code = ?'''
-        data = (trade_round, price, quantity, buy_rate, sell_rate, code)
+    def update_stock_in_monitoring(self, id, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate):
+        query = '''UPDATE INTO monitoring SET id = ?, trade_round =?, price=?, quantity=?, buy_rate=?, sell_rate=? WHERE code = ?'''
+        data = (id, trade_round, price, quantity, buy_rate, sell_rate, code)
         self.logger.log_info("update_stock_in_monitoring query %s, data %s", query, data)
         self.db.update_data(query, data)
         
