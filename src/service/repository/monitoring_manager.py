@@ -48,42 +48,42 @@ class MonitoringManager(YamlManager):
 
     def start_monitoring(self):
         """모든 종목을 멀티 쓰레드로 모니터링"""
-        max_core = os.cpu_count()-1
-        results = []
-        errors = []
-        stocks = self.read_all_stocks(self.COUNTRY_CODE.value)
-        self.logger.log_info("start_monitoring max_core %s  stock %s", max_core, stocks)
-        with ThreadPoolExecutor(max_workers=max_core) as executor:
-            futures = [executor.submit(self.algorithm.run_algorithm, MonitoringData(*stock)) for stock in stocks]
+        try:
+            max_core = os.cpu_count()-1
+            results = []
+            errors = []
+            stocks = self.read_all_stocks(self.COUNTRY_CODE.value)
+            self.logger.log_info("start_monitoring max_core %s  stock %s", max_core, stocks)
+            with ThreadPoolExecutor(max_workers=max_core) as executor:
+                futures = [executor.submit(self.algorithm.run_algorithm, MonitoringData(*stock)) for stock in stocks]
 
-            for future in as_completed(futures):
-                try:
-                    result = future.result() 
-                    results.append(result)
-                except Exception as e:
-                    errors.append(e)
+                for future in as_completed(futures):
+                    try:
+                        result = future.result() 
+                        results.append(result)
+                    except Exception as e:
+                        errors.append(e)
                     
-        for result in results:
-            if result.QueryOp is QueryOp.UPDATE:
+            for result in results:
+                if result.QueryOp is QueryOp.UPDATE:
                          
 
-                self.logger.log_info("update %s", result.MonitoringData.to_tuple())          
+                    self.logger.log_info("update %s", result.MonitoringData.to_tuple())          
 
-                self.update_stock_in_monitoring(*(result.MonitoringData.to_tuple()))
-            elif result.QueryOp is QueryOp.DELETE:
-                self.delete_stock_in_monitoring(result.MonitoringData.code)
+                    self.update_stock_in_monitoring(*(result.MonitoringData.to_tuple()))
+                 elif result.QueryOp is QueryOp.DELETE:
+                     self.delete_stock_in_monitoring(result.MonitoringData.code)
 
-        
-        if errors:
-        # 에러 상세 정보 출력
-            for error in errors:
-                self.logger.log_error("start_monitoring error %s", error)
-            raise Exception("One or more errors occurred.")
+        exception Exception as e:
+            self.logger.log_error("start_monitoring error %s", error) 
+        finally:     
+            if errors:
+            # 에러 상세 정보 출력
+                for error in errors:
+                    self.logger.log_error("start_monitoring error %s", error)
+            
 
 
-    def close_db(self):
-        self.logger.log_info("MonitoringManager db close")
-        self.db.close()
 
 class MonitoringKRManager(MonitoringManager):
     COUNTRY_CODE = CountryCode.KR
