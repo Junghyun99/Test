@@ -36,7 +36,8 @@ class MagicSplit(Algorithm):
             return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
 
 
-        self.trade_db_manager
+        self.trade_db_manager.record_buy_transaction(moniData.stock_name, moniData.code, info[2], moniData.country_code, moniData.trade_round, info[0], info[1]):
+        moniData.id = 1
         moniData.price = info[0] # 실제 거래 매수 금액
         moniData.quantity = info[1] # 실제 거래 매수 수량
         moniData.buy_rate = yaml_data[0]["orders"][1]["buy_rate"]
