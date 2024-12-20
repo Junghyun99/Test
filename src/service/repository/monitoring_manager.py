@@ -53,7 +53,7 @@ class MonitoringManager(YamlManager):
             errors = []
             stocks = self.read_all_stocks(self.COUNTRY_CODE.value)
             self.logger.log_info("Moni 1. start_monitoring")
-            self.logger.log_debug("  - max_core %s, stock count %s", max_core, len(stock))
+            self.logger.log_debug("  - max_core %s, stock count %s", max_core, len(stocks))
             with ThreadPoolExecutor(max_workers=max_core) as executor:
                 futures = [executor.submit(self.algorithm.run_algorithm, MonitoringData(*stock)) for stock in stocks]
 
