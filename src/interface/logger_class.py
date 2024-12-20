@@ -50,7 +50,7 @@ class BaseLogger:
         thread = current_thread()
         if self.log_dict.get(thread.name) == None:
             self.log_dict[thread.name] = []
-        return name
+        return thread.name
 
     def log(self, level, message, *args, **kwargs):
         if args:
