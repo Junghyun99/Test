@@ -16,9 +16,8 @@ def temp_file(tmp_path):
 @pytest.fixture
 def moni_db(temp_file):
     logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
-    db = MonitoringDB(logger, str(temp_file))
-    yield db
-    db.close()
+    return MonitoringDB(logger, str(temp_file))
+ 
 
 # CREATE 테스트 케이스
 def test_insert_data_success(moni_db):
