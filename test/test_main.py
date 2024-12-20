@@ -157,7 +157,7 @@ def test_run_algorithm_initialized(mocker, caplog):
         app.run()
         app.logger.get_logger('SYSTEM').proc_log()
                 
-        assert "MagicSplit" in caplog.text
+        assert "MGST" in caplog.text
 
 
 def test_run_yaml_manager_initialized(mocker, caplog):
