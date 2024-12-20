@@ -3,13 +3,14 @@ from src.interface.db_class import BaseDB
 
 class MonitoringDB(BaseDB):
     def __init__(self, logger,  db_name='Monitoring.db'):
-        super().__init__(logger, db_name)
-        self.connect()  # Use the connect method from BaseDB
+        super().__init__(logger, db_name)        
         self._create_table()
 
     def _create_table(self):
-        cursor = self.conn.cursor()
-        cursor.execute('''CREATE TABLE IF NOT EXISTS 
+        with sqlite3.connect(db_name) as conn:
+            self.conn = conn
+            cursor = self.conn.cursor()
+            cursor.execute('''CREATE TABLE IF NOT EXISTS 
                        monitoring (
                        id INTEGER PRIMARY KEY AUTOINCREMENT,         -- 고유 식별자
                        stock_name TEXT NOT NULL,                     -- 종목 이름
@@ -21,4 +22,4 @@ class MonitoringDB(BaseDB):
                        buy_rate INTEGER NOT NULL CHECK(typeof(buy_rate) == 'integer' AND buy_rate > 0 AND buy_rate < 100),
                        sell_rate INTEGER NOT NULL CHECK(typeof(sell_rate) == 'integer' AND sell_rate > 0 AND sell_rate < 100)
                        )''')
-        self.conn.commit()
+            self.conn.commit()
