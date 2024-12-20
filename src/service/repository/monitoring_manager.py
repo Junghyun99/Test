@@ -67,7 +67,7 @@ class MonitoringManager(YamlManager):
             if result.QueryOp is QueryOp.UPDATE:
                          
 
-                self.logger.log_info("update %s, result.MonitoringData.to_tuple())          
+                self.logger.log_info("update %s", result.MonitoringData.to_tuple())          
 
                 self.update_stock_in_monitoring(*(result.MonitoringData.to_tuple()))
             elif result.QueryOp is QueryOp.DELETE:
