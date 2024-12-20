@@ -138,6 +138,8 @@ def test_run_algorithm(setup_magic_split, mocker):
 
     # 1. 매수 조건 만족
     mock_broker_manager.get_current_price.return_value = 940
+
+    mock_broker_manager.logger = mocker.Mock()
     mock_broker_manager.logger.proc_log.return_value = None
     result = magic_split.run_algorithm(moni_data)
     assert result.QueryOp == QueryOp.UPDATE
