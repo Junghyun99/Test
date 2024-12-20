@@ -83,7 +83,7 @@ class MagicSplit(Algorithm):
             self.logger.log_info("_try_sell_stock 1st condition, round %s != moni round %s",yaml_data[0]["orders"][moniData.trade_round-1]["order"], moniData.trade_round)
             return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
         
-        status, info = self.broker_manager.place_market_order(moniData.code, moniData.quantity, "BUY")
+        status, info = self.broker_manager.place_market_order(moniData.code, moniData.quantity, "SELL")
             
         if status is False:
             self.logger.log_info("_try_sell_stock place_market_order status false")
