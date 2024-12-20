@@ -90,7 +90,7 @@ def test_try_sell_stock_normal(setup_magic_split, mocker):
     moni_data = MonitoringData(1, "StockA", "ABC123", CountryCode.KR, 2, 1000, 10, 0.5, 1.5)
     yaml_mock_data = [{"orders": [{"order": 1, "buy_price": 950, "buy_rate": 0.5, "sell_rate": 1.5}, {"order": 2, "buy_price": 960, "buy_rate": 0.5, "sell_rate": 1.5}]}]
     mock_yaml_manager.read_by_id.return_value = yaml_mock_data
-    mock_broker_manager.place_market_order.return_value = (True, None)
+    mock_broker_manager.place_market_order.return_value = (True, [950,10,1])
     mock_trade_db_manager.get_trade_round.return_value = (950, 10)
 
     # 1. 정상적인 매도
