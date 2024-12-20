@@ -53,6 +53,9 @@ class TradeDBManager(YamlManager):
         data = (stock_name, code, transaction_id, country_code, trade_round, 'buy', price, amount, 'processing', 0)
   
         self.db.insert_data(query, data)
+        query = '''SELECT id INTO history WHERE (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status, pair_id) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+        self.db.read_data()
 
     def record_sell_transaction(self, stock_name, code, transaction_id, country_code, trade_round, price, amount):
         instance = self.get_last_round_data(code)
