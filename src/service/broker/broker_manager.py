@@ -36,7 +36,7 @@ class BrokerManager:
             self.broker.cancel_order(order_id)
             result = False
 
-        info = [self.get_current_price(symbol), quantity]
+        info = [self.get_current_price(symbol), quantity, order_id]
     
         return result, info
     # self.trade_db_manager. 히스토리 추가, 브로커에서?해도될듯?
@@ -67,5 +67,5 @@ class BrokerManager:
             self.logger.log_info("place_limit_order cancel")     
             self.broker.cancel_order(order_id)
             result = False 
-        info = [price, quantity]
+        info = [price, quantity, order_id]
         return result, info
