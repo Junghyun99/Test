@@ -15,13 +15,12 @@ class MonitoringManager(YamlManager):
         self.db = MonitoringDB(logger, self.monitoring_db_file)
         self.algorithm = algorithm
         self.logger = logger
-        self.logger.log_info("create MonitoringManager instance, init %s",self.monitoring_db_file)
+        self.logger.log_info("Moni 0. init")
 
     def read_all_stocks(self, country_code):
         """모니터링 DB에서 모든 종목 읽기"""
         query = "SELECT * FROM monitoring WHERE country_code=?"
-        data = (country_code,)
-        self.logger.log_info("read_all_stocks country code %s", country_code)
+        data = (country_code,)       
         return self.db.read_data(query, data)
 
     def add_stock_in_monitoring(self, id, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate):
@@ -29,20 +28,20 @@ class MonitoringManager(YamlManager):
         query = '''INSERT INTO monitoring (stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
         data = (stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
-        self.logger.log_info("add_stock_in_monitoring query %s, data %s", query, data)
+        
         self.db.insert_data(query, data)
 
     def delete_stock_in_monitoring(self, code):
         """종목 삭제"""
         query = '''DELETE FROM monitoring WHERE code = ?'''
         data = (code,)
-        self.logger.log_info("delete_stock_in_monitoring query %s, data %s", query, data)
+        
         self.db.delete_data(query, data)
  
     def update_stock_in_monitoring(self, id, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate):
         query = '''UPDATE monitoring SET trade_round =?, price=?, quantity=?, buy_rate=?, sell_rate=? WHERE code = ?'''
         data = (trade_round, price, quantity, buy_rate, sell_rate, code)
-        self.logger.log_info("update_stock_in_monitoring query %s, data %s", query, data)
+        
         self.db.update_data(query, data)
         
 
@@ -79,7 +78,7 @@ class MonitoringManager(YamlManager):
         except Exception as e:
             self.logger.log_error("Moni 2-3. error %s", error) 
         finally:
-            self.logger.log_error("Moni 3. end")                            
+            self.logger.log_info("Moni 3. end")                            
             self.logger.proc_log()
             self.algorithm.broker_manager.logger.proc_log()
             
