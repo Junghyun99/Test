@@ -81,6 +81,8 @@ class MonitoringManager(YamlManager):
             # 에러 상세 정보 출력
                 for error in errors:
                     self.logger.log_error("start_monitoring error %s", error)
+            self.logger.proc_log()
+            self.algorithm.broker_manager.logger.proc_log()
             
 
 
