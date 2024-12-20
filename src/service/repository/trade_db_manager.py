@@ -53,9 +53,9 @@ class TradeDBManager(YamlManager):
         data = (stock_name, code, transaction_id, country_code, trade_round, 'buy', price, amount, 'processing', 0)
   
         self.db.insert_data(query, data)
-        query = '''SELECT id INTO history WHERE (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status, pair_id) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
-        self.db.read_data()
+        
+        return self.db.read_data("SELECT id FROM history WHERE transaction_id=?", (transaction_id,))
+
 
     def record_sell_transaction(self, stock_name, code, transaction_id, country_code, trade_round, price, amount):
         instance = self.get_last_round_data(code)
@@ -75,6 +75,9 @@ class TradeDBManager(YamlManager):
         # Update the paired buy transaction
         update_query = "UPDATE history SET status = 'COMPLETED' AND pair_id =? WHERE id = ?"
         self.db.update_data(update_query, (id,instance['pair_id']))
+
+        return instance['id']
+
 
     def manual_adjustment(self, transaction_id, new_status, new_pair_id=None):
         """Manually adjusts a transaction's status and optionally updates the pair ID.
