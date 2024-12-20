@@ -1,5 +1,7 @@
 from src.service.repository.stock_trade_db import StockTradeDB
 
+from src.util.enums import CountryCode
+
 from src.util.yaml_manager import YamlManager
 
 class TradeDBManager(YamlManager):
@@ -12,6 +14,11 @@ class TradeDBManager(YamlManager):
 
         self.logger.log_info("TradeDBManager init")
 
+    def convert_country_code(self, country_code):
+        if country_code == CountryCode.KR:
+            return "KR"
+        if country_code == CountryCode.US:
+            return "US"
     # Reading Methods
     def get_trade_round(self, code, round):
         query = '''
@@ -50,7 +57,7 @@ class TradeDBManager(YamlManager):
     def record_buy_transaction(self, stock_name, code, transaction_id, country_code, trade_round, price, amount):
         query = '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status, pair_id) 
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
-        data = (stock_name, code, transaction_id, country_code, trade_round, 'buy', price, amount, 'processing', 0)
+        data = (stock_name, code, transaction_id, convert_country_code(country_code), trade_round, 'buy', price, amount, 'processing', 0)
   
         self.db.insert_data(query, data)
         
@@ -62,7 +69,7 @@ class TradeDBManager(YamlManager):
         
         query = '''INSERT INTO history (stock_name, code, transaction_id, country_code, trade_round, trade_type, price, amount, status, pair_id) 
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
-        data = (stock_name, code, transaction_id, country_code, trade_round, 'sell', price, amount, 'completed', instance['id'])
+        data = (stock_name, code, transaction_id, convert_country_code(country_code), trade_round, 'sell', price, amount, 'completed', instance['id'])
   
         self.db.insert_data(query, data)
 
