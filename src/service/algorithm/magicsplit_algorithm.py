@@ -121,7 +121,7 @@ class MagicSplit(Algorithm):
                 result =  self._try_sell_stock(current_price, moniData)
             else:
                 result =  AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
-        except as e:
+        except Exception as e:
             self.logger.log_error("MagicSplit run, %s"e, exec_info=True)
         finally:
             self.logger.proc_log()
