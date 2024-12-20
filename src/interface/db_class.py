@@ -67,10 +67,5 @@ class BaseDB:
     def update_data(self, query, data):        
         self.execute_write_query(query, data)
 
-    def close(self):     
-        if self.conn:
-            self.conn.close()
-            self.conn = None
-
-
+   
 
