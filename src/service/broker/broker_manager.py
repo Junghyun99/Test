@@ -15,7 +15,7 @@ class BrokerManager:
         self.logger.log_info("place_market_order %s,  %s, %s", symbol, quantity, order_type)     
         order_id = self.broker.place_market_order(symbol, quantity, order_type)
 
-        self.logger.log_transaction(code, order_type, quantity, 0) #todo      
+        self.logger.log_transaction(symbol, order_type, quantity, 0) #todo      
 
         self.logger.log_info("place_market_order code %s, quantity %s type %s id %s", symbol, quantity, order_type, order_id)
 
