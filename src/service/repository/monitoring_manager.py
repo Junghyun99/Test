@@ -74,7 +74,7 @@ class MonitoringManager(YamlManager):
                  elif result.QueryOp is QueryOp.DELETE:
                      self.delete_stock_in_monitoring(result.MonitoringData.code)
 
-        exception Exception as e:
+        except Exception as e:
             self.logger.log_error("start_monitoring error %s", error) 
         finally:     
             if errors:
