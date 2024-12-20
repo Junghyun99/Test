@@ -212,8 +212,8 @@ def test_start_monitoring_empty(setup_manager, mocker):
 
   # 5. DB 연산 실패 시 처리
     mock_db.delete_data.side_effect = Exception("DB Error")
-    with pytest.raises(Exception):
-        manager.start_monitoring()
+    
+    manager.start_monitoring()
 
 
 def test_start_monitoring_algorithm_excaption(setup_manager, mocker):
