@@ -128,8 +128,8 @@ def test_update_stock_normal(setup_manager):
     manager, _, mock_db = setup_manager
     manager.update_stock_in_monitoring(1, "StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5)
     mock_db.update_data.assert_called_once_with(
-        '''UPDATE INTO monitoring SET id=?, trade_round =?, price=?, quantity=?, buy_rate=?, sell_rate=? WHERE code = ?''',
-        (1, 1, 1000, 10, 0.5, 1.5, "123")
+        '''UPDATE monitoring SET trade_round =?, price=?, quantity=?, buy_rate=?, sell_rate=? WHERE code = ?''',
+        (1, 1000, 10, 0.5, 1.5, "123")
     )
 
 def test_update_stock_invalid_entry(setup_manager):
