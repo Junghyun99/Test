@@ -35,7 +35,10 @@ class BrokerManager:
             self.logger.log_info("place_market_order cancel") 
             self.broker.cancel_order(order_id)
             result = False
-        return result, self.get_current_price(symbol)
+
+        info = [self.get_current_price(symbol), quantity]
+    
+        return result, info
     # self.trade_db_manager. 히스토리 추가, 브로커에서?해도될듯?
     # 시장가 체결 금액 리턴해줘야함
 
@@ -64,4 +67,5 @@ class BrokerManager:
             self.logger.log_info("place_limit_order cancel")     
             self.broker.cancel_order(order_id)
             result = False 
-        return result, price
+        info = [price, quantity]
+        return result, info
