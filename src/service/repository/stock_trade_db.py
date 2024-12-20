@@ -3,14 +3,15 @@ from src.interface.db_class import BaseDB
 
 class StockTradeDB(BaseDB):
     def __init__(self, logger,  db_name='StockTrade.db'):
-        super().__init__(logger, db_name)
-        self.connect()  # Use the connect method from BaseDB
-        self._create_table()
+        super().__init__(logger, db_name)       
+        self._create_table(db_name)
 
 
-    def _create_table(self):
-        cursor = self.conn.cursor()
-        cursor.execute('''CREATE TABLE IF NOT EXISTS 
+    def _create_table(self, db_name):
+        with sqlite3.connect(db_name) as conn:
+            self.conn = conn
+            cursor = self.conn.cursor()
+            cursor.execute('''CREATE TABLE IF NOT EXISTS 
                        history (
                        id INTEGER PRIMARY KEY AUTOINCREMENT,         -- 고유 식별자
                        stock_name TEXT NOT NULL,                     -- 종목 이름
@@ -26,4 +27,4 @@ class StockTradeDB(BaseDB):
                        pair_id INTEGER,
                        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP  -- 거래 시간 
                        )''')
-        self.conn.commit()
+            self.conn.commit()
