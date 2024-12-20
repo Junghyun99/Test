@@ -3,11 +3,11 @@ US:
     code: AAPL
     orders:
       - order: 1
-        buy_price: 150
+        buy_price: 1000
         buy_rate: 5
         sell_rate: 3
       - order: 2
-        buy_price: 155
+        buy_price: 1000
         buy_rate: 5
         sell_rate: 3  
 
