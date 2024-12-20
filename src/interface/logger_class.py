@@ -44,11 +44,11 @@ class BaseLogger:
     def get_logger(self):
         return self.logger
 
-    def log(self, level, message, *args):
+    def log(self, level, message, *args, **kwargs):
         if args:
-            self.logger.log(level, message, *args)
+            self.logger.log(level, message, *args, **kwargs)
         else:
-            self.logger.log(level, message)
+            self.logger.log(level, message, **kwargs)
 
     def log_debug(self, message, *args):
         self.log(logging.DEBUG, message, *args)
