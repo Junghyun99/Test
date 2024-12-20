@@ -33,7 +33,7 @@ def test_read_all_stocks_with_data(setup_manager):
     mock_db.read_data.return_value = mock_data
     result = manager.read_all_stocks(CountryCode.KR.value)
     assert len(result) == 2
-    assert result[0][0] == "Samsung"
+    assert result[0][1] == "Samsung"
 
 def test_read_all_stocks_wrong_country_code(setup_manager): 
     manager, _, mock_db = setup_manager
