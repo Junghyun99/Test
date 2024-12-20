@@ -12,6 +12,7 @@ class BrokerManager:
         return price
 
     def place_market_order(self, symbol, quantity, order_type):      
+        self.logger.log_info("place_market_order %s,  %s, %s", symbol, quantity, order_type)     
         order_id = self.broker.place_market_order(symbol, quantity, order_type)
 
         self.logger.log_transaction(code, order_type, quantity, 0) #todo      
