@@ -179,6 +179,10 @@ def test_start_monitoring_normal(setup_manager, mocker):
         mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData(1, "StockB", "456", CountryCode.KR, 2, 2000, 10, 0.6, 1.6)),
     ]
 
+    mock_algorithm.broker_manager = mocker.Mock()
+    mock_algorithm.broker_manager.logger = mocker.Mock()
+    mock_algorithm.broker_manager.logger.return_value = None
+
     # 1. 정상 작동 확인
     manager.start_monitoring()
     mock_algorithm.run_algorithm.assert_called()
