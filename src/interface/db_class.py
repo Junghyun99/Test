@@ -4,41 +4,52 @@ class BaseDB:
     def __init__(self, logger, db_path):
         self.db_path = db_path
         self.conn = None
-        self.logger = logger
-
-    def connect(self):
-        if not self.conn:
-            self.conn = sqlite3.connect(self.db_path)
-        return self.conn
+        self.logger = logger    
 
     def _create_table(self):        
         raise NotImplementedError("This method must be implemented by subclasses.")
 
     def execute_write_query(self, query, data=None):
         self.logger.log_info("exe query %s data %s", query, data)
-        try:
-            cursor = self.conn.cursor()
-            if data:
-                cursor.execute(query, data)
-            else:
-                cursor.execute(query)
-            self.conn.commit()
-        except sqlite3.Error as e:
-            self.logger.log_error("DB Write Error: %s", e)
-            raise e
+        bWrite = False 
+        Error = None
+        for i in range(10):
+            try:
+                with sqlite3.connect(self.db_path) as conn:
+                    self.conn = conn
+                    cursor = self.conn.cursor()
+                    if data:
+                        cursor.execute(query, data)
+                    else:
+                        cursor.execute(query)
+                    self.conn.commit()
+                    bWrite = True
+                    break           
+            except sqlite3.Error as e:
+                self.logger.log_error("DB Write Error: %s", e)
+                Error = e
+        if Error:
+            raise Error 
 
     def execute_read_query(self, query, data=None):
         self.logger.log_info("exe query %s data %s", query, data)
-        try:
-            cursor = self.conn.cursor()
-            if data:
-                cursor.execute(query, data)
-            else:
-                cursor.execute(query)
-            return cursor.fetchall()
+        bRead = False 
+        Error = None
+        for i in range(10):
+            try:
+                with sqlite3.connect(self.db_path) as conn:
+                    self.conn = conn
+                    cursor = self.conn.cursor()
+                    if data:
+                        cursor.execute(query, data)
+                    else:
+                        cursor.execute(query)
+                    return cursor.fetchall()
         except sqlite3.Error as e:
             self.logger.log_error("DB Read Error: %s", e)
-            raise e
+            Error = e
+        if Error:
+            raise Error
 
     def insert_data(self, query, data):       
         self.execute_write_query(query, data)
