@@ -1,3 +1,4 @@
+from threading import current_thread
 import logging
 import inspect
 from logging.handlers import RotatingFileHandler
@@ -22,6 +23,7 @@ class BaseLogger:
         self.logger = logging.getLogger(logger_name)
         self.logger.propagate = False
         self.logger.setLevel(level)
+        self.log_dict = {}
         if not self.logger.hasHandlers():
             self._setup_handlers(log_file)
 
@@ -44,20 +46,34 @@ class BaseLogger:
     def get_logger(self):
         return self.logger
 
+    def _valid_thread_name(self):
+        thread = current_thread()
+        if self.log_dict.get(thread.name):
+            self.log_dict[thread.name] = []
+        return name
+
     def log(self, level, message, *args, **kwargs):
         if args:
             self.logger.log(level, message, *args, **kwargs)
         else:
             self.logger.log(level, message, **kwargs)
 
-    def log_debug(self, message, *args):
-        self.log(logging.DEBUG, message, *args)
+    def proc_log(self):
+        for value in self.log_dict.values():
+            self.log(value) 
 
-    def log_info(self, message, *args):
-        self.log(logging.INFO, message, *args)
+    def log_debug(self, message, *args, **kwargs):
+        name = self. _valid_thread_name() 
+        self.log_dict[name].append(logging.DEBUG, message, *args, **kwargs)
 
-    def log_warning(self, message, *args):
-        self.log(logging.WARNING, message, *args)
+    def log_info(self, message, *args, **kwargs):
+        name = self. _valid_thread_name() 
+        self.log_dict[name].append(logging.INFO, message, *args, **kwargs)
 
-    def log_error(self, message, *args):
-        self.log(logging.ERROR, message, *args)
+    def log_warning(self, message, *args, **kwargs):
+        name = self. _valid_thread_name() 
+        self.log_dict[name].append(logging.WARNING, message, *args, **kwargs)
+
+    def log_error(self, message, *args, **kwargs):
+        name = self. _valid_thread_name() 
+        self.log_dict[name].append(logging.ERROR, message, *args, **kwargs)
