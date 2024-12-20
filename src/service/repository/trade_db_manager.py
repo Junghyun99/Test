@@ -61,7 +61,9 @@ class TradeDBManager(YamlManager):
   
         self.db.insert_data(query, data)
         
-        return self.db.read_data("SELECT id FROM history WHERE transaction_id=?", (transaction_id,))
+    
+        result = self.db.read_data("SELECT id FROM history WHERE transaction_id=?", (transaction_id,))
+        return result[0][0]
 
 
     def record_sell_transaction(self, stock_name, code, transaction_id, country_code, trade_round, price, amount):
