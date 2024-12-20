@@ -51,7 +51,7 @@ def test_try_buy_stock_normal(setup_magic_split, mocker):
     mock_yaml_manager.read_by_id.return_value = yaml_mock_data
 
     # 1. 정상적인 매수
-    mock_broker_manager.place_market_order.return_value = (True, (960, 10))
+    mock_broker_manager.place_market_order.return_value = (True, [960, 10, 2])
     result = magic_split._try_buy_stock(960, moni_data)
 
     assert result.QueryOp == QueryOp.UPDATE
