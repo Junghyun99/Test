@@ -45,9 +45,9 @@ class BaseDB:
                     else:
                         cursor.execute(query)
                     return cursor.fetchall()
-        except sqlite3.Error as e:
-            self.logger.log_error("DB Read Error: %s", e)
-            error = e
+            except sqlite3.Error as e:
+                self.logger.log_error("DB Read Error: %s", e)
+                error = e
         if error:
             raise error
 
