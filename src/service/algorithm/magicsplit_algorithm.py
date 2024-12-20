@@ -35,6 +35,8 @@ class MagicSplit(Algorithm):
             self.logger.log_info("_try_buy_stock_zero place_market_order status false")
             return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
 
+
+        self.trade_db_manager
         moniData.price = info[0] # 실제 거래 매수 금액
         moniData.quantity = info[1] # 실제 거래 매수 수량
         moniData.buy_rate = yaml_data[0]["orders"][1]["buy_rate"]
