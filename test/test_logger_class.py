@@ -59,6 +59,7 @@ def test_log_info_level(logger, caplog):
     logger.get_logger().propagate = True
     with caplog.at_level(logging.INFO):
         logger.log_info("Check level")
+        logger.proc_log()
     assert "INFO" in caplog.text
     logger.get_logger().handlers.clear()
 
