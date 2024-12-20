@@ -59,21 +59,45 @@ class BaseLogger:
             self.logger.log(level, message, **kwargs)
 
     def proc_log(self):
-        for value in self.log_dict.values():
-            self.log(*value) 
+        thread = current_thread()
+        if self.log_dict.get(thread.name) == None:
+            Pass
+        else:
+            for value in self.log_dict[thread.name]:
+                self.log(*value) 
 
     def log_debug(self, message, *args, **kwargs):
-        name = self._valid_thread_name() 
-        self.log_dict[name].append((logging.DEBUG, message, *args, **kwargs))
+        name = self._valid_thread_name()
+        msg_list = [logging.DEBUG, message]
+        for args in args:
+            msg_list.append(args) 
+        for kw, arg in kwargs.items():
+            msg_list.append({kw:arg})    
+        self.log_dict[name].append(msg_list)
 
     def log_info(self, message, *args, **kwargs):
         name = self._valid_thread_name() 
-        self.log_dict[name].append((logging.INFO, message, *args, **kwargs))
+        msg_list = [logging.INFO, message]
+        for args in args:
+            msg_list.append(args) 
+        for kw, arg in kwargs.items():
+            msg_list.append({kw:arg})    
+        self.log_dict[name].append(msg_list) 
 
     def log_warning(self, message, *args, **kwargs):
         name = self._valid_thread_name() 
-        self.log_dict[name].append((logging.WARNING, message, *args, **kwargs))
+        msg_list = [logging.WARNING, message]
+        for args in args:
+            msg_list.append(args) 
+        for kw, arg in kwargs.items():
+            msg_list.append({kw:arg})    
+        self.log_dict[name].append(msg_list)
 
     def log_error(self, message, *args, **kwargs):
         name = self._valid_thread_name() 
-        self.log_dict[name].append((logging.ERROR, message, *args, **kwargs))
+        msg_list = [logging.ERROR, message]
+        for args in args:
+            msg_list.append(args) 
+        for kw, arg in kwargs.items():
+            msg_list.append({kw:arg})    
+        self.log_dict[name].append(msg_list)
