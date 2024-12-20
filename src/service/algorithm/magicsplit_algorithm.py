@@ -97,7 +97,7 @@ class MagicSplit(Algorithm):
         price, quantity  = self._get_prev_trade_round(moniData.code, moniData.trade_round - 1)
 
 
-         moniData.id = self.trade_db_manager.record_sell_transaction(moniData.stock_name, moniData.code, info[2], moniData.country_code, moniData.trade_round, info[0], info[1])      
+        moniData.id = self.trade_db_manager.record_sell_transaction(moniData.stock_name, moniData.code, info[2], moniData.country_code, moniData.trade_round, info[0], info[1])      
         moniData.trade_round = yaml_data[0]["orders"][moniData.trade_round-2]["order"]
         moniData.price = price
         moniData.quantity = quantity
