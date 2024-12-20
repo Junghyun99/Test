@@ -112,7 +112,7 @@ class TestHistoricalMonitoring:
                VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
         data = ('aaple', 'AAPL', 'US', 0, 100000.0, 1, 5, 3)
         db.insert_data(query, data)
-        db.close()
+        
         yield
         if os.path.exists(self.file_path):
             os.remove(self.file_path)
@@ -142,7 +142,7 @@ class TestHistoricalRun:
                VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
         data = ('aaple', 'AAPL', 'US', 0, 10000.0, 1, 5, 3)
         db.insert_data(query, data)
-        db.close()
+        
         yield
         if os.path.exists(self.file_path):
             os.remove(self.file_path)
@@ -165,7 +165,7 @@ class TestHistoricalRun:
         result = db.read_data("SELECT * FROM history")
         assert result[0][3] == 'TX123'
 
-        db.close()
+        
         if os.path.exists(self.file_path):
             os.remove(self.file_path)
         assert 1 == 2
