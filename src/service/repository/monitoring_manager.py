@@ -53,7 +53,8 @@ class MonitoringManager(YamlManager):
             results = []
             errors = []
             stocks = self.read_all_stocks(self.COUNTRY_CODE.value)
-            self.logger.log_info("start_monitoring max_core %s  stock %s", max_core, stocks)
+            self.logger.log_info("Moni 1. start_monitoring")
+            self.logger.log_debug("  - max_core %s, stock count %s", max_core, len(stock))
             with ThreadPoolExecutor(max_workers=max_core) as executor:
                 futures = [executor.submit(self.algorithm.run_algorithm, MonitoringData(*stock)) for stock in stocks]
 
@@ -68,19 +69,17 @@ class MonitoringManager(YamlManager):
                 if result.QueryOp is QueryOp.UPDATE:
                          
 
-                    self.logger.log_info("update %s", result.MonitoringData.to_tuple())          
+                    self.logger.log_info("Moni 2-1. update %s", result.MonitoringData.to_tuple())          
 
                     self.update_stock_in_monitoring(*(result.MonitoringData.to_tuple()))
                 elif result.QueryOp is QueryOp.DELETE:
-                     self.delete_stock_in_monitoring(result.MonitoringData.code)
+ 
+                     self.logger.log_info("Moni 2-2. delete %s", result.MonitoringData.code)                     self.delete_stock_in_monitoring(result.MonitoringData.code)
 
         except Exception as e:
-            self.logger.log_error("start_monitoring error %s", error) 
-        finally:     
-            if errors:
-            # 에러 상세 정보 출력
-                for error in errors:
-                    self.logger.log_error("start_monitoring error %s", error)
+            self.logger.log_error("Moni 2-3. error %s", error) 
+        finally:
+            self.logger.log_error("Moni 3. end")                            
             self.logger.proc_log()
             self.algorithm.broker_manager.logger.proc_log()
             
