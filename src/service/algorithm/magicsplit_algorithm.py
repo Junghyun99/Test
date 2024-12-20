@@ -122,7 +122,7 @@ class MagicSplit(Algorithm):
             else:
                 result =  AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
         except Exception as e:
-            self.logger.log_error("MagicSplit run, %s"e, exec_info=True)
+            self.logger.log_error("MagicSplit run, %s", e, exec_info=True)
         finally:
             self.logger.proc_log()
             self.broker_manager logger.proc_log()
