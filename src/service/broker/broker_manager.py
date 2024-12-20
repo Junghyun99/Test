@@ -34,8 +34,10 @@ class BrokerManager:
         if count == 10:
             self.logger.log_info("place_market_order cancel") 
             self.broker.cancel_order(order_id)
-        return result
+            result = False
+        return result, self.get_current_price(symbol)
     # self.trade_db_manager. 히스토리 추가, 브로커에서?해도될듯?
+    # 시장가 체결 금액 리턴해줘야함
 
     def place_limit_order(self, symbol, quantity, price, order_type):
         order_id = self.broker.place_limit_order(symbol, quantity, price, order_type)
@@ -46,7 +48,6 @@ class BrokerManager:
         self.logger.log_info("place_limit_order code %s, quantity %s price %s type %s id %s", symbol, quantity, price, order_type, order_id)
 
         result = False
-        info = ()
         count = 0
         while count < 10:
             status = self.broker.get_order_status(order_id)
@@ -62,4 +63,5 @@ class BrokerManager:
         if count == 10:
             self.logger.log_info("place_limit_order cancel")     
             self.broker.cancel_order(order_id)
-        return (result, info)
+            result = False 
+        return result, price
