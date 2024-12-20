@@ -4,9 +4,9 @@ from src.interface.db_class import BaseDB
 class MonitoringDB(BaseDB):
     def __init__(self, logger,  db_name='Monitoring.db'):
         super().__init__(logger, db_name)        
-        self._create_table()
+        self._create_table(db_name)
 
-    def _create_table(self):
+    def _create_table(self, db_name):
         with sqlite3.connect(db_name) as conn:
             self.conn = conn
             cursor = self.conn.cursor()
