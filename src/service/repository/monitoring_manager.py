@@ -74,7 +74,7 @@ class MonitoringManager(YamlManager):
                 elif result.QueryOp is QueryOp.DELETE:
  
                      self.logger.log_info("Moni 2-2. delete %s", result.MonitoringData.code)                     
-                self.delete_stock_in_monitoring(result.MonitoringData.code)
+                    self.delete_stock_in_monitoring(result.MonitoringData.code)
 
         except Exception as e:
             self.logger.log_error("Moni 2-3. error %s", error) 
