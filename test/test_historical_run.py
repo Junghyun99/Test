@@ -16,7 +16,7 @@ def mock_get_current_price(symbol):
     formatted_time = initial_time.strftime("%d/%m/%Y")
 
     # CSV 파일 읽기
-    file_name = f"test/csv/historical_data_{symbol}.csv"
+    file_name = f"test/csv/historical_data_{symbol}.csv
     df = pd.read_csv(file_name)
     df_price = df[df["Date"] == formatted_time] 
     if df_price.empty:
@@ -163,7 +163,7 @@ class TestHistoricalRun:
         self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
         db = StockTradeDB(self.logger, file_path)
         result = db.read_data("SELECT * FROM history")
-        assert result[0][3] == 'TX0'
+        assert result[0][3] == 'TX_0'
         
         if os.path.exists(self.file_path):
             os.remove(self.file_path)
