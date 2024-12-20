@@ -12,7 +12,7 @@ class BaseDB:
     def execute_write_query(self, query, data=None):
         self.logger.log_info("exe query %s data %s", query, data)
         bWrite = False 
-        Error = None
+        error = None
         for i in range(10):
             try:
                 with sqlite3.connect(self.db_path) as conn:
@@ -27,14 +27,14 @@ class BaseDB:
                     break           
             except sqlite3.Error as e:
                 self.logger.log_error("DB Write Error: %s", e)
-                Error = e
-        if Error:
-            raise Error 
+                error = e
+        if error:
+            raise error 
 
     def execute_read_query(self, query, data=None):
         self.logger.log_info("exe query %s data %s", query, data)
         bRead = False 
-        Error = None
+        error = None
         for i in range(10):
             try:
                 with sqlite3.connect(self.db_path) as conn:
@@ -47,9 +47,9 @@ class BaseDB:
                     return cursor.fetchall()
         except sqlite3.Error as e:
             self.logger.log_error("DB Read Error: %s", e)
-            Error = e
-        if Error:
-            raise Error
+            error = e
+        if error:
+            raise error
 
     def insert_data(self, query, data):       
         self.execute_write_query(query, data)
