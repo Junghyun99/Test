@@ -107,21 +107,26 @@ class MagicSplit(Algorithm):
         return AlgorithmData(QueryOp.UPDATE, moniData)
     
     def run_algorithm(self, moniData:MonitoringData):
-        target_buy_price, target_sell_price = self._calculate_price(moniData.price, moniData.buy_rate, moniData.sell_rate)
-        current_price = self.broker_manager.get_current_price(moniData.code)
-        self.logger.log_info("run_algorithm current price %s, target_buy_price  %s, target_sell_price %s",current_price, target_buy_price, target_sell_price)
+        try:
+            target_buy_price, target_sell_price = self._calculate_price(moniData.price, moniData.buy_rate, moniData.sell_rate)
+            current_price = self.broker_manager.get_current_price(moniData.code)
+            self.logger.log_info("run_algorithm current price %s, target_buy_price  %s, target_sell_price %s",current_price, target_buy_price, target_sell_price)
       
-
-        if moniData.trade_round == 0 and current_price <= target_buy_price:
-            return self._try_buy_stock_zero(current_price, moniData)
-        elif current_price <= target_buy_price:
-            return self._try_buy_stock(current_price, moniData)
-        elif current_price >= target_sell_price:
-            return self._try_sell_stock(current_price, moniData)
-        else:
-            return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
-
-
+            result = None
+            if moniData.trade_round == 0 and current_price <= target_buy_price:
+                result =  self._try_buy_stock_zero(current_price, moniData)
+            elif current_price <= target_buy_price:
+                result =  self._try_buy_stock(current_price, moniData)
+            elif current_price >= target_sell_price:
+                result =  self._try_sell_stock(current_price, moniData)
+            else:
+                result =  AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
+        except as e:
+            self.logger.log_error("MagicSplit run, %s"e, exec_info=True)
+        finally:
+            self.logger.proc_log()
+            self.broker_manager logger.proc_log()
+        return result
 '''
 1차수 매수 가격, 매수 5% 매도 5%, 수량가액
 2차수 매수 가격, 매수 5% 매도 5%, 수량가액
