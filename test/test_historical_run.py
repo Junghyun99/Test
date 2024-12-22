@@ -130,8 +130,8 @@ class TestHistoricalRun:
     def mock_get_broker(self):
         return self.broker 
 
-    @pytest.fixture(autouse=True)
-    def setup_monitoring_db(self):
+    @pytest.fixture
+    def setup_appl(self):
         self.file_path ="test/db/Monitoring.db"
         if not os.path.exists(os.path.dirname(self.file_path)):
             os.makedirs(os.path.dirname(self.file_path))  # 디렉토리 생성  
@@ -147,16 +147,32 @@ class TestHistoricalRun:
         if os.path.exists(self.file_path):
             os.remove(self.file_path)
 
+    @pytest.fixture
+    def setup_msft(self):
+        self.file_path ="test/db/Monitoring.db"
+        if not os.path.exists(os.path.dirname(self.file_path)):
+            os.makedirs(os.path.dirname(self.file_path))  # 디렉토리 생성  
+        self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
+        db = MonitoringDB(self.logger, self.file_path)
+                       
+        query = '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+        data = ('Microsoft', 'MSFT', 'US', 0, 10000.0, 1, 5, 3)
+        db.insert_data(query, data)
+        
+        yield
+        if os.path.exists(self.file_path):
+            os.remove(self.file_path)
 
 
 
-    @pytest.fixture(autouse=True)
-    def setup(self, mock_broker):                        
-        self.broker = mock_broker    
-        self.app = MainApp()    
+
+     
 
     @freeze_time("2024-11-12 00:00:00")
-    def test_main_one_shot(self):
+    def test_main_one_shot(self, setup_appl):
+        self.broker = mock_broker    
+        self.app = MainApp()
         self.app.run()
         file_path = "test/db/StockTrade.db"
         
@@ -167,3 +183,19 @@ class TestHistoricalRun:
         
         if os.path.exists(self.file_path):
             os.remove(self.file_path)
+
+    @freeze_time("2024-11-12 00:00:00")
+    def test_main_one_shot_multi_stock(self, setup_appl, setup_msft):
+        self.broker = mock_broker    
+        self.app = MainApp()
+        self.app.run()
+        file_path = "test/db/StockTrade.db"
+        
+        self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
+        db = StockTradeDB(self.logger, file_path)
+        result = db.read_data("SELECT * FROM history")
+        print("result : %s", result)
+        assert result[0][3] == 'TX_0'
+        
+        if os.path.exists(self.file_path):
+            os.remove(self.file_path) 
