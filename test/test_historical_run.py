@@ -195,7 +195,7 @@ class TestHistoricalRun:
         db = StockTradeDB(self.logger, file_path)
         result = db.read_data("SELECT * FROM history")
         print("result : %s", result)
-        assert result[0][3] == 'TX_0'
+        assert result[0][1] == 'TX_0'
         
         if os.path.exists(self.file_path):
             os.remove(self.file_path) 
