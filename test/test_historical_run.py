@@ -170,7 +170,7 @@ class TestHistoricalRun:
      
 
     @freeze_time("2024-11-12 00:00:00")
-    def test_main_one_shot(self, setup_appl):
+    def test_main_one_shot(self, setup_appl, mock_broker):
         self.broker = mock_broker    
         self.app = MainApp()
         self.app.run()
@@ -185,7 +185,7 @@ class TestHistoricalRun:
             os.remove(self.file_path)
 
     @freeze_time("2024-11-12 00:00:00")
-    def test_main_one_shot_multi_stock(self, setup_appl, setup_msft):
+    def test_main_one_shot_multi_stock(self, setup_appl, setup_msft, mock_broker):
         self.broker = mock_broker    
         self.app = MainApp()
         self.app.run()
