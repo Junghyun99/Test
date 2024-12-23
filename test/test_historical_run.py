@@ -205,3 +205,31 @@ class TestHistoricalRun:
         
         if os.path.exists(self.file_path):
             os.remove(self.file_path) 
+
+    @freeze_time("2024-11-12 00:00:00")
+    def test_main_multi_shot_multi_stock(self, setup_appl, setup_msft, mock_broker):
+        self.broker = mock_broker  
+        self.app = MainApp()
+        
+        initial_time = datetime.now()
+        
+
+        for i in range(3):
+            with freeze_time(initial_time + timedelta(days=i)):
+                print(f"Iteration {i + 1}, 날짜: {datetime.now()}")
+                self.app.run()
+     
+        
+        file_path = "test/db/StockTrade.db"
+        
+        self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
+        db = StockTradeDB(self.logger, file_path)
+        result = db.read_data("SELECT * FROM history")
+        print("result : %s", result)
+        assert result[0][3] == 'TX_0'
+        assert result[0][2] == 'AAPL'
+        assert result[1][3] == 'TX_1'
+        assert result[1][2] == 'MSFT'
+        
+        if os.path.exists(self.file_path):
+            os.remove(self.file_path) 
