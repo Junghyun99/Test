@@ -229,7 +229,7 @@ class TestHistoricalRun:
         assert result[0][3] == 'TX_0'
         assert result[0][2] == 'AAPL'
         assert result[1][3] == 'TX_1'
-        assert result[1][2] == 'MSFT'
+        assert result[0][2] == 'MSFT'
         
         if os.path.exists(self.file_path):
             os.remove(self.file_path) 
