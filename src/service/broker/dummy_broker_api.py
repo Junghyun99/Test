@@ -1,3 +1,4 @@
+import threading
 import random
 import time
 from src.interface.broker_api import BrokerAPI
@@ -7,6 +8,7 @@ class DummyBrokerAPI(BrokerAPI):
     def __init__(self):
         self.number = 0
         self.order = {}
+        self.lock = threading.Lock()  # Lock 객체 생성
 
     def generate_order_id(self,index):
         return f"TX_{index}"
@@ -26,11 +28,15 @@ class DummyBrokerAPI(BrokerAPI):
         return round(random.uniform(100, 500), 2)
 
     def place_market_order(self, symbol, quantity, order_type):
-        order_id = self.generate_order_id(self.number)
+
+        with self.lock:  # Lock을 사용하여 코드 블록 동기화
+            order_id = self.generate_order_id(self.number)
+            self.number += 1  # self.number를 안전하게 증가
+       
         status= ["pending", "complete"]
         self.order[order_id] = random.choice(status)
         time.sleep(random.randint(0,9))
-        self.number = self.number + 1
+        
         return order_id
 
     def place_limit_order(self, symbol, quantity, price, order_type):
