@@ -133,6 +133,9 @@ class TestHistoricalRun:
     @pytest.fixture
     def setup_appl(self):
         self.file_path ="test/db/Monitoring.db"
+        if os.path.exists(self.file_path):
+            os.remove(self.file_path)
+
         if not os.path.exists(os.path.dirname(self.file_path)):
             os.makedirs(os.path.dirname(self.file_path))  # 디렉토리 생성  
         self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
@@ -195,7 +198,10 @@ class TestHistoricalRun:
         db = StockTradeDB(self.logger, file_path)
         result = db.read_data("SELECT * FROM history")
         print("result : %s", result)
-        assert result[0][1] == 'TX_0'
+        assert result[0][3] == 'TX_0'
+        assert result[0][2] == 'AAPL'
+        assert result[1][3] == 'TX_1'
+        assert result[1][2] == 'MSFT'
         
         if os.path.exists(self.file_path):
             os.remove(self.file_path) 
