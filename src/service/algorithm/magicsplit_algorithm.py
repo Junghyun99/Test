@@ -111,6 +111,7 @@ class MagicSplit(Algorithm):
         return AlgorithmData(QueryOp.UPDATE, moniData)
     
     def run_algorithm(self, moniData:MonitoringData):
+        print("al %s", current_thread().name)
         self.logger.log_info("*********  %s *********",current_thread().name)
 
         self.logger.log_info("MGST 1. RUN_ALGORITHM")
