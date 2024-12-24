@@ -27,11 +27,11 @@ class BaseDB:
                     self.conn.commit()
                     bWrite = True
                     break           
-            except sqlite3.Error as e:
-                self.logger.log_error("DB Write Error: %s", e, exe_info=True)
+            except sqlite3.Error as e:              
                 error = e
                 time.sleep(round(random.random(),1))
         if error:
+            self.logger.log_error("DB Write Error: %s", e, exe_info=True)
             raise error 
 
     def execute_read_query(self, query, data=None):
@@ -49,10 +49,11 @@ class BaseDB:
                         cursor.execute(query)
                     return cursor.fetchall()
             except sqlite3.Error as e:
-                self.logger.log_error("DB Read Error: %s", e, exe_info=True)
+                
                 error = e
                 time.sleep(round(random.random(),1))
         if error:
+            self.logger.log_error("DB Read Error: %s", e, exe_info=True) 
             raise error
 
     def insert_data(self, query, data):       
