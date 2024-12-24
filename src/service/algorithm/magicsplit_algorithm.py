@@ -131,8 +131,8 @@ class MagicSplit(Algorithm):
         except Exception as e:
             self.logger.log_error("MGST error %s", e, exec_info=True)
         finally:
-            self.logger.proc_log()
-            self.broker_manager.logger.proc_log()
+            pass    
+            
         return result
 '''
 1차수 매수 가격, 매수 5% 매도 5%, 수량가액
