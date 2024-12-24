@@ -63,22 +63,27 @@ class MonitoringManager(YamlManager):
                         results.append(result)
                     except Exception as e:
                         errors.append(e)
-                    
-            for result in results:
-                if result.QueryOp is QueryOp.UPDATE:
+            if len(errors)! = 0:        
+                for result in results:
+                    if result.QueryOp is QueryOp.UPDATE:
                          
 
-                    self.logger.log_info("Moni 2-1. update %s", result.MonitoringData.to_tuple())          
+                        self.logger.log_info("Moni 2-1. update %s", result.MonitoringData.to_tuple())          
 
-                    self.update_stock_in_monitoring(*(result.MonitoringData.to_tuple()))
-                elif result.QueryOp is QueryOp.DELETE:
+                        self.update_stock_in_monitoring(*(result.MonitoringData.to_tuple()))
+                    elif result.QueryOp is QueryOp.DELETE:
  
-                    self.logger.log_info("Moni 2-2. delete %s", result.MonitoringData.code)                     
-                    self.delete_stock_in_monitoring(result.MonitoringData.code)
+                        self.logger.log_info("Moni 2-2. delete %s", result.MonitoringData.code)                     
+                        self.delete_stock_in_monitoring(result.MonitoringData.code)
 
         except Exception as e:
             self.logger.log_error("Moni 2-3. error %s", e) 
         finally:
+            if errors:
+                for err in errors:                            
+
+                    self.logger.log_error("Moni 2. error %s", err)
+            
             self.logger.log_info("Moni 3. end")                            
             self.logger.proc_log()
             self.algorithm.broker_manager.logger.proc_log()
