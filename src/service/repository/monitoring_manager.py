@@ -64,6 +64,7 @@ class MonitoringManager(YamlManager):
                     except Exception as e:
                         errors.append(e)
             print(errors)
+            print(results)
             if len(errors) != 0:        
                 for result in results:
                     if result.QueryOp is QueryOp.UPDATE:
