@@ -1,3 +1,4 @@
+from threading import current_thread
 from src.interface.algorithm import Algorithm
 from src.util.price_calculator import PriceCalculator
 from src.util.enums import QueryOp
@@ -110,6 +111,8 @@ class MagicSplit(Algorithm):
         return AlgorithmData(QueryOp.UPDATE, moniData)
     
     def run_algorithm(self, moniData:MonitoringData):
+        self.logger.log_info("*********  %s *********",current_thread().name)
+
         self.logger.log_info("MGST 1. RUN_ALGORITHM")
         try:
             target_buy_price, target_sell_price = self._calculate_price(moniData.price, moniData.buy_rate, moniData.sell_rate)
