@@ -41,7 +41,7 @@ class BaseLogger:
         self.logger.addHandler(file_handler)
 
     def _get_formatter(self):
-        return CustomFormatter('%(asctime)s - %(threadName)s - %(name)s - %(levelname)s - %(message)s (호출위치: %(caller_info)s)')
+        return ('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     def get_logger(self):
         return self.logger
