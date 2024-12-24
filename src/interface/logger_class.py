@@ -64,7 +64,8 @@ class BaseLogger:
             Pass
         else:
             for value in self.log_dict[thread.name]:
-                self.log(*value) 
+                self.log(*value)
+            del self.log_dict[thread.name] 
 
     def log_debug(self, message, *args, **kwargs):
         name = self._valid_thread_name()
