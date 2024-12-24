@@ -135,8 +135,9 @@ class MagicSplit(Algorithm):
         except Exception as e:
             self.logger.log_error("MGST error %s", e, exec_info=True)
             result =  AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
-        finally:
-            pass    
+        finally:                            
+            self.logger.proc_log()
+            self.broker_manager.logger.proc_log()    
             
         return result
 '''
