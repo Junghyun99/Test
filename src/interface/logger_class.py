@@ -41,7 +41,7 @@ class BaseLogger:
         self.logger.addHandler(file_handler)
 
     def _get_formatter(self):
-        return ('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        return logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     def get_logger(self):
         return self.logger
