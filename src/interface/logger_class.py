@@ -61,7 +61,7 @@ class BaseLogger:
     def proc_log(self):
         thread = current_thread()
         if self.log_dict.get(thread.name) == None:
-            Pass
+            pass
         else:
             for value in self.log_dict[thread.name]:
                 self.log(*value)
