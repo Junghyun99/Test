@@ -4,23 +4,23 @@ US:
     orders:
       - order: 1
         buy_price: 1000
-        buy_rate: 5
-        sell_rate: 3
+        buy_rate: 1
+        sell_rate: 1
       - order: 2
         buy_price: 1000
-        buy_rate: 5
-        sell_rate: 3  
+        buy_rate: 1
+        sell_rate: 1
   - name: microsoft
     code: MSFT
     orders:
       - order: 1
         buy_price: 1000
-        buy_rate: 5
-        sell_rate: 3
+        buy_rate: 1
+        sell_rate: 1
       - order: 2
         buy_price: 1000
-        buy_rate: 5
-        sell_rate: 3  
+        buy_rate: 1
+        sell_rate: 1
 KR:
   - name: 삼성전자
     code: 005930.KR
