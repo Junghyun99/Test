@@ -17,7 +17,7 @@ def setup_magic_split(mocker):
 
     logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')  
 
-mocker.patch("src.service.repository.trade_db_manager.TradeDBManager.last_transaction_id", return_value=None)  
+    mocker.patch("src.service.repository.trade_db_manager.TradeDBManager.last_transaction_id", return_value=None)  
 
     magic_split = MagicSplit(mock_broker_manager, mock_trade_db_manager, mock_yaml_manager, logger)
     return magic_split, mock_broker_manager, mock_trade_db_manager, mock_yaml_manager
