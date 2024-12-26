@@ -19,7 +19,15 @@ class TradeDBManager(YamlManager):
             return "KR"
         if country_code == CountryCode.US:
             return "US"
+  
     # Reading Methods
+    def last_transaction_id(self):
+        query = '''
+            SELECT transaction_id FROM history 
+        '''
+        result = self.db.read_data(query)
+        return result
+
     def get_trade_round(self, code, round):
         query = '''
             SELECT trade_round, id, price, amount, total_value FROM history 
