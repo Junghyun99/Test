@@ -12,6 +12,11 @@ class MagicSplit(Algorithm):
         self.stock_round_yaml_manager = stock_round_yaml_manager
         self.logger = logger
         self.logger.log_info("MGST 0. init")
+        self.set_transaction_dummy()
+
+    def set_transaction_dummy(self):
+        print (" Last tx : %s",self.trade_db_manager.last_transaction_id())
+  
 
     def _calculate_price(self, buy_price, buy_rate, sell_rate):
         target_buy_price = PriceCalculator.calculate_price(buy_price, buy_rate, True)
