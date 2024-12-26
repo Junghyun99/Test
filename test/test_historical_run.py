@@ -142,6 +142,9 @@ class TestHistoricalRun:
         if not os.path.exists(os.path.dirname(self.file_path)):
             os.makedirs(os.path.dirname(self.file_path))  # 디렉토리 생성  
         self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
+
+        LoggerManager("test/test_config.yaml").set_log_level('SYSTEM', logging.DEBUG)
+
         db = MonitoringDB(self.logger, self.file_path)
                        
         query = '''INSERT INTO monitoring(stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate) 
