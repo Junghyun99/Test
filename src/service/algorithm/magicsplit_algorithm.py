@@ -15,7 +15,7 @@ class MagicSplit(Algorithm):
         self.set_transaction_dummy()
 
     def set_transaction_dummy(self):
-        print (" Last tx : %s",self.trade_db_manager.last_transaction_id())
+        print(" Last tx : %s",self.trade_db_manager.last_transaction_id())
   
 
     def _calculate_price(self, buy_price, buy_rate, sell_rate):
