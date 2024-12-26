@@ -1,5 +1,6 @@
 import sys
 import argparse
+import logging 
 
 from src.service.repository.monitoring_manager import MonitoringKRManager, MonitoringUSManager
 from src.service.repository.trade_db_manager import TradeDBManager
