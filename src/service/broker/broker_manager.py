@@ -1,10 +1,15 @@
 import time
+from src.service.broker.dummy_broker_api import DummyBrokerAPI
 
 class BrokerManager:
     def __init__(self, broker, logger):
         self.broker = broker
         self.logger = logger
         self.logger.log_info("create BrokerManager instance, init")
+
+    def set_dummy_number(self, number):
+        if isinstance(self.broker, DummyBrokerAPI):
+            self.broker.set_number(number)
 
     def get_current_price(self, symbol):
         price = self.broker.get_current_price(symbol)
