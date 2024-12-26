@@ -142,9 +142,9 @@ class TestHistoricalRun:
  
         if not os.path.exists(os.path.dirname(self.file_path)):
             os.makedirs(os.path.dirname(self.file_path))  # 디렉토리 생성  
-        self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
-
-        LoggerManager("test/test_config.yaml").set_log_level('SYSTEM', logging.DEBUG)
+        logger_manager = LoggerManager("test/test_config.yaml")
+        self.logger = logger_manager.get_logger('SYSTEM')
+        logger_manager.set_log_level('SYSTEM', logging.DEBUG)
 
         db = MonitoringDB(self.logger, self.file_path)
                        
