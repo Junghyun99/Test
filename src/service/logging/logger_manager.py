@@ -17,11 +17,11 @@ class LoggerManager(YamlManager):
                 self.loggers[logger_type] = TransactionLogger("TransactionLogger",self.transaction_log_file)
             else:
                 raise ValueError(f"Unknown logger type: {logger_type}")
-        print(self.loggers)
+        
         return self.loggers[logger_type]
 
     def set_log_level(self, logger_type, level):
-        print(self.loggers)
+        
         if logger_type in self.loggers:
             self.loggers[logger_type].get_logger().setLevel(level)
         else:
