@@ -10,6 +10,10 @@ class DummyBrokerAPI(BrokerAPI):
         self.order = {}
         self.lock = threading.Lock()  # Lock 객체 생성
 
+    def set_number(self, number):
+        self.number = number
+        
+
     def generate_order_id(self,index):
         return f"TX_{index}"
     
