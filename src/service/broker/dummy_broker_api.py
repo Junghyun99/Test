@@ -32,14 +32,14 @@ class DummyBrokerAPI(BrokerAPI):
         return round(random.uniform(100, 500), 2)
 
     def place_market_order(self, symbol, quantity, order_type):
-
+        time.sleep(random.randint(0,9))
         with self.lock:  # Lock을 사용하여 코드 블록 동기화
             order_id = self.generate_order_id(self.number)
             self.number += 1  # self.number를 안전하게 증가
        
         status= ["pending", "complete"]
         self.order[order_id] = random.choice(status)
-        time.sleep(random.randint(0,9))
+        
         
         return order_id
 
