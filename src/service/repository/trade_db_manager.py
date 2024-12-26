@@ -26,7 +26,7 @@ class TradeDBManager(YamlManager):
             SELECT transaction_id FROM history 
         '''
         result = self.db.read_data(query)
-        return result
+        return result[-1]
 
     def get_trade_round(self, code, round):
         query = '''
