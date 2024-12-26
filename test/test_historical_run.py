@@ -135,7 +135,10 @@ class TestHistoricalRun:
         self.file_path ="test/db/Monitoring.db"
         if os.path.exists(self.file_path):
             os.remove(self.file_path)
+        if os.path.exists("test/db/StockTrade.db"):
+            os.remove("test/db/StockTrade.db")
 
+ 
         if not os.path.exists(os.path.dirname(self.file_path)):
             os.makedirs(os.path.dirname(self.file_path))  # 디렉토리 생성  
         self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
