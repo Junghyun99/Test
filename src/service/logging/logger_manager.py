@@ -20,6 +20,7 @@ class LoggerManager(YamlManager):
         return self.loggers[logger_type]
 
     def set_log_level(self, logger_type, level):
+        print(self.loggers)
         if logger_type in self.loggers:
             self.loggers[logger_type].get_logger().setLevel(level)
         else:
