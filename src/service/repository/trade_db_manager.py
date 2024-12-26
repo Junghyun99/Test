@@ -28,7 +28,7 @@ class TradeDBManager(YamlManager):
         result = self.db.read_data(query)
         if result:
             return result[-1][0]
-        return result 
+        return None
 
     def get_trade_round(self, code, round):
         query = '''
