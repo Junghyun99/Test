@@ -29,10 +29,10 @@ class MagicSplit(Algorithm):
         return target_buy_price, target_sell_price
     
     def _get_prev_trade_round(self, code, trade_round):
-        info = self.trade_db_manager.get_trade_round(code, trade_round)
+        info = self.trade_db_manager.get_trade_round(code, trade_round)[0]
         self.logger.log_info("MGST 4-3. prev_trade_round") 
         self.logger.log_debug(" - input code %s, trade_round %s",code, trade_round)
-        self.logger.log_debug(" - output price %s, quantity %s",info[0], info[1])
+        self.logger.log_debug(" - output price %s, quantity %s",info["price"], info["quantity"])
         return info[0], info[1] # price, quantity
 
     def _try_buy_stock_zero(self, current_price, moniData:MonitoringData):
