@@ -122,7 +122,7 @@ class TestHistoricalMonitoring:
     def test_monitoring(self):
         db = MonitoringDB(self.logger, self.file_path)
         result = db.read_data("SELECT * FROM monitoring WHERE code=?", ('AAPL',))
-        assert result[0][2] == 'AAPL'
+        assert result[0]["code"] == 'AAPL'
         
 
 @pytest.mark.large_test
@@ -189,7 +189,7 @@ class TestHistoricalRun:
         self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
         db = StockTradeDB(self.logger, file_path)
         result = db.read_data("SELECT * FROM history")
-        assert result[0][3] == 'TX_0'
+        assert result[0]["transaction_id"] == 'TX_0'
         
         if os.path.exists(self.file_path):
             os.remove(self.file_path)
@@ -205,10 +205,10 @@ class TestHistoricalRun:
         db = StockTradeDB(self.logger, file_path)
         result = db.read_data("SELECT * FROM history")
         print("result : %s", result)
-        assert result[0][3] == 'TX_0'
-        assert result[0][2] == 'AAPL'
-        assert result[1][3] == 'TX_1'
-        assert result[1][2] == 'MSFT'
+        assert result[0]["transaction_id"] == 'TX_0'
+        assert result[0]["code"] == 'AAPL'
+        assert result[1]["transaction_id"] == 'TX_1'
+        assert result[1]["code"] == 'MSFT'
         
         if os.path.exists(self.file_path):
             os.remove(self.file_path) 
@@ -233,10 +233,10 @@ class TestHistoricalRun:
         db = StockTradeDB(self.logger, file_path)
         result = db.read_data("SELECT * FROM history")
         print("result : %s", result)
-        assert result[0][3] == 'TX_0'
-        assert result[0][2] == 'AAPL'
-        assert result[1][3] == 'TX_1'
-        assert result[0][2] == 'MSFT'
+        assert result[0]["transaxtion_id"] == 'TX_0'
+        assert result[0]["code"] == 'AAPL'
+        assert result[1]["transaxtion_id"] == 'TX_1'
+        assert result[0]["code"] == 'MSFT'
         
         if os.path.exists(self.file_path):
             os.remove(self.file_path) 
