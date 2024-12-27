@@ -42,12 +42,18 @@ class BaseDB:
             try:
                 with sqlite3.connect(self.db_path) as conn:
                     self.conn = conn
+                    self.conn.row_factory = sqlite3.Row
                     cursor = self.conn.cursor()
                     if data:
                         cursor.execute(query, data)
                     else:
                         cursor.execute(query)
-                    return cursor.fetchall()
+
+                    rows = cursor.fetchall()
+
+                     results = [dict(row) for row in rows]
+
+                    return results
             except sqlite3.Error as e:
                 
                 error = e
