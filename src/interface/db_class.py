@@ -50,8 +50,10 @@ class BaseDB:
                         cursor.execute(query)
 
                     rows = cursor.fetchall()
+                    print(rows)
 
                     results = [dict(row) for row in rows]
+                    print(results)
 
                     return results
             except sqlite3.Error as e:
