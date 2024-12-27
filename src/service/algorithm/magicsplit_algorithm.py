@@ -149,7 +149,7 @@ class MagicSplit(Algorithm):
             else:
                 result =  AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
         except Exception as e:
-            self.logger.log_error("MGST error %s", e, exec_info=True)
+            self.logger.log_error("MGST error %s", e, exc_info=True)
             result =  AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
         finally:                            
             self.logger.proc_log()
