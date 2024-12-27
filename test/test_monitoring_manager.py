@@ -180,6 +180,7 @@ def test_start_monitoring_normal(setup_manager, mocker):
         {'id':1, 'stock_name':"StockB", 'code':"456", 'country_code':"KR", 'trade_round':2, 'price':2000, 'quantity':10, 'buy_rate':0.6, 'sell_rate':1.6}
     ]
 
+  
     mock_algorithm.run_algorithm.side_effect = [
         mocker.Mock(QueryOp=QueryOp.UPDATE, MonitoringData=MonitoringData(1, "StockA", "123", CountryCode.KR, 1, 1000, 10, 0.5, 1.5)),
         mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData(1, "StockB", "456", CountryCode.KR, 2, 2000, 10, 0.6, 1.6)),
