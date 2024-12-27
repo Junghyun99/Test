@@ -122,7 +122,7 @@ class TestHistoricalMonitoring:
     def test_monitoring(self):
         db = MonitoringDB(self.logger, self.file_path)
         result = db.read_data("SELECT * FROM monitoring WHERE code=?", ('AAPL',))
-        print(result)
+  
         assert result[0]["code"] == 'AAPL'
         
 
@@ -190,6 +190,7 @@ class TestHistoricalRun:
         self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
         db = StockTradeDB(self.logger, file_path)
         result = db.read_data("SELECT * FROM history")
+        print(result)
         assert result[0]["transaction_id"] == 'TX_0'
         
         if os.path.exists(self.file_path):
