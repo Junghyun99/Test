@@ -31,7 +31,7 @@ class BaseDB:
                 error = e
                 time.sleep(round(random.random(),1))
         if error:
-            self.logger.log_error("DB Write Error: %s", error, exe_info=True)
+            self.logger.log_error("DB Write Error: %s", error, exc_info=True)
             raise error 
 
     def execute_read_query(self, query, data=None):
@@ -53,7 +53,7 @@ class BaseDB:
                 error = e
                 time.sleep(round(random.random(),1))
         if error:
-            self.logger.log_error("DB Read Error: %s", error, exe_info=True) 
+            self.logger.log_error("DB Read Error: %s", error, exc_info=True) 
             raise error
 
     def insert_data(self, query, data):       
