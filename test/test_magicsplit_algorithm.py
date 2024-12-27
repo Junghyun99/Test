@@ -38,7 +38,7 @@ def test_calculate_price(setup_magic_split, mocker):
 # 2. _get_prev_trade_round 테스트
 def test_get_prev_trade_round(setup_magic_split):
     magic_split, _, mock_trade_db_manager, _ = setup_magic_split
-    mock_trade_db_manager.get_trade_round.return_value = (900, 10)
+    mock_trade_db_manager.get_trade_round.return_value = [{'price':900, 'amount':10}]
 
     price, quantity = magic_split._get_prev_trade_round("ABC123", 3)
     assert price == 900
