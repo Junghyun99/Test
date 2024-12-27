@@ -103,8 +103,16 @@ class MagicSplit(Algorithm):
             self.logger.log_error("place_market_order status false")
             return AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
         
-        if moniData.trade_round  == 1: # 1 차수 매도 성공, 모니터링 DB에서 지우기
+
+
+
+             
+
+
+        if moniData.trade_round  == 1: # 1 차수 매도 성공, 모니터링 DB에서 0차수로 변경
             self.logger.log_info("MGST 4-2. sell_stock, lst round sell..")
+     self.trade_db_manager.record_sell_transaction(moniData.stock_name, moniData.code, info[2], moniData.country_code, moniData.trade_round, info[0], info[1]) 
+
             return AlgorithmData(QueryOp.DELETE, moniData)
         
         # 이전 차수에 산 매수금액과 수량
