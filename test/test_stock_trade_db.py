@@ -26,7 +26,7 @@ def test_insert_data_success(stock_db):
     data = ('aaple', 'AAPL', 'TX123', 'US', 1, 'buy', 150.0, 10, 'processing')
     stock_db.insert_data(query, data)
     result = stock_db.read_data("SELECT * FROM history WHERE transaction_id=?", ('TX123',))
-    assert result[0][3] == 'TX123'
+    assert result[0]["transaction_id"] == 'TX123'
 
 def test_insert_data_multiple_entries(stock_db):
     data_entries = [
@@ -75,7 +75,7 @@ def test_read_data_single_entry(stock_db):
         ('aaple', 'AAPL', 'TX130', 'US', 1, 'buy', 150.0, 10, 'completed')
     )
     result = stock_db.read_data("SELECT * FROM history WHERE transaction_id=?", ('TX130',))
-    assert result[0][3] == 'TX130'
+    assert result[0]["transaction_id"] == 'TX130'
 
 def test_read_data_no_results(stock_db):
     result = stock_db.read_data("SELECT * FROM history WHERE transaction_id=?", ('INVALID',))
@@ -110,13 +110,13 @@ def test_full_scenario(stock_db):
         (20, 'TX140')
     )
     updated_data = stock_db.read_data("SELECT amount FROM history WHERE transaction_id=?", ('TX140',))
-    assert updated_data[0][0] == 20
+    assert updated_data[0]["amount"] == 20
 
     # Read
     result = stock_db.read_data("SELECT * FROM history WHERE transaction_id=?", ('TX140',))
     assert len(result) == 1
-    assert result[0][3] == 'TX140'
-    assert result[0][8] == 20  # Updated amount
+    assert result[0]["transaction_id"] == 'TX140'
+    assert result[0]["amount"] == 20  # Updated amount
 
     # Delete
     stock_db.delete_data("DELETE FROM history WHERE transaction_id=?", ('TX140',))
@@ -164,39 +164,39 @@ def test_read_data_by_country_code_kr(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE country_code=?", ('KR',))
     assert len(result) == 10
     for entry in result:
-        assert entry[4] == 'KR'
+        assert entry["country_code"] == 'KR'
 
 def test_read_data_by_country_code_us(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE country_code=?", ('US',))
     assert len(result) == 10
     for entry in result:
-        assert entry[4] == 'US'
+        assert entry["country_code"] == 'US'
 
 # 거래 상태에 따른 데이터 검색 테스트
 def test_read_data_by_status_completed(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE status=?", ('completed',))
     assert len(result) == 10  # 일부 데이터는 'completed' 상태
     for entry in result:
-        assert entry[10] == 'completed'
+        assert entry["status"] == 'completed'
 
 def test_read_data_by_status_processing(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE status=?", ('processing',))
     assert len(result) == 10  # 일부 데이터는 'processing' 상태
     for entry in result:
-        assert entry[10] == 'processing'
+        assert entry["status"] == 'processing'
 
 # 거래 유형별 데이터 검색 테스트
 def test_read_data_by_trade_type_buy(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE trade_type=?", ('buy',))
     assert len(result) == 15  # 일부 데이터는 'buy' 유형
     for entry in result:
-        assert entry[6] == 'buy'
+        assert entry["trade_type"] == 'buy'
 
 def test_read_data_by_trade_type_sell(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE trade_type=?", ('sell',))
     assert len(result) == 5  # 일부 데이터는 'sell' 유형
     for entry in result:
-        assert entry[6] == 'sell'
+        assert entry["trade_type"] == 'sell'
 
 # 복합 조건 검색 테스트
 def test_read_data_by_country_and_status(stock_db,sample_data):
@@ -204,14 +204,14 @@ def test_read_data_by_country_and_status(stock_db,sample_data):
     assert len(result) == 4
     assert len(result) % 2 == 0
     for entry in result:
-        assert entry[4] == 'KR'
-        assert entry[10] == 'completed'
+        assert entry["country_code"] == 'KR'
+        assert entry["status"] == 'completed'
 
 def test_read_data_by_code(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE code=?", ('AAPL',))
     assert len(result) == 7
     for entry in result:
-        assert entry[2] == 'AAPL' #all stack
+        assert entry["code"] == 'AAPL' #all stack
 
 def test_read_data_by_code_processing(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE code=? AND status=?", ('TSLA', 'processing'))
@@ -237,18 +237,18 @@ def test_read_data_by_time_status(stock_db,sample_data):
 def test_read_data_by_time_completed(stock_db,sample_data):
     result = stock_db.read_data("SELECT * FROM history WHERE (date(timestamp) BETWEEN ? AND ?) AND status=? AND trade_type=?", ('2024-09-05','2024-10-05','completed','sell'))
     assert len(result) == 2
-    assert result[0][0] == 8
-    assert result[0][6] == 'sell'
-    assert result[0][11] == 5 #pair
-    assert result[1][0] == 15
-    assert result[1][6] == 'sell'
-    assert result[1][11] == 14 #pair
+    assert result[0]["id"] == 8
+    assert result[0]["trade_type"] == 'sell'
+    assert result[0]["pair_id"] == 5 #pair
+    assert result[1]["id"] == 15
+    assert result[1]["trade_type"] == 'sell'
+    assert result[1]["pair_id"] == 14 #pair
 
     pair_result = stock_db.read_data("SELECT * FROM history WHERE id IN (?, ?)", (5, 14))
     assert len(pair_result) == 2
-    assert pair_result[0][0] == 5
-    assert pair_result[0][6] == 'buy'
-    assert pair_result[0][11] == 8 #pair
-    assert pair_result[1][0] == 14
-    assert pair_result[1][6] == 'buy'
-    assert pair_result[1][11] == 15 #pair
+    assert pair_result[0]["id"] == 5
+    assert pair_result[0]["trade_type"] == 'buy'
+    assert pair_result[0]["pair_id"] == 8 #pair
+    assert pair_result[1]["id"] == 14
+    assert pair_result[1]["trade_type"] == 'buy'
+    assert pair_result[1]["pair_id"] == 15 #pair
