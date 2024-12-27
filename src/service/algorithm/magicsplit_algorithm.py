@@ -52,9 +52,9 @@ class MagicSplit(Algorithm):
         self.trade_db_manager.record_buy_transaction(moniData.stock_name, moniData.code, info[2], moniData.country_code, 1, info[0], info[1])    
         moniData.price = info[0] # 실제 거래 매수 금액
         moniData.quantity = info[1] # 실제 거래 매수 수량
-        moniData.buy_rate = yaml_data[0]["orders"][0]["buy_rate"]
-        moniData.sell_rate = yaml_data[0]["orders"][0]["sell_rate"]
-        moniData.trade_round = yaml_data[0]["orders"][0]["order"]
+        moniData.buy_rate = yaml_data[0]["orders"][1]["buy_rate"]
+        moniData.sell_rate = yaml_data[0]["orders"][1]["sell_rate"]
+        moniData.trade_round = yaml_data[0]["orders"][1]["order"]
         self.logger.log_info("MGST 2-2. BUY_STOCK_ZERO success, moniData %s",moniData)
         return AlgorithmData(QueryOp.UPDATE, moniData)
 
