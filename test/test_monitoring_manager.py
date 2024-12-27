@@ -160,7 +160,7 @@ def test_start_monitoring_partial_success(setup_manager, mocker):
     ]
   
 
- mock_algorithm.run_algorithm.side_effect = [Exception("error"),
+    mock_algorithm.run_algorithm.side_effect = [Exception("error"),
 mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData(1, "StockB", "456", CountryCode.KR, 2, 2000, 10, 0.6, 1.6)),
     ]
     
