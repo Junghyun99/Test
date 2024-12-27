@@ -63,8 +63,7 @@ class MonitoringManager(YamlManager):
                         result = future.result() 
                         results.append(result)
                     except Exception as e:
-                        errors.append(e)
-            print(errors)
+                        errors.append(e)            
             print(results)
             if len(errors) == 0:        
                 for result in results:
