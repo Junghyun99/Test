@@ -37,7 +37,7 @@ class TradeDBManager(YamlManager):
             WHERE code = ? AND status = 'processing' AND trade_round = ?
         '''
         return self.db.read_data(query, (code, round))
-    ,
+    
     def get_last_round_data(self, code):             
         query = '''
             SELECT * FROM history 
