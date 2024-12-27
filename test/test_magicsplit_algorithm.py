@@ -19,6 +19,7 @@ def setup_magic_split(mocker):
 
     mock_trade_db_manager.last_transaction_id.return_value = "TX_123"
 
+mock_trade_db_manager.record_sell_transaction.return_value = None
    
     magic_split = MagicSplit(mock_broker_manager, mock_trade_db_manager, mock_yaml_manager, logger)
     return magic_split, mock_broker_manager, mock_trade_db_manager, mock_yaml_manager
