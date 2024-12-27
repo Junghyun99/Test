@@ -44,6 +44,7 @@ class TradeDBManager(YamlManager):
             ORDER BY trade_round ASC
         '''        
         result = self.db.read_data(query, (code,))
+        print("last %s",result)
         return dict(result[-1])            
 
     def get_active_stacks(self, stock_name=None, date=None):
