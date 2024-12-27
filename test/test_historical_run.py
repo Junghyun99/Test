@@ -206,7 +206,7 @@ class TestHistoricalRun:
         self.logger = LoggerManager("test/test_config.yaml").get_logger('SYSTEM')
         db = StockTradeDB(self.logger, file_path)
         result = db.read_data("SELECT * FROM history")
-        print("result : %s", result)
+        
         if(result[0]["code"] == 'AAPL'):       
             assert result[0]["code"] == 'AAPL'
             assert result[1]["code"] == 'MSFT'
@@ -225,7 +225,7 @@ class TestHistoricalRun:
         initial_time = datetime.now()
         
 
-        for i in range(3):
+        for i in range(10):
             with freeze_time(initial_time + timedelta(days=i)):
                 print(f"Iteration {i + 1}, 날짜: {datetime.now()}")
                 self.app.run()
@@ -237,10 +237,6 @@ class TestHistoricalRun:
         db = StockTradeDB(self.logger, file_path)
         result = db.read_data("SELECT * FROM history")
         print("result : %s", result)
-        assert result[0]["transaxtion_id"] == 'TX_0'
-        assert result[0]["code"] == 'AAPL'
-        assert result[1]["transaxtion_id"] == 'TX_1'
-        assert result[0]["code"] == 'MSFT'
-        
+        assert 1 == 2
         if os.path.exists(self.file_path):
             os.remove(self.file_path) 
