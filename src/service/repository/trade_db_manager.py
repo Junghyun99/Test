@@ -94,8 +94,8 @@ class TradeDBManager(YamlManager):
         id = self.db.read_data(query, (code, transaction_id))
 
         # Update the paired buy transaction
-        update_query = "UPDATE history SET status = 'COMPLETED' AND pair_id =? WHERE id = ?"
-        self.db.update_data(update_query, (id[0]['id'],instance['pair_id']))
+        update_query = "UPDATE history SET status = 'completed', pair_id =? WHERE id = ?"
+        self.db.update_data(update_query, (id[0]['id'],instance['id']))
 
         return instance['id']
 
