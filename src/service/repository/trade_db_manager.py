@@ -26,7 +26,7 @@ class TradeDBManager(YamlManager):
             SELECT transaction_id FROM history 
         '''
         result = self.db.read_data(query)
-        print("Last tx %s",result)
+        
         if result:
             return result[-1]["transaction_id"]
         return None
