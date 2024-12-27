@@ -127,10 +127,9 @@ class MagicSplit(Algorithm):
         return AlgorithmData(QueryOp.UPDATE, moniData)
     
     def run_algorithm(self, moniData:MonitoringData):
-        print("al %s", current_thread().name)
         self.logger.log_info("*********  %s *********",current_thread().name)
 
-        self.logger.log_info("MGST 1. RUN_ALGORITHM")
+        self.logger.log_info("MGST 1. RUN_ALGORITHM, %s",moniData.code)
         try:
             target_buy_price, target_sell_price = self._calculate_price(moniData.price, moniData.buy_rate, moniData.sell_rate)
             
