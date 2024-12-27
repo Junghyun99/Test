@@ -155,10 +155,12 @@ def test_update_stock_in_monitoring(setup_manager):
 def test_start_monitoring_partial_success(setup_manager, mocker):
     manager, mock_algorithm, mock_db = setup_manager
     mock_db.read_data.return_value = [
-        (1, "StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5),
-        (1, "StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)
+        {'id':1, 'stock_name':"StockA", 'code':"123", 'country_code':"KR", 'trade_round':1, 'price':1000, 'quantity':10, 'buy_rate':0.5, 'sell_rate':1.5},
+        {'id':1, 'stock_name':"StockB", 'code':"456", 'country_code':"KR", 'trade_round':2, 'price':2000, 'quantity':10, 'buy_rate':0.6, 'sell_rate':1.6}
     ]
-    mock_algorithm.run_algorithm.side_effect = [Exception("error"),
+  
+
+ mock_algorithm.run_algorithm.side_effect = [Exception("error"),
 mocker.Mock(QueryOp=QueryOp.DELETE, MonitoringData=MonitoringData(1, "StockB", "456", CountryCode.KR, 2, 2000, 10, 0.6, 1.6)),
     ]
     
@@ -174,8 +176,8 @@ def test_start_monitoring_normal(setup_manager, mocker):
 
     # 가짜 데이터 생성
     mock_db.read_data.return_value = [
-        (1, "StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5),
-        (1, "StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6)
+        {'id':1, 'stock_name':"StockA", 'code':"123", 'country_code':"KR", 'trade_round':1, 'price':1000, 'quantity':10, 'buy_rate':0.5, 'sell_rate':1.5},
+        {'id':1, 'stock_name':"StockB", 'code':"456", 'country_code':"KR", 'trade_round':2, 'price':2000, 'quantity':10, 'buy_rate':0.6, 'sell_rate':1.6}
     ]
 
     mock_algorithm.run_algorithm.side_effect = [
@@ -234,9 +236,9 @@ def test_start_monitoring_cpu(setup_manager, mocker):
 
     # 가짜 데이터 생성
     mock_db.read_data.return_value = [
-        (1, "StockA", "123", "KR", 1, 1000, 10, 0.5, 1.5),
-        (1, "StockB", "456", "KR", 2, 2000, 10, 0.6, 1.6),
-        (1, "StockC", "789", "KR", 1, 3000, 10, 0.6, 1.6) 
+        {'id':1, 'stock_name':"StockA", 'code':"123", 'country_code':"KR", 'trade_round':1, 'price':1000, 'quantity':10, 'buy_rate':0.5, 'sell_rate':1.5},
+        {'id':1, 'stock_name':"StockB", 'code':"456", 'country_code':"KR", 'trade_round':2, 'price':2000, 'quantity':10, 'buy_rate':0.6, 'sell_rate':1.6},
+        {'id':1, 'stock_name':"StockC", 'code':"789", 'country_code':"KR", 'trade_round':1, 'price':3000, 'quantity':10, 'buy_rate':0.6, 'sell_rate':1.6}  
     ]
     # 4. 쓰레드 풀 동작 확인
     mocker.patch("os.cpu_count", return_value=2)
