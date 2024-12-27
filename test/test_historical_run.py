@@ -122,6 +122,7 @@ class TestHistoricalMonitoring:
     def test_monitoring(self):
         db = MonitoringDB(self.logger, self.file_path)
         result = db.read_data("SELECT * FROM monitoring WHERE code=?", ('AAPL',))
+        print(result)
         assert result[0]["code"] == 'AAPL'
         
 
