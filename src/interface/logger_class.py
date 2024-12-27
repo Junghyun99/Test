@@ -2,7 +2,7 @@ from threading import current_thread
 import logging
 import inspect
 from logging.handlers import RotatingFileHandler
-
+import copy
 
 class CustomFormatter(logging.Formatter):
     def format(self, record):
@@ -71,7 +71,7 @@ class BaseLogger:
         name = self._valid_thread_name()
         msg_list = [logging.DEBUG, message]
         for args in args:
-            msg_list.append(args) 
+            msg_list.append(copy.deepcopy(args)) 
         for kw, arg in kwargs.items():
             msg_list.append({kw:arg})    
         self.log_dict[name].append(msg_list)
@@ -80,7 +80,7 @@ class BaseLogger:
         name = self._valid_thread_name() 
         msg_list = [logging.INFO, message]
         for args in args:
-            msg_list.append(args) 
+            msg_list.append(copy.deepcopy(args)) 
         for kw, arg in kwargs.items():
             msg_list.append({kw:arg})    
         self.log_dict[name].append(msg_list) 
@@ -89,7 +89,7 @@ class BaseLogger:
         name = self._valid_thread_name() 
         msg_list = [logging.WARNING, message]
         for args in args:
-            msg_list.append(args) 
+            msg_list.append(copy.deepcopy(args)) 
         for kw, arg in kwargs.items():
             msg_list.append({kw:arg})    
         self.log_dict[name].append(msg_list)
@@ -98,7 +98,7 @@ class BaseLogger:
         name = self._valid_thread_name() 
         msg_list = [logging.ERROR, message]
         for args in args:
-            msg_list.append(args) 
+            msg_list.append(copy.deepcopy(args)) 
         for kw, arg in kwargs.items():
             msg_list.append({kw:arg})    
         self.log_dict[name].append(msg_list)
