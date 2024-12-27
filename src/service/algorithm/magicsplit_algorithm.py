@@ -16,6 +16,7 @@ class MagicSplit(Algorithm):
 
     def set_transaction_dummy(self):
         last_tx = self.trade_db_manager.last_transaction_id()
+        print("al last_tx %s",last_tx)
         if last_tx:
             number = int(last_tx.split("_")[1])
             self.broker_manager.set_dummy_number(number)
