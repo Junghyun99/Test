@@ -225,7 +225,7 @@ class TestHistoricalRun:
         initial_time = datetime.now()
         
 
-        for i in range(3):
+        for i in range(10):
             with freeze_time(initial_time + timedelta(days=i)):
                 print(f"Iteration {i + 1}, 날짜: {datetime.now()}")
                 self.app.run()
