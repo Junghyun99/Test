@@ -28,7 +28,7 @@ class TradeDBManager(YamlManager):
         result = self.db.read_data(query)
         print("Last tx %s",result)
         if result:
-            return result[-1]["transaxtion_id"]
+            return result[-1]["transaction_id"]
         return None
 
     def get_trade_round(self, code, round):
