@@ -19,7 +19,7 @@ class MagicSplit(Algorithm):
         print("al last_tx %s",last_tx)
         if last_tx:
             number = int(last_tx.split("_")[1])
-            self.broker_manager.set_dummy_number(number)
+            self.broker_manager.set_dummy_number(number+1)
   
 
     def _calculate_price(self, buy_price, buy_rate, sell_rate):
