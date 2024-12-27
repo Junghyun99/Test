@@ -140,7 +140,9 @@ class MagicSplit(Algorithm):
             self.logger.log_debug("  - current price %s, target_buy_price  %s, target_sell_price %s",current_price, target_buy_price, target_sell_price)
       
             result = None
-            if moniData.trade_round == 0 and current_price <= target_buy_price:
+            if current_price == 0:
+                result =  AlgorithmData(QueryOp.DEFAULT, MonitoringData(*MonitoringData.DUMMY))
+            elif moniData.trade_round == 0 and current_price <= target_buy_price:
                 result =  self._try_buy_stock_zero(current_price, moniData)
             elif current_price <= target_buy_price:
                 result =  self._try_buy_stock(current_price, moniData)
