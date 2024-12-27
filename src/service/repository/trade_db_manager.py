@@ -27,7 +27,7 @@ class TradeDBManager(YamlManager):
         '''
         result = self.db.read_data(query)
         if result:
-            return result[-1][0]
+            return result[-1]["transaxtion_id"]
         return None
 
     def get_trade_round(self, code, round):
@@ -35,7 +35,7 @@ class TradeDBManager(YamlManager):
             SELECT trade_round, id, price, amount, total_value FROM history 
             WHERE code = ? AND status = 'processing' AND trade_round = ?
         '''
-        return dict(self.db.read_data(query, (code, round)))
+        return self.db.read_data(query, (code, round))
     
     def get_last_round_data(self, code):             
         query = '''
@@ -74,7 +74,7 @@ class TradeDBManager(YamlManager):
         
     
         result = self.db.read_data("SELECT id FROM history WHERE transaction_id=?", (transaction_id,))
-        return result[0][0]
+        return result[0]["id"]
 
 
     def record_sell_transaction(self, stock_name, code, transaction_id, country_code, trade_round, price, amount):
