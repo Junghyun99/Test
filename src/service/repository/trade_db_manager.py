@@ -41,12 +41,11 @@ class TradeDBManager(YamlManager):
         query = '''
             SELECT * FROM history 
             WHERE code = ? AND status = 'processing' 
-            ORDER BY trade_round ASC
+            ORDER BY trade_round DESC
         '''        
         result = self.db.read_data(query, (code,))
-        print("last %s",result[-1])
-        print("last dict %s",dict(result[-1]))
-        return dict(result[-1])            
+        
+        return result[0]          
 
     def get_active_stacks(self, stock_name=None, date=None):
         """Returns all active stacks, optionally filtered by stock name or date.
