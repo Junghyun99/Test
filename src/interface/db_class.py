@@ -51,7 +51,7 @@ class BaseDB:
 
                     rows = cursor.fetchall()
 
-                     results = [dict(row) for row in rows]
+                    results = [dict(row) for row in rows]
 
                     return results
             except sqlite3.Error as e:
