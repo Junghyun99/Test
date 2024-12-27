@@ -26,7 +26,7 @@ def test_insert_data_success(moni_db):
     data = ('aaple', 'AAPL', 'US', 1, 150.0, 10, 5, 3)
     moni_db.insert_data(query, data)
     result = moni_db.read_data("SELECT * FROM monitoring WHERE code=?", ('AAPL',))
-    assert result[0][2] == 'AAPL'
+    assert result[0]["code"] == 'AAPL'
 
 def test_insert_data_multiple_entries(moni_db):
     data_entries = [
@@ -150,13 +150,13 @@ def test_full_scenario(moni_db):
         (15, 'AAPL')
     )
     updated_data = moni_db.read_data("SELECT buy_rate FROM monitoring WHERE code=?", ('AAPL',))
-    assert updated_data[0][0] == 15
+    assert updated_data[0]["buy_rate"] == 15
 
     # Read
     result = moni_db.read_data("SELECT * FROM monitoring WHERE code=?", ('AAPL',))
     assert len(result) == 1
-    assert result[0][2] == 'AAPL'
-    assert result[0][7] == 15  # Updated amount
+    assert result[0]["code"] == 'AAPL'
+    assert result[0]["buy_rate"] == 15  # Updated amount
 
     # Delete
     moni_db.delete_data("DELETE FROM monitoring WHERE code=?", ('AAPL',))
@@ -194,21 +194,21 @@ def test_read_data_by_country_code_kr(moni_db,sample_data):
     result = moni_db.read_data("SELECT * FROM monitoring WHERE country_code=?", ('KR',))
     assert len(result) == 5
     for entry in result:
-        assert entry[3] == 'KR'
+        assert entry["country_code"] == 'KR'
 
 def test_read_data_by_country_code_us(moni_db,sample_data):
     result = moni_db.read_data("SELECT * FROM monitoring WHERE country_code=?", ('US',))
     assert len(result) == 5
     for entry in result:
-        assert entry[3] == 'US'
+        assert entry["country_code"] == 'US'
 
 # 복합 조건 검색 테스트
 def test_read_data_by_country_and_trade_round(moni_db,sample_data):
     result = moni_db.read_data("SELECT * FROM monitoring WHERE country_code=? AND trade_round=?", ('KR', 3))
     assert len(result) == 2
     for entry in result:
-        assert entry[3] == 'KR'
-        assert entry[4] == 3
+        assert entry["country_code"] == 'KR'
+        assert entry["trade_round"] == 3
 
 def test_read_data_by_code(moni_db,sample_data):
     result = moni_db.read_data("SELECT * FROM monitoring WHERE code=?", ('AAPL',))
