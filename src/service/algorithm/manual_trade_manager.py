@@ -1,0 +1,2 @@
+class ManualTradeManager():
+    pass
