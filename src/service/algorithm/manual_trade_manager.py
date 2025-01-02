@@ -42,13 +42,13 @@ class ManualTradeManager(Algorithm):
             self.logger.info(f"No active monitoring found for {code}.")
 
 
-
-        
+        current_price = self.broker_manager.get_current_price(code)
+        quantity = PriceCalculator.calculate_quantity(buy_price, current_price)
 
 
         # 브로커를 통해 거래 시도
         self.logger.info(f"Attempting to place a {order_type} order for {code}.")
-        status, transaction_info = self.broker_manager.place_market_order(code, quantity, order_type)
+        status, transaction_info = self.broker_manager.place_market_order(code, quantity, "BUY")
 
         if not status:
             self.logger.error(f"Failed to place {order_type} order for {code}.")
