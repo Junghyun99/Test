@@ -62,4 +62,4 @@ class ManualTradeManager(Algorithm):
 
         # 모니터링에 신규 종목 추가
         
-            self.monitoring_manager.add(code, stock_name, executed_price, executed_quantity)
+            self.monitoring_manager.add_stock_in_monitoring(id, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
