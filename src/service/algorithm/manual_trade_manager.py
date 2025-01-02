@@ -7,6 +7,11 @@ class ManualTradeManager(Algorithm):
         self.trade_db_manager = trade_db_manager
         self.logger = logger
 
+
+    def check_already_existing_monitoring(self):
+        monitoring_data = self.monitoring_manager.read()
+        active_stock = next((data for data in monitoring_data if data["code"] == code), None)
+
     def run_algorithm(self, moniData:MonitoringData):
         """
     stock_name: str
