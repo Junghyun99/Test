@@ -23,6 +23,11 @@ class MonitoringManager(YamlManager):
         data = (country_code,)       
         return self.db.read_data(query, data)
 
+    def check_already_existing_monitoring(self, code):
+        stocks = self.read_all_stocks(self.COUNTRY_CODE.value)
+        return next((stock for stock in stocks if stock["code"] == code), None)
+    
+
     def add_stock_in_monitoring(self, id, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate):
         """새로운 종목 추가"""
         query = '''INSERT INTO monitoring (stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
