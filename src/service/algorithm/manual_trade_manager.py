@@ -38,9 +38,9 @@ class ManualTradeManager(Algorithm):
 
         # 진행 중인지 확인
         monitoring_data = self.monitoring_manager.read()
-        active_stock = next((data for data in monitoring_data if data["code"] == code), None)
+        existing_stock =    self.monitoring_manager.check_already_existing_monitoring(code)
 
-        if active_stock:
+        if existing_stock:
             # 진행 중인 종목이면 모니터링에서 제거 및 자동매매 종료
             self.logger.info(f"Stopping auto-trade for {code}.")
             self.monitoring_manager.delete_stock_in_monitoring(code)
