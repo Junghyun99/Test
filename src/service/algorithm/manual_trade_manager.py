@@ -62,5 +62,6 @@ class ManualTradeManager(Algorithm):
          self.trade_db_manager.record_buy_transaction(stock_name, code, transaction_id, self.COUNTRY_CODE.value, 1, executed_price, executed_quantity)
 
         # 모니터링에 신규 종목 추가
-        
-            self.monitoring_manager.add_stock_in_monitoring(id, stock_name, code, country_code, trade_round, price, quantity, buy_rate, sell_rate)
+        buy_rate = 5
+        sell_rate = 5
+        self.monitoring_manager.add_stock_in_monitoring(0, stock_name, code, self.COUNTRY_CODE, 1, executed_price, executed_quantity, buy_rate, sell_rate)
