@@ -12,19 +12,7 @@ class ManualTradeManager(Algorithm):
         self.logger = logger
 
 
-    
-    def run_algorithm(self, moniData:MonitoringData):
-        """
-    stock_name: str
-    code: str
-    country_code: CountryCode
-    trade_round: int
-    price : float
-    quantity : int
-    buy_rate: int
-    sell_rate: int 
-        """
-        pass
+       
 
     def handle_trade(self, code, stock_name, buy_price):       
         self.logger.info(f"Manual trade initiated for {code}")
