@@ -38,7 +38,7 @@ class ManualTradeManager(Algorithm):
         if active_stock:
             # 진행 중인 종목이면 모니터링에서 제거 및 자동매매 종료
             self.logger.info(f"Stopping auto-trade for {code}.")
-            self.monitoring_manager.delete(code)
+            self.monitoring_manager.delete_stock_in_monitoring(code)
         else:
             self.logger.info(f"No active monitoring found for {code}.")
 
