@@ -7,6 +7,9 @@ class ManualTradeManager(Algorithm):
         self.trade_db_manager = trade_db_manager
         self.logger = logger
 
+    def run_algorithm(self, moniData:MonitoringData):
+        pass
+
     def handle_trade(self, code, stock_name, quantity, order_type, price=None):
         """
         수동 매수/매도 처리 함수.
