@@ -1,4 +1,6 @@
-class ManualTradeManager:
+from src.interface.algorithm import Algorithm
+
+class ManualTradeManager(Algorithm):
     def __init__(self, monitoring_manager, broker_manager, trade_db_manager, logger):      
         self.monitoring_manager = monitoring_manager
         self.broker_manager = broker_manager
