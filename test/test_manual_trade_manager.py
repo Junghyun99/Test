@@ -1,7 +1,7 @@
 import pytest
 from src.util.enums import CountryCode
 from src.util.price_calculator import PriceCalculator
-from src.service.manual_trade_manager import ManualTradeManager
+from src.service.algorithm.manual_trade_manager import ManualTradeManager
 
 
 @pytest.fixture
