@@ -25,8 +25,8 @@ class ManualTradeManager(Algorithm):
         """
         pass
 
-    def handle_trade(self, code, stock_name,):       
-        self.logger.info(f"Manual trade initiated for {code} - {order_type} {quantity} units.")
+    def handle_trade(self, code, stock_name, buy_price):       
+        self.logger.info(f"Manual trade initiated for {code}")
 
         # 진행 중인지 확인       
         existing_stock =    self.monitoring_manager.check_already_existing_monitoring(code)
@@ -61,6 +61,5 @@ class ManualTradeManager(Algorithm):
          self.trade_db_manager.record_buy_transaction(stock_name, code, transaction_id, self.COUNTRY_CODE.value, 1, executed_price, executed_quantity)
 
         # 모니터링에 신규 종목 추가
-        if order_type == "BUY":
-            self.logger.info(f"Adding {code} to monitoring for tracking.")
+        
             self.monitoring_manager.add(code, stock_name, executed_price, executed_quantity)
