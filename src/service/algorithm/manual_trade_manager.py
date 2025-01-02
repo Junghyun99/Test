@@ -25,19 +25,10 @@ class ManualTradeManager(Algorithm):
         """
         pass
 
-    def handle_trade(self, code, stock_name, quantity, order_type, price=None):
-        """
-        수동 매수/매도 처리 함수.
-        :param code: 종목 코드
-        :param stock_name: 종목 이름
-        :param quantity: 거래 수량
-        :param order_type: 거래 타입 ("BUY" or "SELL")
-        :param price: 거래 가격 (선택적, 기본값은 None)
-        """
+    def handle_trade(self, code, stock_name,):       
         self.logger.info(f"Manual trade initiated for {code} - {order_type} {quantity} units.")
 
-        # 진행 중인지 확인
-        monitoring_data = self.monitoring_manager.read()
+        # 진행 중인지 확인       
         existing_stock =    self.monitoring_manager.check_already_existing_monitoring(code)
 
         if existing_stock:
