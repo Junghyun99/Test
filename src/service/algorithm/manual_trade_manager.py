@@ -1,6 +1,9 @@
 from src.interface.algorithm import Algorithm
+from src.util.enums import CountryCode
 
 class ManualTradeManager(Algorithm):
+    COUNTRY_CODE = CountryCode.KR
+
     def __init__(self, monitoring_manager, broker_manager, trade_db_manager, logger):      
         self.monitoring_manager = monitoring_manager
         self.broker_manager = broker_manager
@@ -8,10 +11,7 @@ class ManualTradeManager(Algorithm):
         self.logger = logger
 
 
-    def check_already_existing_monitoring(self):
-        monitoring_data = self.monitoring_manager.read()
-        active_stock = next((data for data in monitoring_data if data["code"] == code), None)
-
+    
     def run_algorithm(self, moniData:MonitoringData):
         """
     stock_name: str
