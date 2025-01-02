@@ -50,9 +50,14 @@ class ManualTradeManager(Algorithm):
         else:
             self.logger.info(f"No active monitoring found for {code}.")
 
+
+
+        
+
+
         # 브로커를 통해 거래 시도
         self.logger.info(f"Attempting to place a {order_type} order for {code}.")
-        status, transaction_info = self.broker_manager.place_market_order(code, quantity, order_type, price)
+        status, transaction_info = self.broker_manager.place_market_order(code, quantity, order_type)
 
         if not status:
             self.logger.error(f"Failed to place {order_type} order for {code}.")
@@ -62,6 +67,9 @@ class ManualTradeManager(Algorithm):
         transaction_id, executed_price, executed_quantity = transaction_info
         self.logger.info(f"{order_type} order successful for {code}: {transaction_id}, "
                          f"Price: {executed_price}, Quantity: {executed_quantity}.")
+
+self.trade_db_manager.record_buy_transaction(moniData.stock_name, moniData.code, info[2], moniData.country_code, 1, info[0], info[1])    
+
         self.trade_db_manager.add(stock_name, code, transaction_id, order_type, executed_price, executed_quantity)
 
         # 모니터링에 신규 종목 추가
