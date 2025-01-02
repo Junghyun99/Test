@@ -70,7 +70,9 @@ class ManualTradeManager(Algorithm):
 
 self.trade_db_manager.record_buy_transaction(moniData.stock_name, moniData.code, info[2], moniData.country_code, 1, info[0], info[1])    
 
-        self.trade_db_manager.add(stock_name, code, transaction_id, order_type, executed_price, executed_quantity)
+        self.trade_db_manager.record_buy_transaction(moniData.stock_name, moniData.code, info[2], moniData.country_code, moniData.trade_round, info[0], info[1])   
+
+        self.trade_db_manager.record_buy_transaction(stock_name, code, transaction_id, )
 
         # 모니터링에 신규 종목 추가
         if order_type == "BUY":
