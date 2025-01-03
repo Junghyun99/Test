@@ -1,6 +1,7 @@
 from src.util.price_calculator import PriceCalculator
 from src.interface.algorithm import Algorithm
 from src.util.enums import CountryCode
+from src.model.monitoring_db_model import AlgorithmData, MonitoringData
 
 class ManualTradeManager(Algorithm):
     COUNTRY_CODE = CountryCode.KR
