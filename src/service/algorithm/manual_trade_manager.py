@@ -11,8 +11,8 @@ class ManualTradeManager(Algorithm):
         self.trade_db_manager = trade_db_manager
         self.logger = logger
 
-
-       
+    def run_algorithm(self, moniData:MonitoringData):
+        pass
 
     def handle_trade(self, code, stock_name, buy_price):       
         self.logger.info(f"Manual trade initiated for {code}")
