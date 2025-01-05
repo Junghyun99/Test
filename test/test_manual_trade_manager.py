@@ -38,7 +38,7 @@ def test_handle_trade_successful_execution(setup_trade_manager):
     broker_manager.get_current_price.assert_called_once_with("005930")
     broker_manager.place_market_order.assert_called_once_with("005930", 2, "BUY")
     trade_db_manager.record_buy_transaction.assert_called_once_with(
-        "Samsung Electronics", "005930", "TX123", "KR", 1, 50500, 10
+        "Samsung Electronics", "005930", "TX123", CountryCode.KR, 1, 50500, 10
     )
     monitoring_manager.add_stock_in_monitoring.assert_called_once()
     logger.info.assert_called()
