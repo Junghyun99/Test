@@ -46,7 +46,7 @@ class ManualTradeManager(Algorithm):
 
         # 거래 성공 시 거래 내역 기록
         transaction_id, executed_price, executed_quantity = transaction_info
-        self.logger.info(f"{order_type} order successful for {code}: {transaction_id}, "
+        self.logger.info(f"buy order successful for {code}: {transaction_id}, "
                          f"Price: {executed_price}, Quantity: {executed_quantity}.")
         self.trade_db_manager.record_buy_transaction(stock_name, code, transaction_id, self.COUNTRY_CODE, 1, executed_price, executed_quantity)
 
