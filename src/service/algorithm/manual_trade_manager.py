@@ -37,7 +37,7 @@ class ManualTradeManager(Algorithm):
 
 
         # 브로커를 통해 거래 시도
-        self.logger.info(f"Attempting to place a {order_type} order for {code}.")
+        self.logger.info(f"Attempting to place a buy order for {code}.")
         status, transaction_info = self.broker_manager.place_market_order(code, quantity, "BUY")
 
         if not status:
