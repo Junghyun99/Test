@@ -41,12 +41,12 @@ class ManualTradeManager(Algorithm):
         status, transaction_info = self.broker_manager.place_market_order(code, quantity, "BUY")
 
         if not status:
-            self.logger.error(f"Failed to place buy order for {code}.")
+            self.logger.error(f"Failed to place BUY order for {code}.")
             return
 
         # 거래 성공 시 거래 내역 기록
         transaction_id, executed_price, executed_quantity = transaction_info
-        self.logger.info(f"buy order successful for {code}: {transaction_id}, "
+        self.logger.info(f"BUY order successful for {code}: {transaction_id}, "
                          f"Price: {executed_price}, Quantity: {executed_quantity}.")
         self.trade_db_manager.record_buy_transaction(stock_name, code, transaction_id, self.COUNTRY_CODE, 1, executed_price, executed_quantity)
 
